@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let isPlaying = false;
 
   // ==========================================
-  // 1. خلفية الجسيمات والتساقط المتحركة (Particles)
+  // 1. خلفية التساقط والجسيمات (Particles Canvas)
   // ==========================================
   const canvas = document.createElement('canvas');
   canvas.id = 'particles-canvas';
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
       this.y = Math.random() * canvas.height;
       this.size = Math.random() * 2.5 + 1;
       this.speedX = Math.random() * 0.8 - 0.4;
-      this.speedY = Math.random() * 1 + 0.6; // حركة التساقط للأسفل
+      this.speedY = Math.random() * 1 + 0.6;
       this.color = `rgba(${168 + Math.random() * 50}, 85, 247, ${Math.random() * 0.7 + 0.3})`;
     }
 
@@ -86,7 +86,84 @@ document.addEventListener('DOMContentLoaded', () => {
   animateParticles();
 
   // ==========================================
-  // 2. التحكم في الصوت وشاشة الدخول
+  // 2. أثر حركة الماوس الأرجواني (Mouse Trail Canvas)
+  // ==========================================
+  const trailCanvas = document.createElement('canvas');
+  trailCanvas.id = 'cursor-trail';
+  trailCanvas.style.position = 'fixed';
+  trailCanvas.style.top = '0';
+  trailCanvas.style.left = '0';
+  trailCanvas.style.width = '100%';
+  trailCanvas.style.height = '100%';
+  trailCanvas.style.pointerEvents = 'none';
+  trailCanvas.style.zIndex = '9999';
+  document.body.appendChild(trailCanvas);
+
+  const trailCtx = trailCanvas.getContext('2d');
+  let trailParticles = [];
+
+  function resizeTrailCanvas() {
+    trailCanvas.width = window.innerWidth;
+    trailCanvas.height = window.innerHeight;
+  }
+  resizeTrailCanvas();
+  window.addEventListener('resize', resizeTrailCanvas);
+
+  class TrailParticle {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.size = Math.random() * 5 + 2;
+      this.speedX = (Math.random() - 0.5) * 1.5;
+      this.speedY = (Math.random() - 0.5) * 1.5;
+      this.color = `rgba(168, 85, 247, ${Math.random() * 0.5 + 0.5})`;
+      this.life = 1;
+      this.decay = Math.random() * 0.03 + 0.02;
+    }
+
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      this.size *= 0.95;
+      this.life -= this.decay;
+    }
+
+    draw() {
+      trailCtx.save();
+      trailCtx.globalAlpha = Math.max(0, this.life);
+      trailCtx.fillStyle = this.color;
+      trailCtx.shadowBlur = 10;
+      trailCtx.shadowColor = '#c084fc';
+      trailCtx.beginPath();
+      trailCtx.arc(this.x, this.y, Math.max(0, this.size), 0, Math.PI * 2);
+      trailCtx.fill();
+      trailCtx.restore();
+    }
+  }
+
+  window.addEventListener('mousemove', (e) => {
+    for (let i = 0; i < 3; i++) {
+      trailParticles.push(new TrailParticle(e.clientX, e.clientY));
+    }
+  });
+
+  function animateTrail() {
+    trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+    for (let i = 0; i < trailParticles.length; i++) {
+      trailParticles[i].update();
+      trailParticles[i].draw();
+      if (trailParticles[i].life <= 0 || trailParticles[i].size <= 0.2) {
+        trailParticles.splice(i, 1);
+        i--;
+      }
+    }
+    requestAnimationFrame(animateTrail);
+  }
+
+  animateTrail();
+
+  // ==========================================
+  // 3. التحكم بالموسيقى وشاشة الدخول
   // ==========================================
   introScreen.addEventListener('click', () => {
     introScreen.classList.add('fade-out');
@@ -141,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // 3. ربط ديسكورد M4.J عبر Lanyard API
+  // 4. ديسكورد M4.J عبر Lanyard API
   // ==========================================
   const DISCORD_ID = "1159623336041652244";
 
@@ -153,22 +230,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (data.success && data.data) {
         const user = data.data;
 
-        // صورة الحساب
         const avatarUrl = user.discord_user.avatar
           ? `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.discord_user.avatar}.png?size=128`
           : `https://cdn.discordapp.com/embed/avatars/0.png`;
         const avatarEl = document.querySelector('.discord-avatar');
         if (avatarEl) avatarEl.src = avatarUrl;
 
-        // الاسم
         const nameEl = document.querySelector('.discord-user-header h3');
         if (nameEl) nameEl.textContent = user.discord_user.global_name || user.discord_user.username;
 
-        // نقطة الحالة
         const statusDot = document.querySelector('.status-indicator');
         if (statusDot) statusDot.className = `status-indicator ${user.discord_status}`;
 
-        // النشاط
         const activityEl = document.querySelector('.discord-activity');
         if (activityEl) {
           if (user.activities && user.activities.length > 0) {
@@ -191,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     } catch (error) {
-      console.error("خطأ في الاتصال بديسكورد:", error);
+      console.error("خطأ في جلب بيانات ديسكورد:", error);
     }
   }
 
