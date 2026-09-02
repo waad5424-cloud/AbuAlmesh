@@ -22,23 +22,12 @@
     <div class="background-overlay"></div>
 
     <div class="container">
-      
-      <!-- كرت ديسكورد التفاعلي (Lanyard) -->
-      <div class="discord-card">
-        <div class="discord-avatar-container">
-          <img class="discord-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Discord Avatar">
-          <span class="status-indicator offline"></span>
-        </div>
-        <div class="discord-user-info">
-          <div class="discord-user-header">
-            <h3>I4.J</h3>
-          </div>
-          <p class="discord-activity">جاري جلب الحالة...</p>
-        </div>
-      </div>
 
       <!-- مشغل الصوت -->
       <div class="music-player">
+        <div class="song-info">
+          <span class="song-title">Dido - Thank You (Slowed / Reverb)</span>
+        </div>
         <div class="disc-container">
           <div id="disc" class="disc"></div>
         </div>
@@ -55,13 +44,14 @@
             <input type="range" id="volume-bar" value="50" min="0" max="100">
           </div>
         </div>
+        <!-- ملف الأغنية -->
         <audio id="audio-player" src="music.mp3"></audio>
       </div>
 
       <!-- كروت التواصل الاجتماعي (Socials) -->
       <div class="socials-grid">
         
-        <!-- كرت الديسكورد المحدث اليوزر فيه لـ I4.J -->
+        <!-- كرت الديسكورد المباشر -->
         <a href="https://discord.com/users/1159623336041652244" target="_blank" class="social-card">
           <div class="social-icon"><i class="fab fa-discord"></i></div>
           <h3>Discord</h3>
