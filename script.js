@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // 4. ديسكورد M4.J عبر Lanyard API
+  // 4. ديسكورد عبر Lanyard API
   // ==========================================
   const DISCORD_ID = "1159623336041652244";
 
