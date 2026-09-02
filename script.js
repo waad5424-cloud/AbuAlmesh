@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // 2. تفعيل تأثير إشعاع الماوس (Mouse Glow)
+  // 2. تفعيل إشعاع الماوس
   const glow = document.createElement('div');
   glow.classList.add('mouse-glow');
   document.body.appendChild(glow);
@@ -98,23 +98,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  // 3. تفعيل أوراق الشجر المتساقطة
+  // 3. تفعيل أوراق الشجر المتساقطة (واضحة وبأحجام ممتازة)
   const leavesContainer = document.createElement('div');
   leavesContainer.classList.add('leaves-container');
   document.body.appendChild(leavesContainer);
 
-  const leavesCount = 15; // عدد الأوراق
+  const leavesCount = 20; 
   for (let i = 0; i < leavesCount; i++) {
     const leaf = document.createElement('div');
     leaf.classList.add('leaf');
     
-    // خصائص عشوائية لكل ورقة
-    const size = Math.random() * 10 + 10; // الحجم بين 10 و 20 بكسل
+    const size = Math.random() * 12 + 10; 
     leaf.style.width = `${size}px`;
-    leaf.style.height = `${size * 1.4}px`;
+    leaf.style.height = `${size * 1.3}px`;
     leaf.style.left = `${Math.random() * 100}vw`;
-    leaf.style.animationDuration = `${Math.random() * 5 + 5}secs`; // السرعة بين 5 إلى 10 ثواني
-    leaf.style.animationDelay = `${Math.random() * 5}secs`;
+    leaf.style.animationDuration = `${Math.random() * 6 + 4}s`; 
+    leaf.style.animationDelay = `${Math.random() * 5}s`;
     
     leavesContainer.appendChild(leaf);
   }
