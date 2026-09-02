@@ -2,35 +2,34 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Tajawal', sans-serif;
+  font-family: 'Inter', 'Tajawal', sans-serif;
 }
 
 body {
-  background-color: #06050a;
+  background-color: #030108;
   color: #ffffff;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow-x: hidden;
-  padding: 40px 0;
+  direction: rtl;
 }
 
-.stars-bg {
+/* خلفية النجوم والشبكة */
+.bg-overlay {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(27, 16, 42, 0.8) 0%, #06050a 100%);
+  background: radial-gradient(circle at 50% 50%, rgba(20, 10, 35, 0.6) 0%, #030108 100%);
   z-index: -1;
 }
 
+/* شاشة الدخول */
 #intro-screen {
   position: fixed;
   inset: 0;
-  background: rgba(6, 5, 10, 0.95);
+  background: #030108;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 99999;
   cursor: pointer;
   transition: opacity 0.8s ease, visibility 0.8s ease;
 }
@@ -42,242 +41,420 @@ body {
 
 .intro-content {
   text-align: center;
-  animation: pulse 2s infinite;
+  color: #fff;
 }
 
 .intro-title {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 900;
-  color: #ffffff;
-  text-shadow: 0 0 15px rgba(168, 85, 247, 0.8);
-  margin-bottom: 20px;
-  text-transform: lowercase;
+  margin-bottom: 15px;
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.8);
 }
 
 .intro-icon {
-  font-size: 3.5rem;
+  font-size: 3rem;
   color: #a855f7;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
-.hidden {
-  display: none !important;
-}
-
-.container {
+/* الهيكل العام للأقسام */
+.page-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 80px 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  width: 90%;
-  max-width: 420px;
-  z-index: 10;
+  gap: 120px;
 }
 
-.main-header {
-  text-align: center;
-  margin-bottom: 5px;
-}
-
-.site-title {
-  font-size: 2.2rem;
-  font-weight: 900;
-  color: #ffffff;
-  text-shadow: 0 0 20px rgba(168, 85, 247, 0.9), 0 0 40px rgba(168, 85, 247, 0.4);
-  letter-spacing: 1px;
-}
-
-.card {
-  background: rgba(18, 14, 28, 0.75);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(168, 85, 247, 0.2);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-}
-
-.section-title {
-  font-size: 1.1rem;
-  color: #a855f7;
-  margin-bottom: 12px;
+.section {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-}
-
-.album-cover-card {
   text-align: center;
 }
 
-.cover-box {
-  width: 220px;
-  height: 220px;
-  border-radius: 20px;
-  margin: 0 auto 15px auto;
-  border: 2px solid rgba(168, 85, 247, 0.4);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(168, 85, 247, 0.25);
-  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-  background: radial-gradient(circle at center, #2e1065 0%, #120924 70%, #06030a 100%);
+.section-badge {
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  color: #a855f7;
+  margin-bottom: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.section-title-en {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+
+.section-sub {
+  font-size: 0.95rem;
+  color: #888;
+  margin-bottom: 35px;
+}
+
+/* قسم About Me */
+.about-content {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 40px;
+  margin-top: 30px;
+  width: 100%;
+  max-width: 850px;
 }
 
-.cover-icon {
-  font-size: 3.5rem;
+.about-image-box {
+  flex: 1;
+  max-width: 380px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.about-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.about-text-box {
+  flex: 1;
+  text-align: right;
+}
+
+.about-description {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #ccc;
+}
+
+/* قسم Music Player */
+.music-player-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.player-left-card {
+  background: rgba(13, 9, 20, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 25px;
+  width: 380px;
+  text-align: right;
+  backdrop-filter: blur(10px);
+}
+
+.now-playing-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.badge-mini {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  width: fit-content;
+}
+
+.np-label {
+  font-size: 0.65rem;
   color: #a855f7;
-  text-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
-  transition: transform 0.4s ease, color 0.4s ease;
-}
-
-.cover-box.playing {
-  transform: scale(1.03);
-  border-color: #a855f7;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 35px rgba(168, 85, 247, 0.55);
-}
-
-.cover-box.playing .cover-icon {
-  transform: scale(1.1);
-  color: #c084fc;
-}
-
-.disc-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #ffffff;
+  letter-spacing: 1.5px;
   margin-top: 5px;
 }
 
-.disc-artist {
-  font-size: 0.9rem;
-  color: #a855f7;
+.track-title-main {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 15px;
 }
 
-.audio-controls {
-  margin-top: 15px;
-}
-
-.time-slider {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.8rem;
-  color: #aaa;
-}
-
-.time-slider input[type="range"], .volume-container input[type="range"] {
-  flex: 1;
+.progress-container input[type="range"], .volume-row input[type="range"] {
+  width: 100%;
   accent-color: #a855f7;
   cursor: pointer;
 }
 
-.control-buttons {
+.time-labels {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-top: 15px;
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 5px;
 }
 
-.btn-control {
+.controls-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 15px 0;
+}
+
+.ctrl-btn {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.play-btn-purple {
   background: #a855f7;
   border: none;
+  width: 50px;
+  height: 32px;
+  border-radius: 16px;
   color: #fff;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  font-size: 1.1rem;
   cursor: pointer;
   box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
-  transition: transform 0.2s ease;
 }
 
-.btn-control:hover {
-  transform: scale(1.1);
-}
-
-.volume-container {
+.volume-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #a855f7;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 15px;
 }
 
-.discord-header {
+.vol-num {
+  font-size: 0.75rem;
+}
+
+.loop-badge {
+  font-size: 0.75rem;
+  color: #666;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 6px;
+  margin-bottom: 15px;
 }
 
-.avatar-wrapper {
+.playlist-box {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 10px;
+}
+
+.playlist-label {
+  font-size: 0.65rem;
+  color: #666;
+  letter-spacing: 1px;
+}
+
+.playlist-item {
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  padding: 8px 12px;
+  border-radius: 10px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.playlist-item small {
+  color: #888;
+  font-size: 0.75rem;
+}
+
+/* القرص الدوار */
+.player-right-disc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vinyl-record {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #111 20%, #222 21%, #000 40%, #151515 41%, #000 100%);
+  border: 3px solid #111;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  animation: spin 10s linear infinite;
+  animation-play-state: paused;
+}
+
+.vinyl-record.playing {
+  animation-play-state: running;
+}
+
+.vinyl-center {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #a855f7;
+  border: 8px solid #000;
+}
+
+.disc-track-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.disc-artist-name {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* قسم Discord */
+.discord-wide-card {
+  background: rgba(13, 9, 20, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 20px 30px;
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: right;
+}
+
+.dc-user-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.dc-avatar-container {
   position: relative;
 }
 
 .discord-avatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 2px solid #a855f7;
+  width: 70px;
+  height: 70px;
+  border-radius: 18px;
+  object-fit: cover;
 }
 
 .status-indicator {
   position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 14px;
-  height: 14px;
+  bottom: -4px;
+  left: -4px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  border: 2px solid #120e1c;
+  border: 3px solid #0d0914;
 }
 
-.status-indicator.online { background-color: #23a55a; }
-.status-indicator.idle { background-color: #f0b232; }
-.status-indicator.dnd { background-color: #f23f43; }
-.status-indicator.offline { background-color: #80848e; }
+.status-indicator.dnd { background: #f23f43; }
+.status-indicator.online { background: #23a55a; }
 
-.discord-user-header h3 {
-  font-size: 1.1rem;
-  color: #fff;
+.dc-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.discord-activity {
+.dc-username {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.dc-badge {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 2px 10px;
+  font-size: 0.7rem;
+  color: #aaa;
+}
+
+.dc-device {
+  font-size: 0.75rem;
+  color: #666;
+  display: block;
+  margin: 2px 0 6px 0;
+}
+
+.dc-activity {
   font-size: 0.85rem;
   color: #aaa;
 }
 
-.about-text {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: #ddd;
+.dc-arrow {
+  color: #555;
+  font-size: 1.1rem;
 }
 
-.social-links {
+/* قسم Socials */
+.socials-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 850px;
+}
+
+.social-card {
+  background: rgba(13, 9, 20, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 30px 15px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-.social-btn {
+.social-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.social-icon-wrapper {
+  background: rgba(255, 255, 255, 0.05);
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  background: rgba(168, 85, 247, 0.1);
-  border: 1px solid rgba(168, 85, 247, 0.3);
-  color: #fff;
-  text-decoration: none;
-  padding: 10px 15px;
-  border-radius: 12px;
-  font-size: 0.95rem;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.social-name {
   font-weight: 700;
-  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  font-size: 0.95rem;
 }
 
-.social-btn:hover {
-  background: rgba(168, 85, 247, 0.25);
-  border-color: #a855f7;
-  transform: translateY(-2px);
+.social-handle {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 4px;
 }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.8; }
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .about-content, .music-player-wrapper {
+    flex-direction: column;
+  }
+  .socials-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
