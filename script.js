@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const mainContent = document.getElementById('main-content');
   const audio = document.getElementById('audio-player');
   const playBtn = document.getElementById('play-pause-btn');
-  const disc = document.getElementById('disc');
+  const coverBox = document.getElementById('disc');
   const progressBar = document.getElementById('progress-bar');
   const volumeBar = document.getElementById('volume-bar');
   const currentTimeEl = document.getElementById('current-time');
@@ -11,6 +11,83 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let isPlaying = false;
 
+  // ==========================================
+  // 1. خلفية الجسيمات والتساقط المتحركة (Particles)
+  // ==========================================
+  const canvas = document.createElement('canvas');
+  canvas.id = 'particles-canvas';
+  canvas.style.position = 'fixed';
+  canvas.style.top = '0';
+  canvas.style.left = '0';
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  canvas.style.pointerEvents = 'none';
+  canvas.style.zIndex = '0';
+  document.body.prepend(canvas);
+
+  const ctx = canvas.getContext('2d');
+  let particlesArray = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2.5 + 1;
+      this.speedX = Math.random() * 0.8 - 0.4;
+      this.speedY = Math.random() * 1 + 0.6; // حركة التساقط للأسفل
+      this.color = `rgba(${168 + Math.random() * 50}, 85, 247, ${Math.random() * 0.7 + 0.3})`;
+    }
+
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+
+      if (this.y > canvas.height) {
+        this.y = 0 - this.size;
+        this.x = Math.random() * canvas.width;
+      }
+      if (this.x > canvas.width) this.x = 0;
+      if (this.x < 0) this.x = canvas.width;
+    }
+
+    draw() {
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function initParticles() {
+    particlesArray = [];
+    const numberOfParticles = Math.floor((canvas.width * canvas.height) / 8000);
+    for (let i = 0; i < numberOfParticles; i++) {
+      particlesArray.push(new Particle());
+    }
+  }
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particlesArray.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    requestAnimationFrame(animateParticles);
+  }
+
+  initParticles();
+  animateParticles();
+
+  // ==========================================
+  // 2. التحكم في الصوت وشاشة الدخول
+  // ==========================================
   introScreen.addEventListener('click', () => {
     introScreen.classList.add('fade-out');
     mainContent.classList.remove('hidden');
@@ -21,12 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isPlaying) {
       audio.pause();
       playBtn.innerHTML = '<i class="fas fa-play"></i>';
-      disc.classList.remove('playing');
+      coverBox.classList.remove('playing');
       isPlaying = false;
     } else {
       audio.play().then(() => {
         playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        disc.classList.add('playing');
+        coverBox.classList.add('playing');
         isPlaying = true;
       }).catch(err => console.log(err));
     }
@@ -64,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // ربط ديسكورد لايف عبر Lanyard API (I4.J)
+  // 3. ربط ديسكورد M4.J عبر Lanyard API
   // ==========================================
   const DISCORD_ID = "1159623336041652244";
 
@@ -76,22 +153,22 @@ document.addEventListener('DOMContentLoaded', () => {
       if (data.success && data.data) {
         const user = data.data;
 
-        // 1. الصورة الشخصية
+        // صورة الحساب
         const avatarUrl = user.discord_user.avatar
           ? `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.discord_user.avatar}.png?size=128`
           : `https://cdn.discordapp.com/embed/avatars/0.png`;
         const avatarEl = document.querySelector('.discord-avatar');
         if (avatarEl) avatarEl.src = avatarUrl;
 
-        // 2. اسم الحساب
+        // الاسم
         const nameEl = document.querySelector('.discord-user-header h3');
         if (nameEl) nameEl.textContent = user.discord_user.global_name || user.discord_user.username;
 
-        // 3. نقطة حالة الاتصال (أونلاين/مشغول/خامل/أوفلاين)
+        // نقطة الحالة
         const statusDot = document.querySelector('.status-indicator');
         if (statusDot) statusDot.className = `status-indicator ${user.discord_status}`;
 
-        // 4. النشاط الحالي
+        // النشاط
         const activityEl = document.querySelector('.discord-activity');
         if (activityEl) {
           if (user.activities && user.activities.length > 0) {
@@ -100,21 +177,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const spotifyStatus = user.activities.find(a => a.name === "Spotify");
 
             if (spotifyStatus) {
-              activityEl.textContent = `🎵 الاستماع إلى ${spotifyStatus.details}`;
+              activityEl.textContent = `🎵 Listening to ${spotifyStatus.details}`;
             } else if (gameStatus) {
-              activityEl.textContent = `🎮 يلعب ${gameStatus.name}`;
+              activityEl.textContent = `🎮 Playing ${gameStatus.name}`;
             } else if (customStatus && customStatus.state) {
               activityEl.textContent = customStatus.state;
             } else {
               activityEl.textContent = user.activities[0].name;
             }
           } else {
-            activityEl.textContent = "ما فيه نشاط ظاهر حاليًا";
+            activityEl.textContent = "لا يوجد نشاط حالي";
           }
         }
       }
     } catch (error) {
-      console.error("خطأ في جلب بيانات ديسكورد:", error);
+      console.error("خطأ في الاتصال بديسكورد:", error);
     }
   }
 
