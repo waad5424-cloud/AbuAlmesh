@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const introScreen = document.getElementById('intro-screen');
-  const mainContent = document.getElementById('main-content');
   const audio = document.getElementById('audio-player');
   const playBtn = document.getElementById('play-pause-btn');
-  const coverBox = document.getElementById('disc');
+  const disc = document.getElementById('disc');
   const progressBar = document.getElementById('progress-bar');
   const volumeBar = document.getElementById('volume-bar');
   const currentTimeEl = document.getElementById('current-time');
@@ -11,20 +10,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let isPlaying = false;
 
-  // خلفية الجسيمات
+  // تأثير جزيئات الخلفية المتصلة (Constellation Canvas)
   const canvas = document.createElement('canvas');
-  canvas.id = 'particles-canvas';
+  canvas.id = 'bg-canvas';
   canvas.style.position = 'fixed';
   canvas.style.top = '0';
   canvas.style.left = '0';
   canvas.style.width = '100%';
   canvas.style.height = '100%';
   canvas.style.pointerEvents = 'none';
-  canvas.style.zIndex = '0';
-  document.body.prepend(canvas);
+  canvas.style.zIndex = '-1';
+  document.body.appendChild(canvas);
 
   const ctx = canvas.getContext('2d');
-  let particlesArray = [];
+  let particles = [];
 
   function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -33,136 +32,63 @@ document.addEventListener('DOMContentLoaded', () => {
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 
-  class Particle {
+  class Star {
     constructor() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
-      this.size = Math.random() * 2.5 + 1;
-      this.speedX = Math.random() * 0.8 - 0.4;
-      this.speedY = Math.random() * 1 + 0.6;
-      this.color = `rgba(${168 + Math.random() * 50}, 85, 247, ${Math.random() * 0.7 + 0.3})`;
+      this.size = Math.random() * 1.5 + 0.5;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
     }
 
     update() {
-      this.x += this.speedX;
-      this.y += this.speedY;
+      this.x += this.vx;
+      this.y += this.vy;
 
-      if (this.y > canvas.height) {
-        this.y = 0 - this.size;
-        this.x = Math.random() * canvas.width;
-      }
-      if (this.x > canvas.width) this.x = 0;
-      if (this.x < 0) this.x = canvas.width;
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
     }
 
     draw() {
-      ctx.fillStyle = this.color;
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
-  function initParticles() {
-    particlesArray = [];
-    const numberOfParticles = Math.floor((canvas.width * canvas.height) / 8000);
-    for (let i = 0; i < numberOfParticles; i++) {
-      particlesArray.push(new Particle());
-    }
-  }
+  for (let i = 0; i < 60; i++) particles.push(new Star());
 
-  function animateParticles() {
+  function animateCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particlesArray.forEach(p => {
-      p.update();
-      p.draw();
-    });
-    requestAnimationFrame(animateParticles);
-  }
+    
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update();
+      particles[i].draw();
 
-  initParticles();
-  animateParticles();
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
 
-  // أثر حركة الماوس
-  const trailCanvas = document.createElement('canvas');
-  trailCanvas.id = 'cursor-trail';
-  trailCanvas.style.position = 'fixed';
-  trailCanvas.style.top = '0';
-  trailCanvas.style.left = '0';
-  trailCanvas.style.width = '100%';
-  trailCanvas.style.height = '100%';
-  trailCanvas.style.pointerEvents = 'none';
-  trailCanvas.style.zIndex = '9999';
-  document.body.appendChild(trailCanvas);
-
-  const trailCtx = trailCanvas.getContext('2d');
-  let trailParticles = [];
-
-  function resizeTrailCanvas() {
-    trailCanvas.width = window.innerWidth;
-    trailCanvas.height = window.innerHeight;
-  }
-  resizeTrailCanvas();
-  window.addEventListener('resize', resizeTrailCanvas);
-
-  class TrailParticle {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-      this.size = Math.random() * 5 + 2;
-      this.speedX = (Math.random() - 0.5) * 1.5;
-      this.speedY = (Math.random() - 0.5) * 1.5;
-      this.color = `rgba(168, 85, 247, ${Math.random() * 0.5 + 0.5})`;
-      this.life = 1;
-      this.decay = Math.random() * 0.03 + 0.02;
-    }
-
-    update() {
-      this.x += this.speedX;
-      this.y += this.speedY;
-      this.size *= 0.95;
-      this.life -= this.decay;
-    }
-
-    draw() {
-      trailCtx.save();
-      trailCtx.globalAlpha = Math.max(0, this.life);
-      trailCtx.fillStyle = this.color;
-      trailCtx.shadowBlur = 10;
-      trailCtx.shadowColor = '#c084fc';
-      trailCtx.beginPath();
-      trailCtx.arc(this.x, this.y, Math.max(0, this.size), 0, Math.PI * 2);
-      trailCtx.fill();
-      trailCtx.restore();
-    }
-  }
-
-  window.addEventListener('mousemove', (e) => {
-    for (let i = 0; i < 3; i++) {
-      trailParticles.push(new TrailParticle(e.clientX, e.clientY));
-    }
-  });
-
-  function animateTrail() {
-    trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
-    for (let i = 0; i < trailParticles.length; i++) {
-      trailParticles[i].update();
-      trailParticles[i].draw();
-      if (trailParticles[i].life <= 0 || trailParticles[i].size <= 0.2) {
-        trailParticles.splice(i, 1);
-        i--;
+        if (dist < 120) {
+          ctx.strokeStyle = `rgba(168, 85, 247, ${1 - dist / 120 * 0.8})`;
+          ctx.lineWidth = 0.4;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
       }
     }
-    requestAnimationFrame(animateTrail);
+    requestAnimationFrame(animateCanvas);
   }
+  animateCanvas();
 
-  animateTrail();
-
-  // إخفاء شاشة الدخول وبدء التشغيل
+  // دخول المواقع
   if (introScreen) {
     introScreen.addEventListener('click', () => {
       introScreen.classList.add('fade-out');
-      if (mainContent) mainContent.classList.remove('hidden');
       togglePlay();
     });
   }
@@ -172,20 +98,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isPlaying) {
       audio.pause();
       if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>';
-      if (coverBox) coverBox.classList.remove('playing');
+      if (disc) disc.classList.remove('playing');
       isPlaying = false;
     } else {
       audio.play().then(() => {
         if (playBtn) playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        if (coverBox) coverBox.classList.add('playing');
+        if (disc) disc.classList.add('playing');
         isPlaying = true;
       }).catch(err => console.log(err));
     }
   }
 
-  if (playBtn) {
-    playBtn.addEventListener('click', togglePlay);
-  }
+  if (playBtn) playBtn.addEventListener('click', togglePlay);
 
   if (audio) {
     audio.addEventListener('timeupdate', () => {
@@ -216,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   }
 
-  // Lanyard API - ديسكورد
+  // Lanyard Discord Status
   const DISCORD_ID = "1159623336041652244";
 
   async function fetchDiscordStatus() {
@@ -230,16 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const avatarUrl = user.discord_user.avatar
           ? `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.discord_user.avatar}.png?size=128`
           : `https://cdn.discordapp.com/embed/avatars/0.png`;
+        
         const avatarEl = document.querySelector('.discord-avatar');
         if (avatarEl) avatarEl.src = avatarUrl;
 
-        const nameEl = document.querySelector('.discord-user-header h3');
+        const nameEl = document.querySelector('.dc-username');
         if (nameEl) nameEl.textContent = user.discord_user.global_name || user.discord_user.username;
 
-        const statusDot = document.querySelector('.status-indicator');
-        if (statusDot) statusDot.className = `status-indicator ${user.discord_status}`;
-
-        const activityEl = document.querySelector('.discord-activity');
+        const activityEl = document.querySelector('.dc-activity');
         if (activityEl) {
           if (user.activities && user.activities.length > 0) {
             const customStatus = user.activities.find(a => a.type === 4);
@@ -256,12 +178,12 @@ document.addEventListener('DOMContentLoaded', () => {
               activityEl.textContent = user.activities[0].name;
             }
           } else {
-            activityEl.textContent = "لا يوجد نشاط حالي";
+            activityEl.textContent = "ما فيه نشاط ظاهر حاليًا";
           }
         }
       }
     } catch (error) {
-      console.error("خطأ في جلب بيانات ديسكورد:", error);
+      console.error("Discord API Error:", error);
     }
   }
 
