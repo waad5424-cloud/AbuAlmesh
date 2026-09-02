@@ -48,8 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   if (progressBar) {
+    progressBar.value = 0;
     progressBar.addEventListener('input', () => {
-      audio.currentTime = (progressBar.value / 100) * audio.duration;
+      if (audio.duration) {
+        audio.currentTime = (progressBar.value / 100) * audio.duration;
+      }
     });
   }
 
@@ -64,63 +67,4 @@ document.addEventListener('DOMContentLoaded', () => {
     const s = Math.floor(sec % 60);
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   }
-
-  // ==========================================
-  // ربط ديسكورد لايف عبر Lanyard API (مشاري)
-  // ==========================================
-  const DISCORD_ID = "1159623336041652244";
-
-  async function fetchDiscordStatus() {
-    try {
-      const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
-      const data = await response.json();
-
-      if (data.success && data.data) {
-        const user = data.data;
-
-        // 1. الصورة الشخصية
-        const avatarUrl = user.discord_user.avatar
-          ? `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.discord_user.avatar}.png?size=128`
-          : `https://cdn.discordapp.com/embed/avatars/0.png`;
-        const avatarEl = document.querySelector('.discord-avatar');
-        if (avatarEl) avatarEl.src = avatarUrl;
-
-        // 2. اسم الحساب
-        const nameEl = document.querySelector('.discord-user-header h3');
-        if (nameEl) nameEl.textContent = user.discord_user.global_name || user.discord_user.username;
-
-        // 3. نقطة حالة الاتصال (أونلاين/مشغول/خامل/أوفلاين)
-        const statusDot = document.querySelector('.status-indicator');
-        if (statusDot) statusDot.className = `status-indicator ${user.discord_status}`;
-
-        // 4. النشاط الحالي (لعبة / حالة مخصصة / Spotify)
-        const activityEl = document.querySelector('.discord-activity');
-        if (activityEl) {
-          if (user.activities && user.activities.length > 0) {
-            const customStatus = user.activities.find(a => a.type === 4);
-            const gameStatus = user.activities.find(a => a.type === 0);
-            const spotifyStatus = user.activities.find(a => a.name === "Spotify");
-
-            if (spotifyStatus) {
-              activityEl.textContent = `🎵 الاستماع إلى ${spotifyStatus.details}`;
-            } else if (gameStatus) {
-              activityEl.textContent = `🎮 يلعب ${gameStatus.name}`;
-            } else if (customStatus && customStatus.state) {
-              activityEl.textContent = customStatus.state;
-            } else {
-              activityEl.textContent = user.activities[0].name;
-            }
-          } else {
-            activityEl.textContent = "ما فيه نشاط ظاهر حاليًا";
-          }
-        }
-      }
-    } catch (error) {
-      console.error("خطأ في جلب بيانات ديسكورد:", error);
-    }
-  }
-
-  // تشغيل الفحص فوراً وتكراره كل 10 ثوانٍ
-  fetchDiscordStatus();
-  setInterval(fetchDiscordStatus, 10000);
 });
