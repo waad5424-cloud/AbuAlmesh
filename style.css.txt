@@ -1,0 +1,210 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #050508;
+  color: #ffffff;
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- شاشة البداية --- */
+.intro-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #050508;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  cursor: pointer;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.intro-content {
+  text-align: center;
+}
+
+.glow-text {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  animation: pulse 2s infinite alternate;
+}
+
+.intro-content p {
+  color: #a1a1aa;
+  font-size: 1rem;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.98); opacity: 0.7; }
+  100% { transform: scale(1.02); opacity: 1; }
+}
+
+.intro-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* --- المحتوى الرئيسي --- */
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+.main-content.hidden {
+  opacity: 0;
+}
+
+/* --- زر الموسيقى --- */
+.music-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.music-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* --- الإضاءات الخلفية --- */
+.light-glow {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.glow-top { background: #ffffff; top: -100px; right: -100px; }
+.glow-bottom { background: #38bdf8; bottom: -100px; left: -100px; }
+
+/* --- تساقط أوراق الشجر --- */
+.leaves-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.leaf {
+  position: absolute;
+  top: -10%;
+  width: 12px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 0% 100% 0% 100%;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  animation: fall linear infinite;
+}
+
+.leaf:nth-child(1) { left: 10%; animation-duration: 8s; animation-delay: 0s; }
+.leaf:nth-child(2) { left: 25%; animation-duration: 11s; animation-delay: 2s; }
+.leaf:nth-child(3) { left: 40%; animation-duration: 7s; animation-delay: 4s; }
+.leaf:nth-child(4) { left: 55%; animation-duration: 10s; animation-delay: 1s; }
+.leaf:nth-child(5) { left: 70%; animation-duration: 9s; animation-delay: 3s; }
+.leaf:nth-child(6) { left: 85%; animation-duration: 12s; animation-delay: 5s; }
+.leaf:nth-child(7) { left: 95%; animation-duration: 8s; animation-delay: 2s; }
+.leaf:nth-child(8) { left: 3%;  animation-duration: 10s; animation-delay: 6s; }
+
+@keyframes fall {
+  0% { top: -10%; transform: translateX(0) rotate(0deg); opacity: 0.8; }
+  50% { transform: translateX(50px) rotate(180deg); }
+  100% { top: 110%; transform: translateX(-50px) rotate(360deg); opacity: 0.2; }
+}
+
+/* --- البطاقة التعريفية --- */
+.profile-card {
+  position: relative;
+  z-index: 2;
+  background: rgba(18, 18, 26, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 30px 25px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+/* --- تنسيق صورة الـ GIF --- */
+.gif-container {
+  margin-bottom: 20px;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.profile-gif {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  display: block;
+  border-radius: 15px;
+}
+
+h1 { font-size: 1.6rem; margin-bottom: 8px; font-weight: 600; }
+.highlight { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.6); }
+.bio { color: #a1a1aa; font-size: 0.9rem; line-height: 1.6; margin-bottom: 30px; }
+
+/* --- الأزرار --- */
+.social-links { display: flex; flex-direction: column; gap: 12px; }
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}

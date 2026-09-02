@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meshari | World</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- أيقونات شبكات التواصل الاجتماعي -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- 1. شاشة البداية (Intro Screen) -->
+  <div id="intro-screen" class="intro-screen">
+    <div class="intro-content">
+      <h1 class="glow-text">Meshari World</h1>
+      <p>اضغط في أي مكان للدخول · Click anywhere to enter</p>
+    </div>
+  </div>
+
+  <!-- ملف الصوت للموسيقى -->
+  <audio id="bg-music" loop src="song.mp3"></audio>
+
+  <!-- 2. المحتوى الرئيسي للموقع -->
+  <main id="main-content" class="main-content hidden">
+
+    <!-- إضاءات خفيفة في الخلفية -->
+    <div class="light-glow glow-top"></div>
+    <div class="light-glow glow-bottom"></div>
+
+    <!-- أوراق الشجر البيضاء المتساقطة -->
+    <div class="leaves-container">
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+    </div>
+
+    <!-- زر التحكم بالموسيقى -->
+    <button id="music-toggle" class="music-btn" title="كتم/تشغيل الموسيقى">
+      <i class="fas fa-music"></i>
+    </button>
+
+    <!-- البطاقة التعريفية -->
+    <div class="profile-card">
+      
+      <!-- صورة الـ GIF المتحركة -->
+      <div class="gif-container">
+        <img src="giphy.gif" alt="Meshari Animation" class="profile-gif">
+      </div>
+
+      <h1>أهلاً بك، أنا <span class="highlight">مشاري</span> 👋</h1>
+      <p class="bio">مرحبا، أنا مشاري. مصمم بوتات بسيط، مبرمج، ومورد للمنتجات الرقمية.. خذ نظرة عن قرب!</p>
+
+      <!-- روابط حسابات التواصل الاجتماعي -->
+      <div class="social-links">
+        
+        <a href="https://www.tiktok.com/@b95m" target="_blank" class="social-btn tiktok">
+          <i class="fab fa-tiktok"></i>
+          <span>TikTok (@b95m)</span>
+        </a>
+
+        <a href="https://www.instagram.com/i4xuz?igsi=ZHA3ZG02eGp5ZHVr&utm_source=qr" target="_blank" class="social-btn instagram">
+          <i class="fab fa-instagram"></i>
+          <span>Instagram (@i4xuz)</span>
+        </a>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
