@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meshari | World</title>
   <link rel="stylesheet" href="style.css">
-  <!-- أيقونات شبكات التواصل الاجتماعي -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-  <!-- 1. شاشة البداية (Intro Screen) -->
   <div id="intro-screen" class="intro-screen">
     <div class="intro-content">
       <h1 class="glow-text">Meshari World</h1>
@@ -18,60 +16,142 @@
     </div>
   </div>
 
-  <!-- ملف الصوت للموسيقى -->
-  <audio id="bg-music" loop src="song.mp3"></audio>
+  <div class="stars-bg"></div>
 
-  <!-- 2. المحتوى الرئيسي للموقع -->
-  <main id="main-content" class="main-content hidden">
+  <div id="main-content" class="main-content hidden">
 
-    <!-- إضاءات خفيفة في الخلفية -->
-    <div class="light-glow glow-top"></div>
-    <div class="light-glow glow-bottom"></div>
-
-    <!-- أوراق الشجر البيضاء المتساقطة -->
-    <div class="leaves-container">
-      <div class="leaf"></div>
-      <div class="leaf"></div>
-      <div class="leaf"></div>
-      <div class="leaf"></div>
-      <div class="leaf"></div>
-      <div class="leaf"></div>
-      <div class="leaf"></div>
-      <div class="leaf"></div>
-    </div>
-
-    <!-- زر التحكم بالموسيقى -->
-    <button id="music-toggle" class="music-btn" title="كتم/تشغيل الموسيقى">
-      <i class="fas fa-music"></i>
-    </button>
-
-    <!-- البطاقة التعريفية -->
-    <div class="profile-card">
-      
-      <!-- صورة الـ GIF المتحركة -->
-      <div class="gif-container">
-        <img src="giphy.gif" alt="Meshari Animation" class="profile-gif">
+    <section class="section about-section">
+      <div class="container about-grid">
+        <div class="about-gif-box">
+          <img src="giphy.gif" alt="GIF" class="about-gif">
+        </div>
+        <div class="about-text-box">
+          <span class="sub-title">A B O U T &nbsp; M E</span>
+          <h2>A little about me</h2>
+          <p class="bio-desc">
+            يامرحبا انا مشاري مطور بوتات ديسكورد بسيط ومبرمج ومورد للمنتجات الرقمية خذ نظرة عن قرب!
+          </p>
+        </div>
       </div>
+    </section>
 
-      <h1>أهلاً بك، أنا <span class="highlight">مشاري</span> 👋</h1>
-      <p class="bio">مرحبا، أنا مشاري. مصمم بوتات بسيط، مبرمج، ومورد للمنتجات الرقمية.. خذ نظرة عن قرب!</p>
+    <section class="section music-section">
+      <div class="container text-center">
+        <span class="sub-title">M U S I C</span>
+        <h2>My musics</h2>
 
-      <!-- روابط حسابات التواصل الاجتماعي -->
-      <div class="social-links">
-        
-        <a href="https://www.tiktok.com/@b95m" target="_blank" class="social-btn tiktok">
-          <i class="fab fa-tiktok"></i>
-          <span>TikTok (@b95m)</span>
-        </a>
+        <div class="player-wrapper">
+          <div class="player-controls-card">
+            <div class="now-playing-header">
+              <span class="badge">1 / 1</span>
+              <div>
+                <small>NOW PLAYING</small>
+                <h4 id="song-title">Black signal</h4>
+              </div>
+            </div>
 
-        <a href="https://www.instagram.com/i4xuz?igsi=ZHA3ZG02eGp5ZHVr&utm_source=qr" target="_blank" class="social-btn instagram">
-          <i class="fab fa-instagram"></i>
-          <span>Instagram (@i4xuz)</span>
-        </a>
+            <div class="progress-box">
+              <input type="range" id="progress-bar" value="0" max="100">
+              <div class="time-stamps">
+                <span id="current-time">0:00</span>
+                <span id="duration-time">2:40</span>
+              </div>
+            </div>
 
+            <div class="control-buttons">
+              <button class="btn-icon"><i class="fas fa-backward-step"></i></button>
+              <button id="play-pause-btn" class="btn-play"><i class="fas fa-play"></i></button>
+              <button class="btn-icon"><i class="fas fa-forward-step"></i></button>
+            </div>
+
+            <div class="volume-box">
+              <i class="fas fa-volume-high"></i>
+              <input type="range" id="volume-bar" value="80" max="100">
+            </div>
+
+            <div class="playlist-box">
+              <small>PLAYLIST</small>
+              <div class="playlist-item active">
+                <span>1</span>
+                <div>
+                  <strong>Black signal</strong>
+                  <small>Meshari</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="album-disc-card">
+            <div class="disc-outer" id="disc">
+              <img src="giphy.gif" alt="Cover" class="disc-img">
+              <div class="disc-center"></div>
+            </div>
+            <h3 class="disc-title">Black signal</h3>
+            <span class="disc-artist">Meshari</span>
+          </div>
+        </div>
       </div>
-    </div>
-  </main>
+    </section>
+
+    <section class="section discord-section">
+      <div class="container text-center">
+        <span class="sub-title">D I S C O R D</span>
+        <h2>What am I doing?</h2>
+        <p class="section-desc">My Discord status updates automatically.</p>
+
+        <div class="discord-card">
+          <div class="discord-avatar-box">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Meshari" alt="Discord Avatar" class="discord-avatar">
+            <span class="status-indicator online"></span>
+          </div>
+          <div class="discord-info">
+            <div class="discord-user-header">
+              <h3>Meshari</h3>
+              <span class="d-badge">Desktop</span>
+            </div>
+            <p class="discord-activity">ما فيه نشاط ظاهر حاليًا</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section socials-section">
+      <div class="container text-center">
+        <span class="sub-title">S O C I A L S</span>
+        <h2>Find me</h2>
+        <p class="section-desc">You can find me on these platforms.</p>
+
+        <div class="socials-grid">
+          <a href="#" class="social-card">
+            <div class="social-icon"><i class="fab fa-discord"></i></div>
+            <h3>Discord</h3>
+            <span>b95m</span>
+          </a>
+
+          <a href="https://github me" target="_blank" class="social-card">
+            <div class="social-icon"><i class="fab fa-github"></i></div>
+            <h3>GitHub</h3>
+            <span>Meshari</span>
+          </a>
+
+          <a href="https://www.instagram.com/i4xuz" target="_blank" class="social-card">
+            <div class="social-icon"><i class="fab fa-instagram"></i></div>
+            <h3>Instagram</h3>
+            <span>@i4xuz</span>
+          </a>
+
+          <a href="https://www.tiktok.com/@b95m" target="_blank" class="social-card">
+            <div class="social-icon"><i class="fab fa-tiktok"></i></div>
+            <h3>TikTok</h3>
+            <span>@b95m</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <audio id="audio-player" loop src="song.mp3"></audio>
 
   <script src="script.js"></script>
 </body>
