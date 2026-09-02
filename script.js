@@ -11,9 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let isPlaying = false;
 
-  // ==========================================
-  // 1. خلفية التساقط والجسيمات (Particles Canvas)
-  // ==========================================
+  // خلفية الجسيمات
   const canvas = document.createElement('canvas');
   canvas.id = 'particles-canvas';
   canvas.style.position = 'fixed';
@@ -85,9 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initParticles();
   animateParticles();
 
-  // ==========================================
-  // 2. أثر حركة الماوس الأرجواني (Mouse Trail Canvas)
-  // ==========================================
+  // أثر حركة الماوس
   const trailCanvas = document.createElement('canvas');
   trailCanvas.id = 'cursor-trail';
   trailCanvas.style.position = 'fixed';
@@ -162,25 +158,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   animateTrail();
 
-  // ==========================================
-  // 3. التحكم بالموسيقى وشاشة الدخول
-  // ==========================================
-  introScreen.addEventListener('click', () => {
-    introScreen.classList.add('fade-out');
-    mainContent.classList.remove('hidden');
-    togglePlay();
-  });
+  // إخفاء شاشة الدخول وبدء التشغيل
+  if (introScreen) {
+    introScreen.addEventListener('click', () => {
+      introScreen.classList.add('fade-out');
+      if (mainContent) mainContent.classList.remove('hidden');
+      togglePlay();
+    });
+  }
 
   function togglePlay() {
+    if (!audio) return;
     if (isPlaying) {
       audio.pause();
-      playBtn.innerHTML = '<i class="fas fa-play"></i>';
-      coverBox.classList.remove('playing');
+      if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>';
+      if (coverBox) coverBox.classList.remove('playing');
       isPlaying = false;
     } else {
       audio.play().then(() => {
-        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        coverBox.classList.add('playing');
+        if (playBtn) playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        if (coverBox) coverBox.classList.add('playing');
         isPlaying = true;
       }).catch(err => console.log(err));
     }
@@ -190,22 +187,24 @@ document.addEventListener('DOMContentLoaded', () => {
     playBtn.addEventListener('click', togglePlay);
   }
 
-  audio.addEventListener('timeupdate', () => {
-    if (audio.duration) {
-      const progress = (audio.currentTime / audio.duration) * 100;
-      progressBar.value = progress;
-      currentTimeEl.textContent = formatTime(audio.currentTime);
-      durationTimeEl.textContent = formatTime(audio.duration);
-    }
-  });
+  if (audio) {
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) {
+        const progress = (audio.currentTime / audio.duration) * 100;
+        if (progressBar) progressBar.value = progress;
+        if (currentTimeEl) currentTimeEl.textContent = formatTime(audio.currentTime);
+        if (durationTimeEl) durationTimeEl.textContent = formatTime(audio.duration);
+      }
+    });
+  }
 
-  if (progressBar) {
+  if (progressBar && audio) {
     progressBar.addEventListener('input', () => {
       audio.currentTime = (progressBar.value / 100) * audio.duration;
     });
   }
 
-  if (volumeBar) {
+  if (volumeBar && audio) {
     volumeBar.addEventListener('input', () => {
       audio.volume = volumeBar.value / 100;
     });
@@ -217,9 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   }
 
-  // ==========================================
-  // 4. ديسكورد عبر Lanyard API
-  // ==========================================
+  // Lanyard API - ديسكورد
   const DISCORD_ID = "1159623336041652244";
 
   async function fetchDiscordStatus() {
