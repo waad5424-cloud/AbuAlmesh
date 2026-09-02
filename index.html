@@ -97,16 +97,17 @@
       <div class="discord-wide-card">
         <div class="dc-user-info">
           <div class="dc-avatar-container">
-            <img class="discord-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
-            <span class="status-indicator dnd"></span>
+            <!-- صورة البروفيسور الخاصة بك (سيتم تحديثها تلقائياً عبر السكريبت) -->
+            <img id="discord-avatar" class="discord-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
+            <span id="discord-status-dot" class="status-indicator offline"></span>
           </div>
           <div class="dc-details">
             <div class="dc-name-row">
-              <h3 class="dc-username">world silentreaper</h3>
-              <span class="dc-badge">Do Not Disturb</span>
+              <h3 id="discord-username" class="dc-username">world silentreaper</h3>
+              <span id="discord-status-text" class="dc-badge">Offline</span>
             </div>
-            <span class="dc-device">Desktop</span>
-            <p class="dc-activity">ما فيه نشاط ظاهر حاليًا</p>
+            <span id="discord-device" class="dc-device">Loading...</span>
+            <p id="discord-activity" class="dc-activity">جاري جلب الحالة...</p>
           </div>
         </div>
         <div class="dc-arrow"><i class="fas fa-arrow-left"></i></div>
