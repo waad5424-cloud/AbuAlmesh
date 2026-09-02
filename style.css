@@ -13,7 +13,6 @@ body {
   direction: rtl;
 }
 
-/* خلفية النجوم والشبكة */
 .bg-overlay {
   position: fixed;
   inset: 0;
@@ -21,7 +20,6 @@ body {
   z-index: -1;
 }
 
-/* شاشة الدخول */
 #intro-screen {
   position: fixed;
   inset: 0;
@@ -42,22 +40,36 @@ body {
 .intro-content {
   text-align: center;
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 }
 
 .intro-title {
   font-size: 2.2rem;
   font-weight: 900;
-  margin-bottom: 15px;
   text-shadow: 0 0 20px rgba(168, 85, 247, 0.8);
 }
 
-.intro-icon {
-  font-size: 3rem;
-  color: #a855f7;
-  margin-bottom: 10px;
+.play-icon-glow {
+  width: 50px;
+  height: 50px;
+  background: #a855f7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.2rem;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+  transition: transform 0.3s ease;
 }
 
-/* الهيكل العام للأقسام */
+#intro-screen:hover .play-icon-glow {
+  transform: scale(1.1);
+}
+
 .page-container {
   max-width: 1000px;
   margin: 0 auto;
@@ -97,7 +109,6 @@ body {
   margin-bottom: 35px;
 }
 
-/* قسم About Me */
 .about-content {
   display: flex;
   align-items: center;
@@ -135,7 +146,6 @@ body {
   color: #ccc;
 }
 
-/* قسم Music Player */
 .music-player-wrapper {
   display: flex;
   align-items: center;
@@ -271,7 +281,6 @@ body {
   font-size: 0.75rem;
 }
 
-/* القرص الدوار */
 .player-right-disc {
   display: flex;
   flex-direction: column;
@@ -315,7 +324,6 @@ body {
   color: #888;
 }
 
-/* قسم Discord */
 .discord-wide-card {
   background: rgba(13, 9, 20, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -395,13 +403,12 @@ body {
   font-size: 1.1rem;
 }
 
-/* قسم Socials */
 .socials-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   width: 100%;
-  max-width: 850px;
+  max-width: 600px;
 }
 
 .social-card {
@@ -455,6 +462,6 @@ body {
     flex-direction: column;
   }
   .socials-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   }
 }
