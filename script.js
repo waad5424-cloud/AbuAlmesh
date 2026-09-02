@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // العناصر الأساسية
   const introScreen = document.getElementById('intro-screen');
   const audio = document.getElementById('audio-player');
   const playPauseBtn = document.getElementById('play-pause-btn');
@@ -11,35 +10,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const disc = document.getElementById('disc');
   const volNum = document.querySelector('.vol-num');
 
-  // 1. تشغيل الأغنية تلقائياً عند الضغط في أي مكان بشاشة الدخول
+  // دالة تشغيل الصوت
+  function startAudio() {
+    if (audio) {
+      if (volumeBar) {
+        audio.volume = volumeBar.value / 100;
+      }
+      audio.play().then(() => {
+        if (playIcon) playIcon.className = 'fas fa-pause';
+        if (disc) disc.classList.add('playing');
+      }).catch(err => {
+        console.log("Audio playback error:", err);
+      });
+    }
+  }
+
+  // عند الضغط على شاشة الدخول
   if (introScreen) {
     introScreen.addEventListener('click', () => {
       introScreen.classList.add('fade-out');
-      
-      if (audio) {
-        // ضبط مستوى الصوت المبدئي
-        if (volumeBar) {
-          audio.volume = volumeBar.value / 100;
-        }
-
-        // تشغيل الصوت
-        audio.play().then(() => {
-          if (playIcon) playIcon.className = 'fas fa-pause';
-          if (disc) disc.classList.add('playing');
-        }).catch(err => {
-          console.log("تعذر التشغيل التلقائي للصوت:", err);
-        });
-      }
+      startAudio();
     });
   }
 
-  // 2. زر التشغيل والإيقاف المؤقت (Play / Pause)
+  // زر التشغيل والإيقاف
   if (playPauseBtn && audio) {
-    playPauseBtn.addEventListener('click', () => {
+    playPauseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       if (audio.paused) {
-        audio.play();
-        if (playIcon) playIcon.className = 'fas fa-pause';
-        if (disc) disc.classList.add('playing');
+        startAudio();
       } else {
         audio.pause();
         if (playIcon) playIcon.className = 'fas fa-play';
@@ -48,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. تحديث شريط التقدم والوقت المتبقي أثناء تشغيل الأغنية
+  // تحديث شريط التقدم والوقت
   if (audio) {
     audio.addEventListener('timeupdate', () => {
       if (audio.duration) {
@@ -59,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // عند انتهاء الأغنية (في حال لم يكن التكرار مفعّلاً)
     audio.addEventListener('ended', () => {
       if (playIcon) playIcon.className = 'fas fa-play';
       if (disc) disc.classList.remove('playing');
@@ -67,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4. السحب على شريط التقدم لتقديم/تأخير الأغنية
+  // تقديم وتأخير الأغنية
   if (progressBar && audio) {
     progressBar.addEventListener('input', () => {
       if (audio.duration) {
@@ -76,11 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 5. التحكم بمستوى الصوت
+  // التحكم في مستوى الصوت
   if (volumeBar && audio) {
-    // ضبط الصوت عند التحميل
-    audio.volume = volumeBar.value / 100;
-
     volumeBar.addEventListener('input', () => {
       audio.volume = volumeBar.value / 100;
       if (volNum) {
@@ -89,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // دالة تحويل الثواني إلى صيغة دقيقة:ثانية (0:00)
   function formatTime(seconds) {
     if (isNaN(seconds)) return '0:00';
     const mins = Math.floor(seconds / 60);
