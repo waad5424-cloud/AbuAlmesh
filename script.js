@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  // 3. تفعيل أوراق الشجر المتساقطة (واضحة وبأحجام ممتازة)
+  // 3. تفعيل أوراق الشجر المتساقطة
   const leavesContainer = document.createElement('div');
   leavesContainer.classList.add('leaves-container');
   document.body.appendChild(leavesContainer);
@@ -117,4 +117,55 @@ document.addEventListener('DOMContentLoaded', () => {
     
     leavesContainer.appendChild(leaf);
   }
+
+
+  // 4. جلب بيانات وحالة الديسكورد الحقيقية عبر Lanyard API
+  const discordId = "1159623336041652244";
+  const avatarEl = document.getElementById("discord-avatar");
+  const usernameEl = document.getElementById("discord-username");
+  const statusDot = document.getElementById("discord-status-dot");
+  const statusText = document.getElementById("discord-status-text");
+  const deviceEl = document.getElementById("discord-device");
+  const activityEl = document.getElementById("discord-activity");
+
+  function fetchDiscordStatus() {
+    fetch(`https://api.lanyard.rest/v1/users/${discordId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          const user = data.data;
+          
+          // تحديث اسم المستخدم وصورة البروفايل الحقيقية
+          if (user.discord_user) {
+            usernameEl.textContent = user.discord_user.username;
+            if (user.discord_user.avatar) {
+              avatarEl.src = `https://cdn.discordapp.com/avatars/${discordId}/${user.discord_user.avatar}.png?size=128`;
+            }
+          }
+
+          // تحديث حالة الاتصال (Online, Idle, DND, Offline)
+          const status = user.discord_status;
+          statusDot.className = `status-indicator ${status}`;
+          statusText.textContent = status.toUpperCase();
+
+          // تحديد الجهاز المستخدم
+          if (user.active_on_discord_desktop) deviceEl.textContent = "Desktop";
+          else if (user.active_on_discord_mobile) deviceEl.textContent = "Mobile";
+          else if (user.active_on_discord_web) deviceEl.textContent = "Web";
+          else deviceEl.textContent = "Offline";
+
+          // تحديث النشاط (اللعبة أو البرنامج المفتوح)
+          if (user.activities && user.activities.length > 0) {
+            const currentAct = user.activities[0];
+            activityEl.textContent = `يتفاعل مع: ${currentAct.name}`;
+          } else {
+            activityEl.textContent = "ما فيه نشاط ظاهر حاليًا";
+          }
+        }
+      })
+      .catch(err => console.log("Lanyard fetch error:", err));
+  }
+
+  fetchDiscordStatus();
+  setInterval(fetchDiscordStatus, 15000); // تحديث كل 15 ثانية
 });
