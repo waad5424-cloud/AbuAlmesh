@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const disc = document.getElementById('disc');
   const volNum = document.querySelector('.vol-num');
 
-  // دالة تشغيل الصوت
+  // 1. تشغيل الصوت
   function startAudio() {
     if (audio) {
       if (volumeBar) {
@@ -20,12 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (playIcon) playIcon.className = 'fas fa-pause';
         if (disc) disc.classList.add('playing');
       }).catch(err => {
-        console.log("Audio playback error:", err);
+        console.log("Audio play error:", err);
       });
     }
   }
 
-  // عند الضغط على شاشة الدخول
   if (introScreen) {
     introScreen.addEventListener('click', () => {
       introScreen.classList.add('fade-out');
@@ -33,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // زر التشغيل والإيقاف
   if (playPauseBtn && audio) {
     playPauseBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -47,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // تحديث شريط التقدم والوقت
   if (audio) {
     audio.addEventListener('timeupdate', () => {
       if (audio.duration) {
@@ -65,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // تقديم وتأخير الأغنية
   if (progressBar && audio) {
     progressBar.addEventListener('input', () => {
       if (audio.duration) {
@@ -74,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // التحكم في مستوى الصوت
   if (volumeBar && audio) {
     volumeBar.addEventListener('input', () => {
       audio.volume = volumeBar.value / 100;
@@ -89,5 +84,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  }
+
+
+  // 2. تفعيل تأثير إشعاع الماوس (Mouse Glow)
+  const glow = document.createElement('div');
+  glow.classList.add('mouse-glow');
+  document.body.appendChild(glow);
+
+  document.addEventListener('mousemove', (e) => {
+    glow.style.left = `${e.clientX}px`;
+    glow.style.top = `${e.clientY}px`;
+  });
+
+
+  // 3. تفعيل أوراق الشجر المتساقطة
+  const leavesContainer = document.createElement('div');
+  leavesContainer.classList.add('leaves-container');
+  document.body.appendChild(leavesContainer);
+
+  const leavesCount = 15; // عدد الأوراق
+  for (let i = 0; i < leavesCount; i++) {
+    const leaf = document.createElement('div');
+    leaf.classList.add('leaf');
+    
+    // خصائص عشوائية لكل ورقة
+    const size = Math.random() * 10 + 10; // الحجم بين 10 و 20 بكسل
+    leaf.style.width = `${size}px`;
+    leaf.style.height = `${size * 1.4}px`;
+    leaf.style.left = `${Math.random() * 100}vw`;
+    leaf.style.animationDuration = `${Math.random() * 5 + 5}secs`; // السرعة بين 5 إلى 10 ثواني
+    leaf.style.animationDelay = `${Math.random() * 5}secs`;
+    
+    leavesContainer.appendChild(leaf);
   }
 });
