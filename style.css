@@ -452,3 +452,46 @@ body {
     grid-template-columns: repeat(1, 1fr);
   }
 }
+/* --- تأثير إشعاع الماوس (Mouse Glow) --- */
+.mouse-glow {
+  position: fixed;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(138, 43, 226, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition: width 0.3s, height 0.3s;
+}
+
+/* --- تأثير أوراق الشجر المتساقطة (Falling Leaves) --- */
+.leaves-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.leaf {
+  position: absolute;
+  top: -10%;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50% 0 50% 50%;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) translateX(100px) rotate(360deg);
+    opacity: 0.2;
+  }
+}
