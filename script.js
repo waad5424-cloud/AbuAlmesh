@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchDiscordStatus();
   setInterval(fetchDiscordStatus, 30000);
 
-  // --- 5. مشغل الموسيقى ---
+  // --- 5. مشغل الموسيقى (بالروابط المباشرة) ---
   const audioPlayer = document.getElementById('audio-player');
   const playPauseBtn = document.getElementById('play-pause-btn');
   const progressBar = document.getElementById('progress-bar');
