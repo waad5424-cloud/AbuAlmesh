@@ -18,12 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const discArtistName = document.getElementById('disc-artist-name');
   const playlistItems = document.querySelectorAll('.playlist-item');
 
-  // قائمة الأغاني بروابط ومرفقات تدعم التشغيل المباشر
+  // قائمة الأغاني مع الرابط الجديد المباشر
   const playlist = [
     {
       title: "I Wanna Be Yours",
       artist: "Arctic Monkeys",
-      src: "https://files.catbox.moe/u8o252.mp3" // رابط بديل بصيغة mp3 مضمونة التشغيل
+      src: "https://files.catbox.moe/azuegp.mp3"
     },
     {
       title: "Thank You",
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadTrack(index) {
     currentTrackIndex = index;
     audio.src = playlist[index].src;
-    audio.load(); // إعادة تحميل عنصر الصوت لتجنب مشاكل المتصفح
+    audio.load();
     currentTrackTitle.textContent = playlist[index].title;
     discTrackName.textContent = playlist[index].title;
     discArtistName.textContent = playlist[index].artist;
