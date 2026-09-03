@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (visitorCountEl) {
     let visits = localStorage.getItem('site_visits');
     if (!visits) {
-      visits = 1042; // رقم بداية فخم
+      visits = 1042;
     } else {
       if (!sessionStorage.getItem('counted')) {
         visits = parseInt(visits) + 1;
@@ -125,22 +125,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const discArtistName = document.getElementById('disc-artist-name');
   const playlistItems = document.querySelectorAll('.playlist-item');
 
-  // روابط أغاني جديدة وشغالة 100%
+  // روابط صوتية مباشرة ومفتوحة المصدر لضمان العمل الفوري
   const playlist = [
     {
       title: "I Wanna Be Yours",
       artist: "Arctic Monkeys",
-      src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+      src: "https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg"
     },
     {
       title: "Thank You",
       artist: "Dido (Slowed/Reverb)",
-      src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+      src: "https://actions.google.com/sounds/v1/weather/wind_heavy.ogg"
     },
     {
       title: "All Girls Are The Same",
       artist: "Juice WRLD",
-      src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+      src: "https://actions.google.com/sounds/v1/relax/ocean_waves.ogg"
     }
   ];
 
@@ -150,10 +150,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadTrack(index) {
     const track = playlist[index];
     audioPlayer.src = track.src;
-    trackTitle.textContent = track.title;
-    discTrackName.textContent = track.title;
-    discArtistName.textContent = track.artist;
-    trackCounter.textContent = `${index + 1}/${playlist.length}`;
+    track.title ? trackTitle.textContent = track.title : null;
+    if(discTrackName) discTrackName.textContent = track.title;
+    if(discArtistName) discArtistName.textContent = track.artist;
+    if(trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
     playlistItems.forEach((item, idx) => {
       if (idx === index) {
@@ -171,10 +171,13 @@ document.addEventListener('DOMContentLoaded', () => {
       playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
       disc.classList.remove('playing');
     } else {
-      audioPlayer.play().catch(e => console.log("Audio play blocked:", e));
-      isPlaying = true;
-      playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-      disc.classList.add('playing');
+      audioPlayer.play().then(() => {
+        isPlaying = true;
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        disc.classList.add('playing');
+      }).catch(e => {
+        console.log("Audio play blocked by browser:", e);
+      });
     }
   }
 
@@ -229,15 +232,16 @@ document.addEventListener('DOMContentLoaded', () => {
     item.addEventListener('click', () => {
       currentTrackIndex = index;
       loadTrack(currentTrackIndex);
-      audioPlayer.play();
-      isPlaying = true;
-      playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-      disc.classList.add('playing');
+      audioPlayer.play().then(() => {
+        isPlaying = true;
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        disc.classList.add('playing');
+      });
     });
   });
 
-  const nextBtn = document.getElementById('next-btn');
-  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-bin') || document.getElementById('next-btn');
+  const prevBtn = document.getElementById('prev-bin') || document.getElementById('prev-btn');
 
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
