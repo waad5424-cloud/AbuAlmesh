@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const discArtistName = document.getElementById('disc-artist-name');
   const playlistItems = document.querySelectorAll('.playlist-item');
 
-  // قائمة الأغاني بالرابط الجديد المباشر
+  // قائمة الأغاني
   const playlist = [
     {
       title: "I Wanna Be Yours",
@@ -96,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // دعم الدخول عبر زر Enter أو Space
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.code === 'Space') {
       closeIntro();
@@ -191,25 +190,24 @@ document.addEventListener('DOMContentLoaded', () => {
     glow.style.top = `${e.clientY}px`;
   });
 
-  // أوراق الشجر المتساقطة
-  const leavesContainer = document.createElement('div');
-  leavesContainer.classList.add('leaves-container');
-  document.body.appendChild(leavesContainer);
-
-  const leavesCount = 20; 
-  for (let i = 0; i < leavesCount; i++) {
-    const leaf = document.createElement('div');
-    leaf.classList.add('leaf');
-    
-    const size = Math.random() * 12 + 10; 
-    leaf.style.width = `${size}px`;
-    leaf.style.height = `${size * 1.3}px`;
-    leaf.style.left = `${Math.random() * 100}vw`;
-    leaf.style.animationDuration = `${Math.random() * 6 + 4}s`; 
-    leaf.style.animationDelay = `${Math.random() * 5}s`;
-    
-    leavesContainer.appendChild(leaf);
-  }
+  // تفعيل تمييز الروابط العلوية حسب التمرير
+  const navLinks = document.querySelectorAll('.nav-link');
+  window.addEventListener('scroll', () => {
+    let scrollPos = window.scrollY;
+    document.querySelectorAll('section').forEach(section => {
+      let top = section.offsetTop - 150;
+      let height = section.offsetHeight;
+      let id = section.getAttribute('id');
+      if (scrollPos >= top && scrollPos < top + height) {
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === `#${id}`) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  });
 
   // جلب بيانات الديسكورد عبر Lanyard API
   const discordId = "1159623336041652244";
@@ -239,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
           statusText.textContent = status.toUpperCase();
 
           if (user.active_on_discord_desktop) deviceEl.textContent = "Desktop";
-          else if (user.active_on_discord_mobile) deviceEl.textContent = "Mobile";
+          else if (user.active_on_discord_mobile) deviceEl.textContent, "Mobile";
           else if (user.active_on_discord_web) deviceEl.textContent = "Web";
           else deviceEl.textContent = "Offline";
 
