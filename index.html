@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>world silentreaper</title>
+  <title>Silentreaper World</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- شاشة الدخول المطابقة للطلب -->
+  <!-- شاشة الدخول -->
   <div id="intro-screen">
     <div class="intro-box">
       <div class="intro-top-badge">SILENTREAPER WORLD</div>
@@ -27,10 +27,37 @@
 
   <div class="bg-overlay"></div>
 
+  <!-- الشريط العلوي (Navbar) الجديد -->
+  <header class="site-header">
+    <div class="nav-brand" dir="ltr">SILENTREAPER WORLD</div>
+    <nav class="nav-links" dir="ltr">
+      <a href="#hero" class="nav-link active">Home</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#music" class="nav-link">Music</a>
+      <a href="#socials" class="nav-link">Socials</a>
+      <a href="#discord" class="nav-link">Discord</a>
+    </nav>
+    <div class="nav-actions" dir="ltr">
+      <button class="nav-icon-btn" title="Command Menu"><i class="fas fa-command"></i> K</button>
+      <button class="nav-icon-btn" id="theme-toggle"><i class="fas fa-sun"></i></button>
+    </div>
+  </header>
+
   <main class="page-container">
 
+    <!-- القسم الرئيسي (Hero Section) -->
+    <section id="hero" class="section hero-section">
+      <div class="hero-content">
+        <span class="hero-subtitle" dir="ltr">THIS IS MY WORLD</span>
+        <h1 class="hero-title" dir="ltr">Good evening.</h1>
+        <p class="hero-desc">مساحة شخصية أشارك فيها مشاريعي، الموسيقى، والأشياء اللي أبتكرها.</p>
+      </div>
+    </section>
+
     <!-- القسم الأول: ABOUT ME -->
-    <section class="section about-section">
+    <section id="about" class="section about-section">
       <div class="section-badge">ABOUT ME</div>
       <h2 class="section-title-en" dir="ltr">A little about me</h2>
       <div class="about-content">
@@ -42,8 +69,28 @@
       </div>
     </section>
 
+    <!-- قسم SKILLS (إضافي بناءً على الشريط العلوي) -->
+    <section id="skills" class="section skills-section">
+      <div class="section-badge">SKILLS</div>
+      <h2 class="section-title-en" dir="ltr">What I do</h2>
+      <div class="skills-grid">
+        <div class="skill-card"><i class="fas fa-robot"></i><span>تطوير البوتات</span></div>
+        <div class="skill-card"><i class="fas fa-code"></i><span>البرمجة والتطوير</span></div>
+        <div class="skill-card"><i class="fas fa-store"></i><span>توريد المنتجات الرقمية</span></div>
+      </div>
+    </section>
+
+    <!-- قسم PROJECTS (إضافي) -->
+    <section id="projects" class="section projects-section">
+      <div class="section-badge">PROJECTS</div>
+      <h2 class="section-title-en" dir="ltr">Featured Projects</h2>
+      <div class="projects-card">
+        <p class="section-sub">قريباً سيتم إدراج المشاريع والأعمال البرمجية هنا.</p>
+      </div>
+    </section>
+
     <!-- القسم الثاني: MUSIC -->
-    <section class="section music-section">
+    <section id="music" class="section music-section">
       <div class="section-badge">MUSIC</div>
       <h2 class="section-title-en" dir="ltr">My musics</h2>
       <div class="music-player-wrapper">
@@ -97,12 +144,11 @@
         </div>
       </div>
 
-      <!-- عنصر الصوت الرئيسي -->
       <audio id="audio-player" preload="auto"></audio>
     </section>
 
     <!-- القسم الثالث: DISCORD -->
-    <section class="section discord-section">
+    <section id="discord" class="section discord-section">
       <div class="section-badge">DISCORD</div>
       <h2 class="section-title-en" dir="ltr">What am I doing?</h2>
       <p class="section-sub" dir="ltr">My Discord status updates automatically.</p>
@@ -127,7 +173,7 @@
     </section>
 
     <!-- القسم الرابع: SOCIALS -->
-    <section class="section socials-section">
+    <section id="socials" class="section socials-section">
       <div class="section-badge">SOCIALS</div>
       <h2 class="section-title-en" dir="ltr">Find me</h2>
       <p class="section-sub" dir="ltr">You can find me on these platforms.</p>
