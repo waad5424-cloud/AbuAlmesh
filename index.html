@@ -45,9 +45,9 @@
       <div class="music-player-wrapper">
         <div class="player-left-card">
           <div class="now-playing-header">
-            <span class="badge-mini">1/1</span>
+            <span id="track-counter" class="badge-mini">1/2</span>
             <span class="np-label">NOW PLAYING</span>
-            <h3 class="track-title-main">Thank You</h3>
+            <h3 id="current-track-title" class="track-title-main">Thank You</h3>
           </div>
           <div class="progress-container">
             <input type="range" id="progress-bar" value="0" min="0" max="100">
@@ -57,21 +57,25 @@
             </div>
           </div>
           <div class="controls-row">
-            <button class="ctrl-btn"><i class="fas fa-step-backward"></i></button>
+            <button id="prev-btn" class="ctrl-btn"><i class="fas fa-step-backward"></i></button>
             <button id="play-pause-btn" class="play-btn-purple"><i class="fas fa-pause"></i></button>
-            <button class="ctrl-btn"><i class="fas fa-step-forward"></i></button>
+            <button id="next-btn" class="ctrl-btn"><i class="fas fa-step-forward"></i></button>
           </div>
           <div class="volume-row">
             <i class="fas fa-volume-down"></i>
             <input type="range" id="volume-bar" value="35" min="0" max="100">
             <span class="vol-num">35%</span>
           </div>
-          <div class="loop-badge"><i class="fas fa-sync-alt"></i> تكرار الأغنية</div>
+          <div class="loop-badge"><i class="fas fa-sync-alt"></i> تكرار الأغاني</div>
           <div class="playlist-box">
             <span class="playlist-label">PLAYLIST</span>
-            <div class="playlist-item active">
+            <div class="playlist-item active" data-index="0">
               <span>Thank You</span>
               <small>Dido (Slowed/Reverb)</small>
+            </div>
+            <div class="playlist-item" data-index="1">
+              <span>All Girls Are The Same</span>
+              <small>Juice WRLD</small>
             </div>
           </div>
         </div>
@@ -80,12 +84,13 @@
           <div class="vinyl-record" id="disc">
             <div class="vinyl-center"></div>
           </div>
-          <h3 class="disc-track-name">Thank You</h3>
-          <p class="disc-artist-name">Dido (Slowed/Reverb)</p>
+          <h3 id="disc-track-name" class="disc-track-name">Thank You</h3>
+          <p id="disc-artist-name" class="disc-artist-name">Dido (Slowed/Reverb)</p>
         </div>
       </div>
 
-      <audio id="audio-player" src="https://files.catbox.moe/f0ui4v.mp4" loop preload="auto"></audio>
+      <!-- عنصر الصوت الرئيسي -->
+      <audio id="audio-player" preload="auto"></audio>
     </section>
 
     <!-- القسم الثالث: DISCORD -->
@@ -97,7 +102,6 @@
       <div class="discord-wide-card">
         <div class="dc-user-info">
           <div class="dc-avatar-container">
-            <!-- صورة البروفيسور الخاصة بك (سيتم تحديثها تلقائياً عبر السكريبت) -->
             <img id="discord-avatar" class="discord-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
             <span id="discord-status-dot" class="status-indicator offline"></span>
           </div>
