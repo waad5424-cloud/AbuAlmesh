@@ -20,7 +20,6 @@ body {
   overflow-x: hidden;
 }
 
-/* طبقة تعتيم الخلفية لزيادة وضوح النصوص */
 .bg-overlay {
   background: rgba(10, 2, 2, 0.82);
   position: fixed;
@@ -32,7 +31,6 @@ body {
   pointer-events: none;
 }
 
-/* --- شاشة الدخول (Intro Screen) --- */
 #intro-screen {
   position: fixed;
   top: 0;
@@ -92,7 +90,6 @@ body {
   font-size: 0.95rem;
 }
 
-/* --- هيكل الصفحة الرئيسي --- */
 .page-container {
   width: 100%;
   max-width: 650px;
@@ -103,7 +100,6 @@ body {
   z-index: 2;
 }
 
-/* --- الأقسام المشتركة --- */
 .section {
   display: flex;
   flex-direction: column;
@@ -136,7 +132,6 @@ body {
   margin-bottom: 15px;
 }
 
-/* --- قسم ABOUT ME --- */
 .about-content {
   width: 100%;
   background: rgba(20, 5, 5, 0.6);
@@ -152,7 +147,6 @@ body {
   line-height: 1.6;
 }
 
-/* --- قسم MUSIC --- */
 .music-player-wrapper {
   width: 100%;
   display: grid;
@@ -207,7 +201,6 @@ body {
   color: #fff;
 }
 
-/* شريط التقدم والتحكم */
 .progress-container {
   display: flex;
   flex-direction: column;
@@ -327,7 +320,6 @@ input[type="range"] {
   color: #ff3b3b;
 }
 
-/* قرص الأغاني (Vinyl) */
 .player-right-disc {
   display: flex;
   flex-direction: column;
@@ -379,7 +371,6 @@ input[type="range"] {
   text-align: center;
 }
 
-/* --- قسم DISCORD --- */
 .discord-wide-card {
   width: 100%;
   background: rgba(20, 5, 5, 0.65);
@@ -471,7 +462,6 @@ input[type="range"] {
   font-size: 1rem;
 }
 
-/* --- قسم SOCIALS --- */
 .socials-grid {
   width: 100%;
   display: grid;
@@ -515,7 +505,6 @@ input[type="range"] {
   color: #888;
 }
 
-/* --- التأثيرات الخاصة (إشعاع الماوس والأوراق المتحركة) --- */
 .mouse-glow {
   position: fixed;
   width: 400px;
