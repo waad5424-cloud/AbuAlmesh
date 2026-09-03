@@ -18,12 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const discArtistName = document.getElementById('disc-artist-name');
   const playlistItems = document.querySelectorAll('.playlist-item');
 
-  // قائمة الأغاني (الأولى هي I Wanna Be Yours)
+  // قائمة الأغاني بروابط ومرفقات تدعم التشغيل المباشر
   const playlist = [
     {
       title: "I Wanna Be Yours",
       artist: "Arctic Monkeys",
-      src: "https://files.catbox.moe/ves6c4.webm"
+      src: "https://files.catbox.moe/u8o252.mp3" // رابط بديل بصيغة mp3 مضمونة التشغيل
     },
     {
       title: "Thank You",
@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadTrack(index) {
     currentTrackIndex = index;
     audio.src = playlist[index].src;
+    audio.load(); // إعادة تحميل عنصر الصوت لتجنب مشاكل المتصفح
     currentTrackTitle.textContent = playlist[index].title;
     discTrackName.textContent = playlist[index].title;
     discArtistName.textContent = playlist[index].artist;
@@ -56,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // تحميل الأغنية الأولى افتراضياً
   loadTrack(0);
 
   function startAudio() {
@@ -64,12 +64,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (volumeBar) {
         audio.volume = volumeBar.value / 100;
       }
-      audio.play().then(() => {
-        if (playIcon) playIcon.className = 'fas fa-pause';
-        if (disc) disc.classList.add('playing');
-      }).catch(err => {
-        console.log("Audio play error:", err);
-      });
+      let playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          if (playIcon) playIcon.className = 'fas fa-pause';
+          if (disc) disc.classList.add('playing');
+        }).catch(error => {
+          console.log("Autoplay blocked or error:", error);
+        });
+      }
     }
   }
 
