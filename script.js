@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const discArtistName = document.getElementById('disc-artist-name');
   const playlistItems = document.querySelectorAll('.playlist-item');
 
-  // قائمة الأغاني مع الرابط الجديد المباشر
+  // قائمة الأغاني بالرابط الجديد المباشر
   const playlist = [
     {
       title: "I Wanna Be Yours",
@@ -76,12 +76,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  if (introScreen) {
-    introScreen.addEventListener('click', () => {
+  // إغلاق شاشة الدخول وبدء التشغيل
+  function closeIntro() {
+    if (introScreen) {
       introScreen.classList.add('fade-out');
       startAudio();
+    }
+  }
+
+  if (introScreen) {
+    introScreen.addEventListener('click', closeIntro);
+  }
+
+  const enterBtn = document.getElementById('enter-btn');
+  if (enterBtn) {
+    enterBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeIntro();
     });
   }
+
+  // دعم الدخول عبر زر Enter أو Space
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.code === 'Space') {
+      closeIntro();
+    }
+  });
 
   if (playPauseBtn && audio) {
     playPauseBtn.addEventListener('click', (e) => {
@@ -224,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
           else deviceEl.textContent = "Offline";
 
           if (user.activities && user.activities.length > 0) {
-            const currentAct = user.activities[0];
+            const currentAct = user.activities.find(act => act.name !== "Custom Status") || user.activities[0];
             activityEl.textContent = `يتفاعل مع: ${currentAct.name}`;
           } else {
             activityEl.textContent = "ما فيه نشاط ظاهر حاليًا";
