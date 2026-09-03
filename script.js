@@ -1,62 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // --- 1. عداد الزيارات (Visitor Counter) ---
+  // --- 1. عداد الزيارات ---
   const visitorCountEl = document.getElementById('visitor-count');
   if (visitorCountEl) {
-    let visits = localStorage.getItem('site_visits');
-    if (!visits) {
-      visits = 1042;
-    } else {
-      if (!sessionStorage.getItem('counted')) {
-        visits = parseInt(visits) + 1;
-        localStorage.setItem('site_visits', visits);
-        sessionStorage.setItem('counted', 'true');
-      }
+    let visits = localStorage.getItem('site_visits') || 1042;
+    if (!sessionStorage.getItem('counted')) {
+      visits = parseInt(visits) + 1;
+      localStorage.setItem('site_visits', visits);
+      sessionStorage.setItem('counted', 'true');
     }
-    visitorCountEl.textContent = visits.toLocaleString();
+    visitorCountEl.textContent = Number(visits).toLocaleString();
   }
 
-  // --- 2. شاشة الترحيب (Intro Screen) ---
+  // --- 2. شاشة الترحيب ---
   const introScreen = document.getElementById('intro-screen');
   const enterBtn = document.getElementById('enter-btn');
-
   function removeIntro() {
     if (introScreen) {
       introScreen.classList.add('fade-out');
-      setTimeout(() => {
-        introScreen.style.display = 'none';
-      }, 600);
+      setTimeout(() => introScreen.style.display = 'none', 600);
     }
   }
+  if (enterBtn) enterBtn.addEventListener('click', removeIntro);
+  window.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.code === 'Space') removeIntro(); });
+  if (introScreen) introScreen.addEventListener('click', removeIntro);
 
-  if (enterBtn) {
-    enterBtn.addEventListener('click', removeIntro);
-  }
-
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.code === 'Space') {
-      removeIntro();
-    }
-  });
-
-  if (introScreen) {
-    introScreen.addEventListener('click', removeIntro);
-  }
-
-  // --- 3. زر العودة إلى الأعلى ---
+  // --- 3. زر العودة للأعلى ---
   const backToTopBtn = document.getElementById('back-to-top');
   if (backToTopBtn) {
-    backToTopBtn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
+    backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  // --- 4. جلب حالة الدسكورد (Discord Status API) ---
-  const DISCORD_USER_ID = "YOUR_DISCORD_ID_HERE"; 
-  
+  // --- 4. جلب حالة الديسكورد ---
+  const DISCORD_USER_ID = "YOUR_DISCORD_ID_HERE";
   async function fetchDiscordStatus() {
     const avatarEl = document.getElementById('discord-avatar');
     const statusDot = document.getElementById('discord-status-dot');
@@ -68,50 +44,33 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
       const data = await res.json();
-
       if (data.success && data.data) {
         const { discord_user, discord_status, activities, active_on_discord_desktop, active_on_discord_mobile, active_on_discord_web } = data.data;
-
-        if (avatarEl && discord_user.avatar) {
-          avatarEl.src = `https://cdn.discordapp.com/avatars/${discord_user.id}/${discord_user.avatar}.png`;
-        }
-        if (usernameEl) {
-          usernameEl.textContent = discord_user.username;
-        }
-
+        if (avatarEl && discord_user.avatar) avatarEl.src = `https://cdn.discordapp.com/avatars/${discord_user.id}/${discord_user.avatar}.png`;
+        if (usernameEl) usernameEl.textContent = discord_user.username;
         if (statusDot && statusTextEl) {
           statusDot.className = `status-indicator ${discord_status}`;
           statusTextEl.textContent = discord_status.toUpperCase();
-          statusTextEl.className = `dc-badge ${discord_status}`;
         }
-
         if (deviceEl) {
           let devices = [];
           if (active_on_discord_desktop) devices.push("Desktop");
           if (active_on_discord_mobile) devices.push("Mobile");
           if (active_on_discord_web) devices.push("Web");
-          deviceEl.textContent = devices.length > 0 ? `Active on: ${devices.join(', ')}` : "Offline";
+          deviceEl.textContent = devices.length ? `Active on: ${devices.join(', ')}` : "Offline";
         }
-
         if (activityEl) {
-          if (activities && activities.length > 0) {
-            const currentAct = activities.find(a => a.type === 0) || activities[0];
-            activityEl.textContent = `Playing / Doing: ${currentAct.name}`;
-          } else {
-            activityEl.textContent = "No activities right now.";
-          }
+          activityEl.textContent = activities?.length ? `Playing: ${activities[0].name}` : "No activities right now.";
         }
       }
-    } catch (err) {
-      console.log("Discord API error:", err);
-      if (activityEl) activityEl.textContent = "Offline or API error";
+    } catch (e) {
+      console.log("Discord error");
     }
   }
-
   fetchDiscordStatus();
   setInterval(fetchDiscordStatus, 30000);
 
-  // --- 5. مشغل الموسيقى (Music Player) ---
+  // --- 5. مشغل الموسيقى ---
   const audioPlayer = document.getElementById('audio-player');
   const playPauseBtn = document.getElementById('play-pause-btn');
   const progressBar = document.getElementById('progress-bar');
@@ -124,24 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const discTrackName = document.getElementById('disc-track-name');
   const discArtistName = document.getElementById('disc-artist-name');
   const playlistItems = document.querySelectorAll('.playlist-item');
+  const nextBtn = document.getElementById('next-btn');
+  const prevBtn = document.getElementById('prev-btn');
 
-  // روابط صوتية مباشرة ومفتوحة المصدر لضمان العمل الفوري
   const playlist = [
-    {
-      title: "I Wanna Be Yours",
-      artist: "Arctic Monkeys",
-      src: "https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg"
-    },
-    {
-      title: "Thank You",
-      artist: "Dido (Slowed/Reverb)",
-      src: "https://actions.google.com/sounds/v1/weather/wind_heavy.ogg"
-    },
-    {
-      title: "All Girls Are The Same",
-      artist: "Juice WRLD",
-      src: "https://actions.google.com/sounds/v1/relax/ocean_waves.ogg"
-    }
+    { title: "I Wanna Be Yours", artist: "Arctic Monkeys", src: "https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg" },
+    { title: "Thank You", artist: "Dido (Slowed/Reverb)", src: "https://actions.google.com/sounds/v1/weather/wind_heavy.ogg" },
+    { title: "All Girls Are The Same", artist: "Juice WRLD", src: "https://actions.google.com/sounds/v1/relax/ocean_waves.ogg" }
   ];
 
   let currentTrackIndex = 0;
@@ -149,35 +97,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function loadTrack(index) {
     const track = playlist[index];
-    audioPlayer.src = track.src;
-    track.title ? trackTitle.textContent = track.title : null;
-    if(discTrackName) discTrackName.textContent = track.title;
-    if(discArtistName) discArtistName.textContent = track.artist;
-    if(trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
+    if (audioPlayer) audioPlayer.src = track.src;
+    if (trackTitle) trackTitle.textContent = track.title;
+    if (discTrackName) discTrackName.textContent = track.title;
+    if (discArtistName) discArtistName.textContent = track.artist;
+    if (trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
     playlistItems.forEach((item, idx) => {
-      if (idx === index) {
-        item.classList.add('active');
-      } else {
-        item.classList.remove('active');
-      }
+      item.classList.toggle('active', idx === index);
     });
   }
 
   function togglePlay() {
+    if (!audioPlayer) return;
     if (isPlaying) {
       audioPlayer.pause();
       isPlaying = false;
-      playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-      disc.classList.remove('playing');
+      if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+      if (disc) disc.classList.remove('playing');
     } else {
       audioPlayer.play().then(() => {
         isPlaying = true;
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        disc.classList.add('playing');
-      }).catch(e => {
-        console.log("Audio play blocked by browser:", e);
-      });
+        if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        if (disc) disc.classList.add('playing');
+      }).catch(err => console.log("Playback error:", err));
     }
   }
 
@@ -187,20 +130,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (audioPlayer) {
     audioPlayer.addEventListener('timeupdate', () => {
-      if (audioPlayer.duration) {
-        const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-        progressBar.value = progressPercent;
+      if (audioPlayer.duration && progressBar) {
+        progressBar.value = (audioPlayer.currentTime / audioPlayer.duration) * 100;
         
-        let currentMinutes = Math.floor(audioPlayer.currentTime / 60);
-        let currentSeconds = Math.floor(audioPlayer.currentTime % 60);
-        if (currentSeconds < 10) currentSeconds = `0${currentSeconds}`;
-        currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
+        let cMin = Math.floor(audioPlayer.currentTime / 60);
+        let cSec = Math.floor(audioPlayer.currentTime % 60);
+        if (currentTimeEl) currentTimeEl.textContent = `${cMin}:${cSec < 10 ? '0' : ''}${cSec}`;
 
-        let durationMinutes = Math.floor(audioPlayer.duration / 60);
-        let durationSeconds = Math.floor(audioPlayer.duration % 60);
-        if (durationSeconds < 10) durationSeconds = `0${durationSeconds}`;
-        if (!isNaN(audioPlayer.duration)) {
-          durationTimeEl.textContent = `${durationMinutes}:${durationSeconds}`;
+        let dMin = Math.floor(audioPlayer.duration / 60);
+        let dSec = Math.floor(audioPlayer.duration % 60);
+        if (durationTimeEl && !isNaN(audioPlayer.duration)) {
+          durationTimeEl.textContent = `${dMin}:${dSec < 10 ? '0' : ''}${dSec}`;
         }
       }
     });
@@ -212,11 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (progressBar) {
+  if (progressBar && audioPlayer) {
     progressBar.addEventListener('input', () => {
       if (audioPlayer.duration) {
-        const seekTime = (progressBar.value / 100) * audioPlayer.duration;
-        audioPlayer.currentTime = seekTime;
+        audioPlayer.currentTime = (progressBar.value / 100) * audioPlayer.duration;
       }
     });
   }
@@ -232,22 +171,21 @@ document.addEventListener('DOMContentLoaded', () => {
     item.addEventListener('click', () => {
       currentTrackIndex = index;
       loadTrack(currentTrackIndex);
-      audioPlayer.play().then(() => {
-        isPlaying = true;
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        disc.classList.add('playing');
-      });
+      if (audioPlayer) {
+        audioPlayer.play().then(() => {
+          isPlaying = true;
+          if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+          if (disc) disc.classList.add('playing');
+        });
+      }
     });
   });
-
-  const nextBtn = document.getElementById('next-bin') || document.getElementById('next-btn');
-  const prevBtn = document.getElementById('prev-bin') || document.getElementById('prev-btn');
 
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
-      if (isPlaying) audioPlayer.play();
+      if (isPlaying && audioPlayer) audioPlayer.play();
     });
   }
 
@@ -255,10 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
       loadTrack(currentTrackIndex);
-      if (isPlaying) audioPlayer.play();
+      if (isPlaying && audioPlayer) audioPlayer.play();
     });
   }
 
   loadTrack(currentTrackIndex);
-
 });
