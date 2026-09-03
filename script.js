@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchDiscordStatus();
   setInterval(fetchDiscordStatus, 30000);
 
-  // --- 5. مشغل الموسيقى (بالروابط المباشرة) ---
+  // --- 5. مشغل الموسيقى ---
   const audioPlayer = document.getElementById('audio-player');
   const playPauseBtn = document.getElementById('play-pause-btn');
   const progressBar = document.getElementById('progress-bar');
@@ -87,9 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.getElementById('prev-btn');
 
   const playlist = [
-    { title: "I Wanna Be Yours", artist: "Arctic Monkeys", src: "https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg" },
-    { title: "Thank You", artist: "Dido (Slowed/Reverb)", src: "https://actions.google.com/sounds/v1/weather/wind_heavy.ogg" },
-    { title: "All Girls Are The Same", artist: "Juice WRLD", src: "https://actions.google.com/sounds/v1/relax/ocean_waves.ogg" }
+    { title: "I Wanna Be Yours", artist: "Arctic Monkeys", src: "https://files.catbox.moe/g244x0.mp3" },
+    { title: "Thank You", artist: "Dido (Slowed/Reverb)", src: "https://files.catbox.moe/5v3v3w.mp3" },
+    { title: "All Girls Are The Same", artist: "Juice WRLD", src: "https://files.catbox.moe/r9b8a3.mp3" }
   ];
 
   let currentTrackIndex = 0;
