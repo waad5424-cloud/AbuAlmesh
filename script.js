@@ -18,8 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const discArtistName = document.getElementById('disc-artist-name');
   const playlistItems = document.querySelectorAll('.playlist-item');
 
-  // قائمة الأغاني المضافة
+  // قائمة الأغاني (الأولى هي I Wanna Be Yours)
   const playlist = [
+    {
+      title: "I Wanna Be Yours",
+      artist: "Arctic Monkeys",
+      src: "https://files.catbox.moe/ves6c4.webm"
+    },
     {
       title: "Thank You",
       artist: "Dido (Slowed/Reverb)",
@@ -42,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
     discArtistName.textContent = playlist[index].artist;
     trackCounter.textContent = `${index + 1}/${playlist.length}`;
 
-    // تحديث شكل قائمة التشغيل لتحديد النشطة
     playlistItems.forEach((item, idx) => {
       if (idx === index) {
         item.classList.add('active');
@@ -89,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // زر التالي
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
       let nextIndex = (currentTrackIndex + 1) % playlist.length;
@@ -98,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // زر السابق
   if (prevBtn) {
     prevBtn.addEventListener('click', () => {
       let prevIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
@@ -107,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // النقر على أغنية من القائمة مباشرة
   playlistItems.forEach(item => {
     item.addEventListener('click', () => {
       const idx = parseInt(item.getAttribute('data-index'));
@@ -126,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // عند انتهاء الأغنية تنتقل تلقائياً للتالية
     audio.addEventListener('ended', () => {
       let nextIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(nextIndex);
@@ -158,8 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   }
 
-
-  // 2. إشعاع الماوس
+  // إشعاع الماوس الأحمر الفاتح
   const glow = document.createElement('div');
   glow.classList.add('mouse-glow');
   document.body.appendChild(glow);
@@ -169,8 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
     glow.style.top = `${e.clientY}px`;
   });
 
-
-  // 3. أوراق الشجر المتساقطة
+  // أوراق الشجر المتساقطة
   const leavesContainer = document.createElement('div');
   leavesContainer.classList.add('leaves-container');
   document.body.appendChild(leavesContainer);
@@ -190,8 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     leavesContainer.appendChild(leaf);
   }
 
-
-  // 4. جلب بيانات الديسكورد عبر Lanyard API
+  // جلب بيانات الديسكورد عبر Lanyard API
   const discordId = "1159623336041652244";
   const avatarEl = document.getElementById("discord-avatar");
   const usernameEl = document.getElementById("discord-username");
