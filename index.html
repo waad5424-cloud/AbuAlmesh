@@ -10,7 +10,6 @@
 </head>
 <body>
 
-  <!-- شاشة الدخول -->
   <div id="intro-screen">
     <div class="intro-box">
       <div class="intro-top-badge">SILENTREAPER WORLD</div>
@@ -27,9 +26,8 @@
 
   <div class="bg-overlay"></div>
 
-  <!-- الشريط العلوي (Navbar) -->
   <header class="site-header">
-    <div class="nav-brand" dir="ltr">SILENTREAPER WORLD</div>
+    <div class="nav-brand" dir="ltr">Silentreaper World</div>
     <nav class="nav-links" dir="ltr">
       <a href="#hero" class="nav-link active">Home</a>
       <a href="#about" class="nav-link">About</a>
@@ -38,6 +36,7 @@
       <a href="#music" class="nav-link">Music</a>
       <a href="#socials" class="nav-link">Socials</a>
       <a href="#discord" class="nav-link">Discord</a>
+      <a href="#visitors" class="nav-link">Visitors</a>
     </nav>
     <div class="nav-actions" dir="ltr">
       <button class="nav-icon-btn" title="Command Menu"><i class="fas fa-command"></i> K</button>
@@ -47,7 +46,6 @@
 
   <main class="page-container">
 
-    <!-- القسم الرئيسي (Hero Section) -->
     <section id="hero" class="section hero-section">
       <div class="hero-content">
         <span class="hero-subtitle" dir="ltr">THIS IS MY WORLD</span>
@@ -56,7 +54,6 @@
       </div>
     </section>
 
-    <!-- القسم الأول: ABOUT ME -->
     <section id="about" class="section about-section">
       <div class="section-badge">ABOUT ME</div>
       <h2 class="section-title-en" dir="ltr">A little about me</h2>
@@ -69,7 +66,6 @@
       </div>
     </section>
 
-    <!-- قسم SKILLS -->
     <section id="skills" class="section skills-section">
       <div class="section-badge">SKILLS</div>
       <h2 class="section-title-en" dir="ltr">What I do</h2>
@@ -80,7 +76,6 @@
       </div>
     </section>
 
-    <!-- قسم PROJECTS -->
     <section id="projects" class="section projects-section">
       <div class="section-badge">PROJECTS</div>
       <h2 class="section-title-en" dir="ltr">Featured Projects</h2>
@@ -89,7 +84,6 @@
       </div>
     </section>
 
-    <!-- القسم الثاني: MUSIC -->
     <section id="music" class="section music-section">
       <div class="section-badge">MUSIC</div>
       <h2 class="section-title-en" dir="ltr">My musics</h2>
@@ -147,7 +141,6 @@
       <audio id="audio-player" preload="auto"></audio>
     </section>
 
-    <!-- القسم الثالث: DISCORD -->
     <section id="discord" class="section discord-section">
       <div class="section-badge">DISCORD</div>
       <h2 class="section-title-en" dir="ltr">What am I doing?</h2>
@@ -172,7 +165,6 @@
       </div>
     </section>
 
-    <!-- القسم الرابع: SOCIALS (تمت إضافة doou store هنا) -->
     <section id="socials" class="section socials-section">
       <div class="section-badge">SOCIALS</div>
       <h2 class="section-title-en" dir="ltr">Find me</h2>
@@ -191,12 +183,29 @@
         </a>
         <a href="https://discord.gg/NYYxHjCVvb" target="_blank" class="social-card store-card">
           <div class="social-icon-wrapper store-icon-wrap">
-            <img src="https://i.imgur.com/your-uploaded-logo.png" alt="doou store" class="doou-store-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <i class="fas fa-store" style="display:none;"></i>
+            <i class="fas fa-store"></i>
           </div>
           <span class="social-name">doou store</span>
           <span class="social-handle">Discord Server</span>
         </a>
+      </div>
+    </section>
+
+    <section id="visitors" class="section visitors-section">
+      <div class="section-badge" dir="ltr">VISITORS</div>
+      <h2 class="section-title-en" dir="ltr">World counter</h2>
+      <p class="section-sub" dir="ltr">Total visits recorded across Silentreaper World.</p>
+
+      <div class="visitors-card">
+        <div class="visitor-icon-box">
+          <i class="fas fa-circle-dot"></i>
+        </div>
+        <span class="visitor-label" dir="ltr">TOTAL VISITS</span>
+        <h3 id="visitor-count" class="visitor-number">--</h3>
+        <div class="visitor-status-row">
+          <span class="v-dot"></span>
+          <span class="v-status-text">Counter active</span>
+        </div>
       </div>
     </section>
 
