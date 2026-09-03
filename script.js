@@ -1,19 +1,58 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+  // --- 1. عداد الزيارات (Visitor Counter) ---
+  const visitorCountEl = document.getElementById('visitor-count');
+  if (visitorCountEl) {
+    let visits = localStorage.getItem('site_visits');
+    if (!visits) {
+      visits = 1042; // رقم بداية فخم
+    } else {
+      if (!sessionStorage.getItem('counted')) {
+        visits = parseInt(visits) + 1;
+        localStorage.setItem('site_visits', visits);
+        sessionStorage.setItem('counted', 'true');
+      }
+    }
+    visitorCountEl.textContent = visits.toLocaleString();
+  }
+
+  // --- 2. شاشة الترحيب (Intro Screen) ---
   const introScreen = document.getElementById('intro-screen');
-  const audio = document.getElementById('audio-player');
+  const enterBtn = document.getElementById('enter-btn');
+
+  function removeIntro() {
+    if (introScreen) {
+      introScreen.classList.add('fade-out');
+      setTimeout(() => {
+        introScreen.style.display = 'none';
+      }, 600);
+    }
+  }
+
+  if (enterBtn) {
+    enterBtn.addEventListener('click', removeIntro);
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.code === 'Space') {
+      removeIntro();
+    }
+  });
+
+  if (introScreen) {
+    introScreen.addEventListener('click', removeIntro);
+  }
+
+  // --- 3. مشغل الموسيقى (Music Player) ---
+  const audioPlayer = document.getElementById('audio-player');
   const playPauseBtn = document.getElementById('play-pause-btn');
-  const playIcon = playPauseBtn ? playPauseBtn.querySelector('i') : null;
   const progressBar = document.getElementById('progress-bar');
-  const volumeBar = document.getElementById('volume-bar');
   const currentTimeEl = document.getElementById('current-time');
   const durationTimeEl = document.getElementById('duration-time');
-  const disc = document.getElementById('disc');
-  const volNum = document.querySelector('.vol-num');
-  
-  const prevBtn = document.getElementById('prev-btn');
-  const nextBtn = document.getElementById('next-btn');
+  const volumeBar = document.getElementById('volume-bar');
+  const trackTitle = document.getElementById('current-track-title');
   const trackCounter = document.getElementById('track-counter');
-  const currentTrackTitle = document.getElementById('current-track-title');
+  const disc = document.getElementById('disc');
   const discTrackName = document.getElementById('disc-track-name');
   const discArtistName = document.getElementById('disc-artist-name');
   const playlistItems = document.querySelectorAll('.playlist-item');
@@ -23,31 +62,31 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       title: "I Wanna Be Yours",
       artist: "Arctic Monkeys",
-      src: "https://files.catbox.moe/azuegp.mp3"
+      src: "https://www.bensound.com/bensound-music/bensound-creativeminds.mp3" // رابط تجريبي مؤقت
     },
     {
       title: "Thank You",
       artist: "Dido (Slowed/Reverb)",
-      src: "https://files.catbox.moe/f0ui4v.mp4"
+      src: "https://www.bensound.com/bensound-music/bensound-acousticbreeze.mp3"
     },
     {
       title: "All Girls Are The Same",
       artist: "Juice WRLD",
-      src: "https://files.catbox.moe/2zyo0g.mp4"
+      src: "https://www.bensound.com/bensound-music/bensound-ukulele.mp3"
     }
   ];
 
   let currentTrackIndex = 0;
+  let isPlaying = false;
 
   function loadTrack(index) {
-    currentTrackIndex = index;
-    audio.src = playlist[index].src;
-    audio.load();
-    currentTrackTitle.textContent = playlist[index].title;
-    discTrackName.textContent = playlist[index].title;
-    discArtistName.textContent = playlist[index].artist;
+    const track = playlist[index];
+    audioPlayer.src = track.src;
+    trackTitle.textContent = track.title;
+    discTrackName.textContent = track.title;
+    discArtistName.textContent = track.artist;
     trackCounter.textContent = `${index + 1}/${playlist.length}`;
-
+    
     playlistItems.forEach((item, idx) => {
       if (idx === index) {
         item.classList.add('active');
@@ -57,201 +96,104 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  loadTrack(0);
-
-  function startAudio() {
-    if (audio) {
-      if (volumeBar) {
-        audio.volume = volumeBar.value / 100;
-      }
-      let playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          if (playIcon) playIcon.className = 'fas fa-pause';
-          if (disc) disc.classList.add('playing');
-        }).catch(error => {
-          console.log("Autoplay blocked or error:", error);
-        });
-      }
+  function togglePlay() {
+    if (isPlaying) {
+      audioPlayer.pause();
+      isPlaying = false;
+      playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+      disc.classList.remove('playing');
+    } else {
+      audioPlayer.play().catch(e => console.log("Audio play blocked:", e));
+      isPlaying = true;
+      playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      disc.classList.add('playing');
     }
   }
 
-  // إغلاق شاشة الدخول وبدء التشغيل
-  function closeIntro() {
-    if (introScreen) {
-      introScreen.classList.add('fade-out');
-      startAudio();
-    }
+  if (playPauseBtn) {
+    playPauseBtn.addEventListener('click', togglePlay);
   }
 
-  if (introScreen) {
-    introScreen.addEventListener('click', closeIntro);
-  }
+  // تحديث شريط التقدم
+  if (audioPlayer) {
+    audioPlayer.addEventListener('timeupdate', () => {
+      if (audioPlayer.duration) {
+        const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        progressBar.value = progressPercent;
+        
+        // حساب الوقت الحالي
+        let currentMinutes = Math.floor(audioPlayer.currentTime / 60);
+        let currentSeconds = Math.floor(audioPlayer.currentTime % 60);
+        if (currentSeconds < 10) currentSeconds = `0${currentSeconds}`;
+        currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
 
-  const enterBtn = document.getElementById('enter-btn');
-  if (enterBtn) {
-    enterBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      closeIntro();
+        // حساب الوقت الكلي
+        let durationMinutes = Math.floor(audioPlayer.duration / 60);
+        let durationSeconds = Math.floor(audioPlayer.duration % 60);
+        if (durationSeconds < 10) durationSeconds = `0${durationSeconds}`;
+        if (!isNaN(audioPlayer.duration)) {
+          durationTimeEl.textContent = `${durationMinutes}:${durationSeconds}`;
+        }
+      }
+    });
+
+    audioPlayer.addEventListener('ended', () => {
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      loadTrack(currentTrackIndex);
+      audioPlayer.play();
     });
   }
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.code === 'Space') {
-      closeIntro();
-    }
+  if (progressBar) {
+    progressBar.addEventListener('input', () => {
+      if (audioPlayer.duration) {
+        const seekTime = (progressBar.value / 100) * audioPlayer.duration;
+        audioPlayer.currentTime = seekTime;
+      }
+    });
+  }
+
+  // التحكم بالصوت
+  if (volumeBar && audioPlayer) {
+    audioPlayer.volume = volumeBar.value / 100;
+    volumeBar.addEventListener('input', () => {
+      audioPlayer.volume = volumeBar.value / 100;
+    });
+  }
+
+  // الضغط على القائمة لتغيير الأغنية
+  playlistItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      currentTrackIndex = index;
+      loadTrack(currentTrackIndex);
+      audioPlayer.play();
+      isPlaying = true;
+      playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      disc.classList.add('playing');
+    });
   });
 
-  if (playPauseBtn && audio) {
-    playPauseBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (audio.paused) {
-        startAudio();
-      } else {
-        audio.pause();
-        if (playIcon) playIcon.className = 'fas fa-play';
-        if (disc) disc.classList.remove('playing');
-      }
-    });
-  }
+  // أزرار التالي والسابق
+  const nextBtn = document.getElementById('next-btn');
+  const prevBtn = document.getElementById('prev-btn');
 
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
-      let nextIndex = (currentTrackIndex + 1) % playlist.length;
-      loadTrack(nextIndex);
-      startAudio();
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      loadTrack(currentTrackIndex);
+      if (isPlaying) audioPlayer.play();
     });
   }
 
   if (prevBtn) {
     prevBtn.addEventListener('click', () => {
-      let prevIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-      loadTrack(prevIndex);
-      startAudio();
+      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+      loadTrack(currentTrackIndex);
+      if (isPlaying) audioPlayer.play();
     });
   }
 
-  playlistItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const idx = parseInt(item.getAttribute('data-index'));
-      loadTrack(idx);
-      startAudio();
-    });
-  });
+  // تحميل الأغنية الأولى كبداية
+  loadTrack(currentTrackIndex);
 
-  if (audio) {
-    audio.addEventListener('timeupdate', () => {
-      if (audio.duration) {
-        const progressPercent = (audio.currentTime / audio.duration) * 100;
-        if (progressBar) progressBar.value = progressPercent;
-        if (currentTimeEl) currentTimeEl.textContent = formatTime(audio.currentTime);
-        if (durationTimeEl) durationTimeEl.textContent = formatTime(audio.duration);
-      }
-    });
-
-    audio.addEventListener('ended', () => {
-      let nextIndex = (currentTrackIndex + 1) % playlist.length;
-      loadTrack(nextIndex);
-      startAudio();
-    });
-  }
-
-  if (progressBar && audio) {
-    progressBar.addEventListener('input', () => {
-      if (audio.duration) {
-        audio.currentTime = (progressBar.value / 100) * audio.duration;
-      }
-    });
-  }
-
-  if (volumeBar && audio) {
-    volumeBar.addEventListener('input', () => {
-      audio.volume = volumeBar.value / 100;
-      if (volNum) {
-        volNum.textContent = `${volumeBar.value}%`;
-      }
-    });
-  }
-
-  function formatTime(seconds) {
-    if (isNaN(seconds)) return '0:00';
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-  }
-
-  // إشعاع الماوس الأحمر الفاتح
-  const glow = document.createElement('div');
-  glow.classList.add('mouse-glow');
-  document.body.appendChild(glow);
-
-  document.addEventListener('mousemove', (e) => {
-    glow.style.left = `${e.clientX}px`;
-    glow.style.top = `${e.clientY}px`;
-  });
-
-  // تفعيل تمييز الروابط العلوية حسب التمرير
-  const navLinks = document.querySelectorAll('.nav-link');
-  window.addEventListener('scroll', () => {
-    let scrollPos = window.scrollY;
-    document.querySelectorAll('section').forEach(section => {
-      let top = section.offsetTop - 150;
-      let height = section.offsetHeight;
-      let id = section.getAttribute('id');
-      if (scrollPos >= top && scrollPos < top + height) {
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === `#${id}`) {
-            link.classList.add('active');
-          }
-        });
-      }
-    });
-  });
-
-  // جلب بيانات الديسكورد عبر Lanyard API
-  const discordId = "1159623336041652244";
-  const avatarEl = document.getElementById("discord-avatar");
-  const usernameEl = document.getElementById("discord-username");
-  const statusDot = document.getElementById("discord-status-dot");
-  const statusText = document.getElementById("discord-status-text");
-  const deviceEl = document.getElementById("discord-device");
-  const activityEl = document.getElementById("discord-activity");
-
-  function fetchDiscordStatus() {
-    fetch(`https://api.lanyard.rest/v1/users/${discordId}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          const user = data.data;
-          
-          if (user.discord_user) {
-            usernameEl.textContent = user.discord_user.username;
-            if (user.discord_user.avatar) {
-              avatarEl.src = `https://cdn.discordapp.com/avatars/${discordId}/${user.discord_user.avatar}.png?size=128`;
-            }
-          }
-
-          const status = user.discord_status;
-          statusDot.className = `status-indicator ${status}`;
-          statusText.textContent = status.toUpperCase();
-
-          if (user.active_on_discord_desktop) deviceEl.textContent = "Desktop";
-          else if (user.active_on_discord_mobile) deviceEl.textContent, "Mobile";
-          else if (user.active_on_discord_web) deviceEl.textContent = "Web";
-          else deviceEl.textContent = "Offline";
-
-          if (user.activities && user.activities.length > 0) {
-            const currentAct = user.activities.find(act => act.name !== "Custom Status") || user.activities[0];
-            activityEl.textContent = `يتفاعل مع: ${currentAct.name}`;
-          } else {
-            activityEl.textContent = "ما فيه نشاط ظاهر حاليًا";
-          }
-        }
-      })
-      .catch(err => console.log("Lanyard fetch error:", err));
-  }
-
-  fetchDiscordStatus();
-  setInterval(fetchDiscordStatus, 15000);
 });
