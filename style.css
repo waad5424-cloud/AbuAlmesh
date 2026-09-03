@@ -103,7 +103,7 @@ body {
 
 @media(max-width: 768px) {
   .nav-links {
-    display: none; /* إخفاء الروابط في الشاشات الصغيرة جداً أو تجميعها */
+    display: none;
   }
 }
 
@@ -179,7 +179,7 @@ body {
 .page-container {
   width: 100%;
   max-width: 650px;
-  padding: 100px 20px 40px 20px; /* مسافة أعلى للـ Navbar */
+  padding: 100px 20px 40px 20px;
   display: flex;
   flex-direction: column;
   gap: 35px;
@@ -611,11 +611,18 @@ input[type="range"] {
   font-size: 1rem;
 }
 
+/* --- Socials Grid & doou store Card --- */
 .socials-grid {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media(max-width: 600px) {
+  .socials-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .social-card {
@@ -641,6 +648,19 @@ input[type="range"] {
 .social-icon-wrapper {
   font-size: 1.5rem;
   color: #ff3b3b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.doou-store-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255, 59, 59, 0.5);
 }
 
 .social-name {
