@@ -9,8 +9,52 @@ document.addEventListener('DOMContentLoaded', () => {
   const durationTimeEl = document.getElementById('duration-time');
   const disc = document.getElementById('disc');
   const volNum = document.querySelector('.vol-num');
+  
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const trackCounter = document.getElementById('track-counter');
+  const currentTrackTitle = document.getElementById('current-track-title');
+  const discTrackName = document.getElementById('disc-track-name');
+  const discArtistName = document.getElementById('disc-artist-name');
+  const playlistItems = document.querySelectorAll('.playlist-item');
 
-  // 1. تشغيل الصوت
+  // قائمة الأغاني المضافة
+  const playlist = [
+    {
+      title: "Thank You",
+      artist: "Dido (Slowed/Reverb)",
+      src: "https://files.catbox.moe/f0ui4v.mp4"
+    },
+    {
+      title: "All Girls Are The Same",
+      artist: "Juice WRLD",
+      src: "https://files.catbox.moe/2zyo0g.mp4"
+    }
+  ];
+
+  let currentTrackIndex = 0;
+
+  function loadTrack(index) {
+    currentTrackIndex = index;
+    audio.src = playlist[index].src;
+    currentTrackTitle.textContent = playlist[index].title;
+    discTrackName.textContent = playlist[index].title;
+    discArtistName.textContent = playlist[index].artist;
+    trackCounter.textContent = `${index + 1}/${playlist.length}`;
+
+    // تحديث شكل قائمة التشغيل لتحديد النشطة
+    playlistItems.forEach((item, idx) => {
+      if (idx === index) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+  }
+
+  // تحميل الأغنية الأولى افتراضياً
+  loadTrack(0);
+
   function startAudio() {
     if (audio) {
       if (volumeBar) {
@@ -45,6 +89,33 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // زر التالي
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      let nextIndex = (currentTrackIndex + 1) % playlist.length;
+      loadTrack(nextIndex);
+      startAudio();
+    });
+  }
+
+  // زر السابق
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      let prevIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+      loadTrack(prevIndex);
+      startAudio();
+    });
+  }
+
+  // النقر على أغنية من القائمة مباشرة
+  playlistItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const idx = parseInt(item.getAttribute('data-index'));
+      loadTrack(idx);
+      startAudio();
+    });
+  });
+
   if (audio) {
     audio.addEventListener('timeupdate', () => {
       if (audio.duration) {
@@ -55,10 +126,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // عند انتهاء الأغنية تنتقل تلقائياً للتالية
     audio.addEventListener('ended', () => {
-      if (playIcon) playIcon.className = 'fas fa-play';
-      if (disc) disc.classList.remove('playing');
-      if (progressBar) progressBar.value = 0;
+      let nextIndex = (currentTrackIndex + 1) % playlist.length;
+      loadTrack(nextIndex);
+      startAudio();
     });
   }
 
@@ -87,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // 2. تفعيل إشعاع الماوس
+  // 2. إشعاع الماوس
   const glow = document.createElement('div');
   glow.classList.add('mouse-glow');
   document.body.appendChild(glow);
@@ -98,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  // 3. تفعيل أوراق الشجر المتساقطة
+  // 3. أوراق الشجر المتساقطة
   const leavesContainer = document.createElement('div');
   leavesContainer.classList.add('leaves-container');
   document.body.appendChild(leavesContainer);
@@ -119,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // 4. جلب بيانات وحالة الديسكورد الحقيقية عبر Lanyard API
+  // 4. جلب بيانات الديسكورد عبر Lanyard API
   const discordId = "1159623336041652244";
   const avatarEl = document.getElementById("discord-avatar");
   const usernameEl = document.getElementById("discord-username");
@@ -135,7 +207,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.success) {
           const user = data.data;
           
-          // تحديث اسم المستخدم وصورة البروفايل الحقيقية
           if (user.discord_user) {
             usernameEl.textContent = user.discord_user.username;
             if (user.discord_user.avatar) {
@@ -143,18 +214,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           }
 
-          // تحديث حالة الاتصال (Online, Idle, DND, Offline)
           const status = user.discord_status;
           statusDot.className = `status-indicator ${status}`;
           statusText.textContent = status.toUpperCase();
 
-          // تحديد الجهاز المستخدم
           if (user.active_on_discord_desktop) deviceEl.textContent = "Desktop";
           else if (user.active_on_discord_mobile) deviceEl.textContent = "Mobile";
           else if (user.active_on_discord_web) deviceEl.textContent = "Web";
           else deviceEl.textContent = "Offline";
 
-          // تحديث النشاط (اللعبة أو البرنامج المفتوح)
           if (user.activities && user.activities.length > 0) {
             const currentAct = user.activities[0];
             activityEl.textContent = `يتفاعل مع: ${currentAct.name}`;
@@ -167,5 +235,5 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   fetchDiscordStatus();
-  setInterval(fetchDiscordStatus, 15000); // تحديث كل 15 ثانية
+  setInterval(fetchDiscordStatus, 15000);
 });
