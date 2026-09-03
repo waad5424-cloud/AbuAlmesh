@@ -1,3 +1,4 @@
+/* --- التنسيقات العامة والخطوط --- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,79 +7,103 @@
 }
 
 body {
-  background-color: #030108;
-  color: #ffffff;
+  background-image: url('https://media1.giphy.com/media/QmJei3WeJeBs4/giphy.gif');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: #fff;
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   overflow-x: hidden;
-  direction: rtl;
 }
 
+/* طبقة تعتيم الخلفية لزيادة وضوح النصوص */
 .bg-overlay {
+  background: rgba(10, 2, 2, 0.82);
   position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(20, 10, 35, 0.6) 0%, #030108 100%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: -1;
+  pointer-events: none;
 }
 
+/* --- شاشة الدخول (Intro Screen) --- */
 #intro-screen {
   position: fixed;
-  inset: 0;
-  background: #030108;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 1, 1, 0.95);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 99999;
+  z-index: 100000;
   cursor: pointer;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
+  transition: opacity 0.5s ease;
 }
 
 #intro-screen.fade-out {
   opacity: 0;
-  visibility: hidden;
+  pointer-events: none;
 }
 
 .intro-content {
   text-align: center;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
 }
 
 .intro-title {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   font-weight: 900;
-  text-shadow: 0 0 20px rgba(168, 85, 247, 0.8);
+  color: #ff3b3b;
+  margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255, 59, 59, 0.5);
 }
 
 .play-icon-glow {
-  width: 50px;
-  height: 50px;
-  background: #a855f7;
+  width: 70px;
+  height: 70px;
+  background: rgba(255, 59, 59, 0.15);
+  border: 2px solid #ff3b3b;
   border-radius: 50%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  color: #fff;
-  font-size: 1.2rem;
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
-  transition: transform 0.3s ease;
+  align-items: center;
+  margin: 0 auto 15px;
+  color: #ff3b3b;
+  font-size: 1.5rem;
+  box-shadow: 0 0 20px rgba(255, 59, 59, 0.3);
+  animation: pulse-glow 2s infinite;
 }
 
-#intro-screen:hover .play-icon-glow {
-  transform: scale(1.1);
+@keyframes pulse-glow {
+  0% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 59, 59, 0.3); }
+  50% { transform: scale(1.08); box-shadow: 0 0 25px rgba(255, 59, 59, 0.6); }
+  100% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 59, 59, 0.3); }
 }
 
+.intro-content p {
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+/* --- هيكل الصفحة الرئيسي --- */
 .page-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 80px 20px;
+  width: 100%;
+  max-width: 650px;
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
-  gap: 120px;
+  gap: 35px;
+  z-index: 2;
 }
 
+/* --- الأقسام المشتركة --- */
 .section {
   display: flex;
   flex-direction: column;
@@ -87,272 +112,327 @@ body {
 }
 
 .section-badge {
+  background: rgba(255, 59, 59, 0.1);
+  color: #ff3b3b;
   font-size: 0.75rem;
-  letter-spacing: 3px;
-  color: #a855f7;
-  margin-bottom: 8px;
   font-weight: 700;
-  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 59, 59, 0.3);
+  margin-bottom: 8px;
+  letter-spacing: 1px;
 }
 
 .section-title-en {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 10px;
-  letter-spacing: -0.5px;
+  color: #fff;
+  margin-bottom: 6px;
 }
 
 .section-sub {
-  font-size: 0.95rem;
   color: #888;
-  margin-bottom: 35px;
+  font-size: 0.85rem;
+  margin-bottom: 15px;
 }
 
+/* --- قسم ABOUT ME --- */
 .about-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
   width: 100%;
-  max-width: 650px;
-  background: rgba(13, 9, 20, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 30px;
-}
-
-.about-text-box {
-  width: 100%;
-  text-align: center;
+  background: rgba(20, 5, 5, 0.6);
+  border: 1px solid rgba(255, 59, 59, 0.2);
+  border-radius: 16px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
 }
 
 .about-description {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: #ccc;
+  color: #ddd;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
+/* --- قسم MUSIC --- */
 .music-player-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
   width: 100%;
-  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 15px;
+  background: rgba(20, 5, 5, 0.65);
+  border: 1px solid rgba(255, 59, 59, 0.25);
+  border-radius: 20px;
+  padding: 20px;
+  backdrop-filter: blur(12px);
+  align-items: center;
+}
+
+@media(max-width: 600px) {
+  .music-player-wrapper {
+    grid-template-columns: 1fr;
+  }
 }
 
 .player-left-card {
-  background: rgba(13, 9, 20, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 25px;
-  width: 380px;
-  text-align: right;
-  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
 }
 
 .now-playing-header {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .badge-mini {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 59, 59, 0.2);
+  color: #ff3b3b;
+  font-size: 0.65rem;
   padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.7rem;
+  border-radius: 6px;
   width: fit-content;
+  font-weight: 700;
 }
 
 .np-label {
-  font-size: 0.65rem;
-  color: #a855f7;
-  letter-spacing: 1.5px;
-  margin-top: 5px;
+  font-size: 0.7rem;
+  color: #888;
+  letter-spacing: 0.5px;
 }
 
 .track-title-main {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  margin-bottom: 15px;
+  color: #fff;
 }
 
-.progress-container input[type="range"], .volume-row input[type="range"] {
-  width: 100%;
-  accent-color: #a855f7;
+/* شريط التقدم والتحكم */
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+input[type="range"] {
+  accent-color: #ff3b3b;
   cursor: pointer;
+  width: 100%;
 }
 
 .time-labels {
   display: flex;
   justify-content: space-between;
-  font-size: 0.75rem;
-  color: #666;
-  margin-top: 5px;
+  font-size: 0.7rem;
+  color: #888;
 }
 
 .controls-row {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
-  margin: 15px 0;
+  gap: 15px;
 }
 
 .ctrl-btn {
-  background: none;
+  background: transparent;
   border: none;
-  color: #888;
+  color: #aaa;
   font-size: 1rem;
   cursor: pointer;
+  transition: color 0.2s;
+}
+
+.ctrl-btn:hover {
+  color: #ff3b3b;
 }
 
 .play-btn-purple {
-  background: #a855f7;
-  border: none;
-  width: 50px;
-  height: 32px;
-  border-radius: 16px;
+  background: #ff3b3b;
   color: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 12px rgba(255, 59, 59, 0.5);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.play-btn-purple:hover {
+  transform: scale(1.08);
+  background: #e02e2e;
 }
 
 .volume-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-size: 0.8rem;
-  color: #888;
-  margin-bottom: 15px;
-}
-
-.vol-num {
-  font-size: 0.75rem;
+  color: #aaa;
 }
 
 .loop-badge {
-  font-size: 0.75rem;
-  color: #666;
+  font-size: 0.7rem;
+  color: #ff3b3b;
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 15px;
+  gap: 5px;
 }
 
 .playlist-box {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px;
+  border-radius: 10px;
 }
 
 .playlist-label {
   font-size: 0.65rem;
-  color: #666;
-  letter-spacing: 1px;
+  color: #777;
+  font-weight: bold;
 }
 
 .playlist-item {
-  background: rgba(168, 85, 247, 0.15);
-  border: 1px solid rgba(168, 85, 247, 0.3);
-  padding: 8px 12px;
-  border-radius: 10px;
-  margin-top: 8px;
   display: flex;
   flex-direction: column;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.playlist-item span {
+  font-size: 0.8rem;
+  color: #ccc;
+  font-weight: 600;
 }
 
 .playlist-item small {
-  color: #888;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
+  color: #777;
 }
 
+.playlist-item.active {
+  background: rgba(255, 59, 59, 0.15);
+  border-left: 3px solid #ff3b3b;
+}
+
+.playlist-item.active span {
+  color: #ff3b3b;
+}
+
+/* قرص الأغاني (Vinyl) */
 .player-right-disc {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
 }
 
 .vinyl-record {
-  width: 200px;
-  height: 200px;
+  width: 120px;
+  height: 120px;
+  background: #111;
+  border: 4px solid #333;
   border-radius: 50%;
-  background: radial-gradient(circle, #111 20%, #222 21%, #000 40%, #151515 41%, #000 100%);
-  border: 3px solid #111;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 15px;
-  animation: spin 10s linear infinite;
-  animation-play-state: paused;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
 }
 
 .vinyl-record.playing {
-  animation-play-state: running;
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .vinyl-center {
-  width: 70px;
-  height: 70px;
+  width: 40px;
+  height: 40px;
+  background: #ff3b3b;
   border-radius: 50%;
-  background: #a855f7;
-  border: 8px solid #000;
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px rgba(255, 59, 59, 0.8);
 }
 
 .disc-track-name {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 700;
+  color: #fff;
+  text-align: center;
 }
 
 .disc-artist-name {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #888;
+  text-align: center;
 }
 
+/* --- قسم DISCORD --- */
 .discord-wide-card {
-  background: rgba(13, 9, 20, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 20px 30px;
   width: 100%;
-  max-width: 650px;
+  background: rgba(20, 5, 5, 0.65);
+  border: 1px solid rgba(255, 59, 59, 0.25);
+  border-radius: 18px;
+  padding: 16px 20px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  text-align: right;
+  align-items: center;
+  backdrop-filter: blur(10px);
 }
 
 .dc-user-info {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
+  text-align: left;
 }
 
 .dc-avatar-container {
   position: relative;
+  width: 60px;
+  height: 60px;
 }
 
 .discord-avatar {
-  width: 70px;
-  height: 70px;
-  border-radius: 18px;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
   object-fit: cover;
+  border: 2px solid rgba(255, 59, 59, 0.4);
 }
 
 .status-indicator {
   position: absolute;
-  bottom: -4px;
-  left: -4px;
-  width: 16px;
-  height: 16px;
+  bottom: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  border: 3px solid #0d0914;
+  border: 2px solid #140505;
 }
 
-.status-indicator.dnd { background: #f23f43; }
-.status-indicator.online { background: #23a55a; }
+.status-indicator.online { background: #3ba55d; }
+.status-indicator.idle { background: #faa81a; }
+.status-indicator.dnd { background: #ed4245; }
+.status-indicator.offline { background: #747f8d; }
+
+.dc-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 
 .dc-name-row {
   display: flex;
@@ -361,111 +441,93 @@ body {
 }
 
 .dc-username {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 700;
+  color: #fff;
 }
 
 .dc-badge {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 2px 10px;
-  font-size: 0.7rem;
-  color: #aaa;
+  font-size: 0.65rem;
+  background: rgba(255, 59, 59, 0.2);
+  color: #ff3b3b;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
 }
 
 .dc-device {
   font-size: 0.75rem;
-  color: #666;
-  display: block;
-  margin: 2px 0 6px 0;
+  color: #888;
 }
 
 .dc-activity {
-  font-size: 0.85rem;
-  color: #aaa;
+  font-size: 0.8rem;
+  color: #ff8585;
+  margin-top: 2px;
 }
 
 .dc-arrow {
-  color: #555;
-  font-size: 1.1rem;
+  color: #666;
+  font-size: 1rem;
 }
 
+/* --- قسم SOCIALS --- */
 .socials-grid {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  width: 100%;
-  max-width: 600px;
+  gap: 15px;
 }
 
 .social-card {
-  background: rgba(13, 9, 20, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 30px 15px;
+  background: rgba(20, 5, 5, 0.65);
+  border: 1px solid rgba(255, 59, 59, 0.2);
+  border-radius: 16px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 8px;
   text-decoration: none;
-  color: #fff;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 .social-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(168, 85, 247, 0.5);
+  transform: translateY(-3px);
+  border-color: #ff3b3b;
+  box-shadow: 0 0 15px rgba(255, 59, 59, 0.3);
 }
 
 .social-icon-wrapper {
-  background: rgba(255, 255, 255, 0.05);
-  width: 50px;
-  height: 50px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 1.5rem;
-  margin-bottom: 15px;
+  color: #ff3b3b;
 }
 
 .social-name {
+  font-size: 0.9rem;
   font-weight: 700;
-  font-size: 0.95rem;
+  color: #fff;
 }
 
 .social-handle {
   font-size: 0.75rem;
-  color: #666;
-  margin-top: 4px;
+  color: #888;
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@media (max-width: 768px) {
-  .music-player-wrapper {
-    flex-direction: column;
-  }
-  .socials-grid {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
-/* --- تأثير إشعاع الماوس (Mouse Glow) --- */
+/* --- التأثيرات الخاصة (إشعاع الماوس والأوراق المتحركة) --- */
 .mouse-glow {
   position: fixed;
-  width: 350px;
-  height: 350px;
-  background: radial-gradient(circle, rgba(138, 43, 226, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 90, 90, 0.28) 0%, rgba(0, 0, 0, 0) 70%);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
   z-index: 9999;
-  transition: width 0.3s, height 0.3s;
+  mix-blend-mode: screen;
 }
 
-/* --- تأثير أوراق الشجر المتساقطة (Falling Leaves) --- */
 .leaves-container {
   position: fixed;
   top: 0;
@@ -473,14 +535,14 @@ body {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
   overflow: hidden;
 }
 
 .leaf {
   position: absolute;
   top: -10%;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 59, 59, 0.3);
   border-radius: 50% 0 50% 50%;
   animation: fall linear infinite;
 }
@@ -488,30 +550,8 @@ body {
 @keyframes fall {
   0% {
     transform: translateY(0) translateX(0) rotate(0deg);
-    opacity: 1;
   }
   100% {
-    transform: translateY(110vh) translateX(100px) rotate(360deg);
-    opacity: 0.2;
+    transform: translateY(110vh) translateX(80px) rotate(360deg);
   }
-}
-/* --- تعديل الخلفية لتكون صورة الـ GIF المتحركة --- */
-body {
-  background-image: url('https://media1.giphy.com/media/QmJei3WeJeBs4/giphy.gif');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-}
-
-/* زيادة دكنة الطبقة الشفافة فوق الخلفية لضمان وضوح النصوص */
-.bg-overlay {
-  background: rgba(10, 5, 15, 0.75); /* طبقة سوداء بنفسجية داكنة خفيفة */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  pointer-events: none;
 }
