@@ -43,7 +43,75 @@ document.addEventListener('DOMContentLoaded', () => {
     introScreen.addEventListener('click', removeIntro);
   }
 
-  // --- 3. مشغل الموسيقى (Music Player) ---
+  // --- 3. زر العودة إلى الأعلى ---
+  const backToTopBtn = document.getElementById('back-to-top');
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  }
+
+  // --- 4. جلب حالة الدسكورد (Discord Status API) ---
+  const DISCORD_USER_ID = "YOUR_DISCORD_ID_HERE"; 
+  
+  async function fetchDiscordStatus() {
+    const avatarEl = document.getElementById('discord-avatar');
+    const statusDot = document.getElementById('discord-status-dot');
+    const usernameEl = document.getElementById('discord-username');
+    const statusTextEl = document.getElementById('discord-status-text');
+    const deviceEl = document.getElementById('discord-device');
+    const activityEl = document.getElementById('discord-activity');
+
+    try {
+      const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
+      const data = await res.json();
+
+      if (data.success && data.data) {
+        const { discord_user, discord_status, activities, active_on_discord_desktop, active_on_discord_mobile, active_on_discord_web } = data.data;
+
+        if (avatarEl && discord_user.avatar) {
+          avatarEl.src = `https://cdn.discordapp.com/avatars/${discord_user.id}/${discord_user.avatar}.png`;
+        }
+        if (usernameEl) {
+          usernameEl.textContent = discord_user.username;
+        }
+
+        if (statusDot && statusTextEl) {
+          statusDot.className = `status-indicator ${discord_status}`;
+          statusTextEl.textContent = discord_status.toUpperCase();
+          statusTextEl.className = `dc-badge ${discord_status}`;
+        }
+
+        if (deviceEl) {
+          let devices = [];
+          if (active_on_discord_desktop) devices.push("Desktop");
+          if (active_on_discord_mobile) devices.push("Mobile");
+          if (active_on_discord_web) devices.push("Web");
+          deviceEl.textContent = devices.length > 0 ? `Active on: ${devices.join(', ')}` : "Offline";
+        }
+
+        if (activityEl) {
+          if (activities && activities.length > 0) {
+            const currentAct = activities.find(a => a.type === 0) || activities[0];
+            activityEl.textContent = `Playing / Doing: ${currentAct.name}`;
+          } else {
+            activityEl.textContent = "No activities right now.";
+          }
+        }
+      }
+    } catch (err) {
+      console.log("Discord API error:", err);
+      if (activityEl) activityEl.textContent = "Offline or API error";
+    }
+  }
+
+  fetchDiscordStatus();
+  setInterval(fetchDiscordStatus, 30000);
+
+  // --- 5. مشغل الموسيقى (Music Player) ---
   const audioPlayer = document.getElementById('audio-player');
   const playPauseBtn = document.getElementById('play-pause-btn');
   const progressBar = document.getElementById('progress-bar');
@@ -57,22 +125,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const discArtistName = document.getElementById('disc-artist-name');
   const playlistItems = document.querySelectorAll('.playlist-item');
 
-  // قائمة الأغاني
+  // روابط أغاني جديدة وشغالة 100%
   const playlist = [
     {
       title: "I Wanna Be Yours",
       artist: "Arctic Monkeys",
-      src: "https://www.bensound.com/bensound-music/bensound-creativeminds.mp3" // رابط تجريبي مؤقت
+      src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
     },
     {
       title: "Thank You",
       artist: "Dido (Slowed/Reverb)",
-      src: "https://www.bensound.com/bensound-music/bensound-acousticbreeze.mp3"
+      src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
     },
     {
       title: "All Girls Are The Same",
       artist: "Juice WRLD",
-      src: "https://www.bensound.com/bensound-music/bensound-ukulele.mp3"
+      src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
     }
   ];
 
@@ -114,20 +182,17 @@ document.addEventListener('DOMContentLoaded', () => {
     playPauseBtn.addEventListener('click', togglePlay);
   }
 
-  // تحديث شريط التقدم
   if (audioPlayer) {
     audioPlayer.addEventListener('timeupdate', () => {
       if (audioPlayer.duration) {
         const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
         progressBar.value = progressPercent;
         
-        // حساب الوقت الحالي
         let currentMinutes = Math.floor(audioPlayer.currentTime / 60);
         let currentSeconds = Math.floor(audioPlayer.currentTime % 60);
         if (currentSeconds < 10) currentSeconds = `0${currentSeconds}`;
         currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
 
-        // حساب الوقت الكلي
         let durationMinutes = Math.floor(audioPlayer.duration / 60);
         let durationSeconds = Math.floor(audioPlayer.duration % 60);
         if (durationSeconds < 10) durationSeconds = `0${durationSeconds}`;
@@ -153,7 +218,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // التحكم بالصوت
   if (volumeBar && audioPlayer) {
     audioPlayer.volume = volumeBar.value / 100;
     volumeBar.addEventListener('input', () => {
@@ -161,7 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // الضغط على القائمة لتغيير الأغنية
   playlistItems.forEach((item, index) => {
     item.addEventListener('click', () => {
       currentTrackIndex = index;
@@ -173,7 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // أزرار التالي والسابق
   const nextBtn = document.getElementById('next-btn');
   const prevBtn = document.getElementById('prev-btn');
 
@@ -193,7 +255,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // تحميل الأغنية الأولى كبداية
   loadTrack(currentTrackIndex);
 
 });
