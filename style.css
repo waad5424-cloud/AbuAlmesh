@@ -495,3 +495,23 @@ body {
     opacity: 0.2;
   }
 }
+/* --- تعديل الخلفية لتكون صورة الـ GIF المتحركة --- */
+body {
+  background-image: url('https://media1.giphy.com/media/QmJei3WeJeBs4/giphy.gif');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* زيادة دكنة الطبقة الشفافة فوق الخلفية لضمان وضوح النصوص */
+.bg-overlay {
+  background: rgba(10, 5, 15, 0.75); /* طبقة سوداء بنفسجية داكنة خفيفة */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
