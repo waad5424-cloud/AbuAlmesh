@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   font-family: 'Inter', 'Tajawal', sans-serif;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -15,13 +16,13 @@ body {
   color: #fff;
   min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   overflow-x: hidden;
 }
 
 .bg-overlay {
-  background: rgba(10, 2, 2, 0.82);
+  background: rgba(10, 2, 2, 0.85);
   position: fixed;
   top: 0;
   left: 0;
@@ -31,7 +32,82 @@ body {
   pointer-events: none;
 }
 
-/* --- شاشة الدخول المطابقة للطلب --- */
+/* --- تصميم الـ Navbar العلوي الفخم --- */
+.site-header {
+  position: fixed;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 850px;
+  background: rgba(15, 10, 10, 0.75);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 59, 59, 0.2);
+  border-radius: 40px;
+  padding: 10px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 999;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.nav-brand {
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.nav-links {
+  display: flex;
+  gap: 16px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #aaa;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #ff3b3b;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.nav-icon-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ccc;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.nav-icon-btn:hover {
+  border-color: #ff3b3b;
+  color: #ff3b3b;
+}
+
+@media(max-width: 768px) {
+  .nav-links {
+    display: none; /* إخفاء الروابط في الشاشات الصغيرة جداً أو تجميعها */
+  }
+}
+
+/* --- شاشة الدخول --- */
 #intro-screen {
   position: fixed;
   top: 0;
@@ -103,7 +179,7 @@ body {
 .page-container {
   width: 100%;
   max-width: 650px;
-  padding: 40px 20px;
+  padding: 100px 20px 40px 20px; /* مسافة أعلى للـ Navbar */
   display: flex;
   flex-direction: column;
   gap: 35px;
@@ -115,6 +191,35 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+/* --- قسم الـ Hero --- */
+.hero-section {
+  padding: 40px 0;
+  text-align: left;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.hero-subtitle {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: #888;
+  font-weight: 700;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.hero-desc {
+  color: #aaa;
+  font-size: 0.95rem;
 }
 
 .section-badge {
@@ -142,8 +247,11 @@ body {
   margin-bottom: 15px;
 }
 
-.about-content {
+.about-content, .skills-grid, .projects-card {
   width: 100%;
+}
+
+.about-content {
   background: rgba(20, 5, 5, 0.6);
   border: 1px solid rgba(255, 59, 59, 0.2);
   border-radius: 16px;
@@ -155,6 +263,37 @@ body {
   color: #ddd;
   font-size: 1rem;
   line-height: 1.6;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.skill-card {
+  background: rgba(20, 5, 5, 0.6);
+  border: 1px solid rgba(255, 59, 59, 0.2);
+  padding: 15px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #ddd;
+}
+
+.skill-card i {
+  color: #ff3b3b;
+  font-size: 1.2rem;
+}
+
+.projects-card {
+  background: rgba(20, 5, 5, 0.6);
+  border: 1px solid rgba(255, 59, 59, 0.2);
+  padding: 20px;
+  border-radius: 16px;
 }
 
 .music-player-wrapper {
@@ -525,32 +664,4 @@ input[type="range"] {
   transform: translate(-50%, -50%);
   z-index: 9999;
   mix-blend-mode: screen;
-}
-
-.leaves-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
-  overflow: hidden;
-}
-
-.leaf {
-  position: absolute;
-  top: -10%;
-  background: rgba(255, 59, 59, 0.3);
-  border-radius: 50% 0 50% 50%;
-  animation: fall linear infinite;
-}
-
-@keyframes fall {
-  0% {
-    transform: translateY(0) translateX(0) rotate(0deg);
-  }
-  100% {
-    transform: translateY(110vh) translateX(80px) rotate(360deg);
-  }
 }
