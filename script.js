@@ -109,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.getElementById('prev-btn');
 
   const playlist = [
+    { title: "Runaway", artist: "AURORA", src: "https://files.catbox.moe/7wl70w.mp3" },
     { title: "I Wanna Be Yours", artist: "Arctic Monkeys", src: "https://files.catbox.moe/azuegp.mp3" },
     { title: "Thank You", artist: "Dido (Slowed/Reverb)", src: "https://files.catbox.moe/f0ui4v.mp4" },
     { title: "All Girls Are The Same", artist: "Juice WRLD", src: "https://files.catbox.moe/2zyo0g.mp4" }
