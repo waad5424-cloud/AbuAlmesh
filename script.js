@@ -104,9 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const disc = document.getElementById('disc');
   const discTrackName = document.getElementById('disc-track-name');
   const discArtistName = document.getElementById('disc-artist-name');
-  const playlistItems = document.querySelectorAll('.playlist-item');
   const nextBtn = document.getElementById('next-btn');
   const prevBtn = document.getElementById('prev-btn');
+  
+  // الحاوية الخاصة بالبلاي ليست في ملف الـ HTML (لو ما كانت موجودة برمجياً، أنشئ عنصر بقلاس playlist-container)
+  let playlistContainer = document.querySelector('.playlist-container');
 
   const playlist = [
     { title: "Runaway", artist: "AURORA", src: "https://files.catbox.moe/7wl70w.mp3" },
@@ -118,6 +120,32 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentTrackIndex = 0;
   let isPlaying = false;
 
+  // بناء عناصر البلاي ليست تلقائياً بالواجهة
+  function renderPlaylist() {
+    if (!playlistContainer) return;
+    playlistContainer.innerHTML = '';
+    playlist.forEach((track, index) => {
+      const item = document.createElement('div');
+      item.className = `playlist-item ${index === currentTrackIndex ? 'active' : ''}`;
+      item.innerHTML = `
+        <span class="track-name">${track.title}</span>
+        <span class="artist-name">${track.artist}</span>
+      `;
+      item.addEventListener('click', () => {
+        currentTrackIndex = index;
+        loadTrack(currentTrackIndex);
+        if (audioPlayer) {
+          audioPlayer.play().then(() => {
+            isPlaying = true;
+            if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            if (disc) disc.classList.add('playing');
+          });
+        }
+      });
+      playlistContainer.appendChild(item);
+    });
+  }
+
   function loadTrack(index) {
     const track = playlist[index];
     if (audioPlayer) audioPlayer.src = track.src;
@@ -126,6 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (discArtistName) discArtistName.textContent = track.artist;
     if (trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
+    // تحديث الأشكال النشطة في القائمة لو كانت موجودة
+    const playlistItems = document.querySelectorAll('.playlist-item');
     playlistItems.forEach((item, idx) => {
       item.classList.toggle('active', idx === index);
     });
@@ -190,24 +220,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  playlistItems.forEach((item, index) => {
-    item.addEventListener('click', () => {
-      currentTrackIndex = index;
-      loadTrack(currentTrackIndex);
-      if (audioPlayer) {
-        audioPlayer.play().then(() => {
-          isPlaying = true;
-          if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-          if (disc) disc.classList.add('playing');
-        });
-      }
-    });
-  });
-
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
+      renderPlaylist();
       if (isPlaying && audioPlayer) audioPlayer.play();
     });
   }
@@ -216,9 +233,11 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
       loadTrack(currentTrackIndex);
+      renderPlaylist();
       if (isPlaying && audioPlayer) audioPlayer.play();
     });
   }
 
+  renderPlaylist();
   loadTrack(currentTrackIndex);
 });
