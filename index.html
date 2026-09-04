@@ -9,15 +9,12 @@
 </head>
 <body>
 
-  <!-- شاشة الترحيب -->
   <div id="intro-screen" class="intro-screen">
     <button id="enter-btn">اضغط للدخول</button>
   </div>
 
-  <!-- المحتوى الرئيسي -->
   <div class="main-container">
     
-    <!-- معلومات الديسكورد -->
     <div class="discord-box">
       <img id="discord-avatar" src="" alt="Avatar">
       <div>
@@ -29,7 +26,6 @@
       <span id="discord-status-dot" class="status-indicator offline"></span>
     </div>
 
-    <!-- مشغل الموسيقى -->
     <div class="music-player">
       <audio id="audio-player" preload="auto"></audio>
       
@@ -63,29 +59,10 @@
         <input type="range" id="volume-bar" value="80" min="0" max="100">
       </div>
 
-      <!-- قائمة الأغاني الأربع كاملة -->
-      <div class="playlist-container">
-        <div class="playlist-item" data-index="0">
-          <span class="track-name">Runaway</span>
-          <span class="artist-name">AURORA</span>
-        </div>
-        <div class="playlist-item" data-index="1">
-          <span class="track-name">I Wanna Be Yours</span>
-          <span class="artist-name">Arctic Monkeys</span>
-        </div>
-        <div class="playlist-item" data-index="2">
-          <span class="track-name">Thank You</span>
-          <span class="artist-name">Dido (Slowed/Reverb)</span>
-        </div>
-        <div class="playlist-item" data-index="3">
-          <span class="track-name">All Girls Are The Same</span>
-          <span class="artist-name">Juice WRLD</span>
-        </div>
-      </div>
+      <div class="playlist-container"></div>
 
     </div>
 
-    <!-- عداد الزيارات وزر الأب -->
     <div class="footer-box">
       <div>الزيارات: <span id="visitor-count">1042</span></div>
       <button id="back-to-top">العودة للأعلى</button>
