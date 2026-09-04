@@ -23,7 +23,7 @@ body {
 }
 
 .bg-overlay {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.75);
   position: fixed;
   top: 0;
   left: 0;
@@ -190,16 +190,35 @@ body {
 .section {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+}
+
+.section-badge {
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: #888;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.section-title-en {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.section-sub {
+  color: #aaa;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
 }
 
 /* --- قسم الـ Hero --- */
 .hero-section {
   padding: 40px 0;
-  text-align: left;
-  align-items: flex-start;
-  width: 100%;
 }
 
 .hero-subtitle {
@@ -219,36 +238,12 @@ body {
 }
 
 .hero-desc {
-  color: #aaa;
+  color: #ccc;
   font-size: 0.95rem;
 }
 
-.section-badge {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  margin-bottom: 8px;
-  letter-spacing: 1px;
-}
-
-.section-title-en {
-  font-size: 2rem;
-  font-weight: 800;
-  color: #fff;
-  margin-bottom: 6px;
-}
-
-.section-sub {
-  color: #888;
-  font-size: 0.85rem;
-  margin-bottom: 15px;
-}
-
-.about-content, .skills-grid, .projects-card {
+/* --- الأقسام والبطاقات --- */
+.about-content, .skills-grid, .projects-card, .discord-wide-card, .visitors-card {
   width: 100%;
 }
 
@@ -297,6 +292,7 @@ body {
   border-radius: 16px;
 }
 
+/* --- مشغل الموسيقى --- */
 .music-player-wrapper {
   width: 100%;
   display: grid;
@@ -523,8 +519,8 @@ input[type="range"] {
   text-align: center;
 }
 
+/* --- بطاقة الديسكورد --- */
 .discord-wide-card {
-  width: 100%;
   background: rgba(15, 15, 15, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 18px;
@@ -614,7 +610,7 @@ input[type="range"] {
   font-size: 1rem;
 }
 
-/* --- Socials Grid & doou store --- */
+/* --- وسائل التواصل --- */
 .socials-grid {
   width: 100%;
   display: grid;
@@ -669,9 +665,8 @@ input[type="range"] {
   color: #888;
 }
 
-/* --- Visitors Card Styling --- */
+/* --- عداد الزوار --- */
 .visitors-card {
-  width: 100%;
   background: rgba(15, 15, 15, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 20px;
@@ -733,12 +728,37 @@ input[type="range"] {
   color: #aaa;
 }
 
-/* --- تأثير ضوء الماوس الأبيض الخفيف --- */
+/* --- زر العودة للأعلى والفوتر --- */
+.footer-section {
+  align-items: center;
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.back-to-top-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: all 0.2s;
+}
+
+.back-to-top-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #fff;
+}
+
+/* --- تأثير ضوء الماوس (معدل ليكون واضحاً وناعمًا) --- */
 .mouse-glow {
   position: fixed;
-  width: 350px;
-  height: 350px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 40%, rgba(0, 0, 0, 0) 70%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(0, 0, 0, 0) 70%);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -746,7 +766,7 @@ input[type="range"] {
   mix-blend-mode: screen;
 }
 
-/* --- تأثير تساقط أوراق الشجر --- */
+/* --- تأثير تساقط أوراق الشجر (مرئية وواضحة بدون تعتيم النصوص) --- */
 .leaves-container {
   position: fixed;
   top: 0;
@@ -763,20 +783,20 @@ input[type="range"] {
   top: -10vh;
   width: 16px;
   height: 12px;
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.55);
   border-radius: 0% 80% 20% 80%;
   animation: fall linear infinite;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
 }
 
 @keyframes fall {
   0% {
     transform: translateY(-10vh) translateX(0) rotate(0deg);
-    opacity: 0.8;
+    opacity: 0.85;
   }
   50% {
     transform: translateY(50vh) translateX(40px) rotate(180deg);
-    opacity: 0.5;
+    opacity: 0.6;
   }
   100% {
     transform: translateY(110vh) translateX(-30px) rotate(360deg);
@@ -784,7 +804,6 @@ input[type="range"] {
   }
 }
 
-/* توزيع الأوراق بسرعات ومواضع مختلفة */
 .leaf:nth-child(1) { left: 10%; animation-duration: 9s; animation-delay: 0s; }
 .leaf:nth-child(2) { left: 25%; animation-duration: 12s; animation-delay: 2s; }
 .leaf:nth-child(3) { left: 40%; animation-duration: 8s; animation-delay: 4s; }
