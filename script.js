@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
       introScreen.classList.add('fade-out');
       setTimeout(() => introScreen.style.display = 'none', 600);
       
-      // تشغيل الموسيقى تلقائياً فور دخول الموقع
       if (audioPlayer && !isPlaying) {
         audioPlayer.play().then(() => {
           isPlaying = true;
@@ -107,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('next-btn');
   const prevBtn = document.getElementById('prev-btn');
 
-  // أضفنا Runaway هنا كأول عنصر بالباي ليست مع باقي أغانيك الأصلية
+  // الأغاني الأربع كاملة (Runaway أضيفت وصارت الأولى)
   const playlist = [
     { title: "Runaway", artist: "AURORA", src: "https://files.catbox.moe/7wl70w.mp3" },
     { title: "I Wanna Be Yours", artist: "Arctic Monkeys", src: "https://files.catbox.moe/azuegp.mp3" },
@@ -126,9 +125,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (discArtistName) discArtistName.textContent = track.artist;
     if (trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
+    // تحديث الـ active تلقائياً لكل عناصر القائمة
     const playlistItems = document.querySelectorAll('.playlist-item');
     playlistItems.forEach((item, idx) => {
       item.classList.toggle('active', idx === index);
+    });
+  }
+
+  // بناء القائمة ديناميكياً في الصفحة عشان تضمن إن الأغاني الأربع تظهر وتتفاعل صح
+  function renderPlaylist() {
+    const playlistContainer = document.querySelector('.playlist-container');
+    if (!playlistContainer) return;
+
+    playlistContainer.innerHTML = '';
+    playlist.forEach((track, index) => {
+      const item = document.createElement('div');
+      item.className = `playlist-item ${index === currentTrackIndex ? 'active' : ''}`;
+      item.innerHTML = `
+        <span class="track-name">${track.title}</span>
+        <span class="artist-name">${track.artist}</span>
+      `;
+      
+      item.addEventListener('click', () => {
+        currentTrackIndex = index;
+        loadTrack(currentTrackIndex);
+        if (audioPlayer) {
+          audioPlayer.play().then(() => {
+            isPlaying = true;
+            if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            if (disc) disc.classList.add('playing');
+          });
+        }
+      });
+      playlistContainer.appendChild(item);
     });
   }
 
@@ -172,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     audioPlayer.addEventListener('ended', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
+      renderPlaylist();
       audioPlayer.play();
     });
   }
@@ -191,26 +221,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ربط عناصر القائمة الحالية الموجودة في الـ HTML بنظام الضغط والتشغيل
-  const playlistItems = document.querySelectorAll('.playlist-item');
-  playlistItems.forEach((item, index) => {
-    item.addEventListener('click', () => {
-      currentTrackIndex = index;
-      loadTrack(currentTrackIndex);
-      if (audioPlayer) {
-        audioPlayer.play().then(() => {
-          isPlaying = true;
-          if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-          if (disc) disc.classList.add('playing');
-        });
-      }
-    });
-  });
-
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
+      renderPlaylist();
       if (isPlaying && audioPlayer) audioPlayer.play();
     });
   }
@@ -219,9 +234,11 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
       loadTrack(currentTrackIndex);
+      renderPlaylist();
       if (isPlaying && audioPlayer) audioPlayer.play();
     });
   }
 
+  renderPlaylist();
   loadTrack(currentTrackIndex);
 });
