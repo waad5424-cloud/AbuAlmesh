@@ -1,14 +1,71 @@
-/* --- تنسيقات الموقع الأصلية مع الأسطوانة بالأبيض والأسود --- */
-
+/* --- إعدادات الموقع العامة والأسود الفاخر --- */
 body {
   background-color: #000000;
   color: #ffffff;
   font-family: 'Cairo', sans-serif;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
+  direction: rtl;
+  text-align: right;
 }
 
-/* شكل الأسطوانة الكلاسيكي (الأساسي) */
+/* خلفية بليتش المتحركة بالأبيض والأسود الفخم */
+.background-image-container, .hero-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -999;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(140%) brightness(35%);
+}
+
+/* تنسيق حاوية المحتوى والبطاقات */
+.main-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.glass-card, .profile-card, .music-player-card {
+  background: rgba(12, 12, 12, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.95);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* الهيدر العلوي */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: rgba(0, 0, 0, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.nav-links a {
+  color: #999999;
+  margin-left: 20px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #ffffff;
+}
+
+/* شكل الأسطوانة الكلاسيكي الأساسي (أبيض وأسود نقي) */
 .vinyl-record {
   width: 180px;
   height: 180px;
@@ -24,7 +81,7 @@ body {
   justify-content: center;
 }
 
-/* خطوط الأسطوانة الدائرية (حزوز الأسطوانة الكلاسيكية) */
+/* خطوط الأسطوانة الدائرية (حزوز الأسطوانة) */
 .vinyl-record::before {
   content: '';
   position: absolute;
@@ -35,7 +92,7 @@ body {
   pointer-events: none;
 }
 
-/* لمعة الإطار الخارجي وتوهجه عند التشغيل (باللون الأبيض الفخم) */
+/* لمعة الإطار الخارجي وتوهجه عند التشغيل باللون الأبيض الفخم */
 .vinyl-record.playing {
   border-color: #ffffff;
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.3);
@@ -54,7 +111,7 @@ body {
   height: 55px;
   background: #ffffff;
   border-radius: 50%;
-  border: 3px solid #fff;
+  border: 3px solid #333;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), inset 0 0 5px rgba(0, 0, 0, 0.5);
   position: relative;
   display: flex;
@@ -70,4 +127,21 @@ body {
   background: #000;
   border-radius: 50%;
   border: 2px solid #333;
+}
+
+/* تنسيق الأزرار وعناصر التحكم */
+button, .interactive-btn {
+  background: #151515;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover, .interactive-btn:hover {
+  background: #fff;
+  color: #000;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
 }
