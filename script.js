@@ -15,14 +15,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- 2. شاشة الترحيب وتشغيل الموسيقى تلقائياً ---
   const introScreen = document.getElementById('intro-screen');
   const enterBtn = document.getElementById('enter-btn');
-  
+  const audioPlayer = document.getElementById('audio-player');
+  const playPauseBtn = document.getElementById('play-pause-btn');
+  const disc = document.getElementById('disc');
+
+  let isPlaying = false;
+
   function removeIntro() {
     if (introScreen) {
       introScreen.classList.add('fade-out');
       setTimeout(() => introScreen.style.display = 'none', 600);
       
-      // تشغيل الموسيقى تلقائياً فور دخول الموقع
-      if (audioPlayer && !isPlaying) {
+      // تشغيل الأغنية فور دخول الموقع لتخطي قيود المتصفح
+      if (audioPlayer) {
         audioPlayer.play().then(() => {
           isPlaying = true;
           if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
@@ -42,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  // --- 4. جلب حالة الديسكورد ---
+  // --- 4. جلب حالة الديسكورد (بدون تعليق) ---
   const DISCORD_USER_ID = "1159623336041652244";
   async function fetchDiscordStatus() {
     const avatarEl = document.getElementById('discord-avatar');
@@ -92,23 +97,18 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchDiscordStatus();
   setInterval(fetchDiscordStatus, 30000);
 
-  // --- 5. مشغل الموسيقى ---
-  const audioPlayer = document.getElementById('audio-player');
-  const playPauseBtn = document.getElementById('play-pause-btn');
+  // --- 5. مشغل الموسيقى وقائمة التشغيل ---
   const progressBar = document.getElementById('progress-bar');
   const currentTimeEl = document.getElementById('current-time');
   const durationTimeEl = document.getElementById('duration-time');
   const volumeBar = document.getElementById('volume-bar');
   const trackTitle = document.getElementById('current-track-title');
   const trackCounter = document.getElementById('track-counter');
-  const disc = document.getElementById('disc');
   const discTrackName = document.getElementById('disc-track-name');
   const discArtistName = document.getElementById('disc-artist-name');
+  const playlistItems = document.querySelectorAll('.playlist-item');
   const nextBtn = document.getElementById('next-btn');
   const prevBtn = document.getElementById('prev-btn');
-  
-  // الحاوية الخاصة بالبلاي ليست في ملف الـ HTML (لو ما كانت موجودة برمجياً، أنشئ عنصر بقلاس playlist-container)
-  let playlistContainer = document.querySelector('.playlist-container');
 
   const playlist = [
     { title: "Runaway", artist: "AURORA", src: "https://files.catbox.moe/7wl70w.mp3" },
@@ -118,35 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   let currentTrackIndex = 0;
-  let isPlaying = false;
-
-  // بناء عناصر البلاي ليست تلقائياً بالواجهة
-  function renderPlaylist() {
-    if (!playlistContainer) return;
-    playlistContainer.innerHTML = '';
-    playlist.forEach((track, index) => {
-      const item = document.createElement('div');
-      item.className = `playlist-item ${index === currentTrackIndex ? 'active' : ''}`;
-      item.innerHTML = `
-        <span class="track-name">${track.title}</span>
-        <span class="artist-name">${track.artist}</span>
-      `;
-      item.addEventListener('click', () => {
-        currentTrackIndex = index;
-        loadTrack(currentTrackIndex);
-        if (audioPlayer) {
-          audioPlayer.play().then(() => {
-            isPlaying = true;
-            if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            if (disc) disc.classList.add('playing');
-          });
-        }
-      });
-      playlistContainer.appendChild(item);
-    });
-  }
 
   function loadTrack(index) {
+    if (!playlist[index]) return;
     const track = playlist[index];
     if (audioPlayer) audioPlayer.src = track.src;
     if (trackTitle) trackTitle.textContent = track.title;
@@ -154,8 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (discArtistName) discArtistName.textContent = track.artist;
     if (trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
-    // تحديث الأشكال النشطة في القائمة لو كانت موجودة
-    const playlistItems = document.querySelectorAll('.playlist-item');
     playlistItems.forEach((item, idx) => {
       item.classList.toggle('active', idx === index);
     });
@@ -220,11 +192,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  playlistItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      currentTrackIndex = index;
+      loadTrack(currentTrackIndex);
+      if (audioPlayer) {
+        audioPlayer.play().then(() => {
+          isPlaying = true;
+          if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+          if (disc) disc.classList.add('playing');
+        });
+      }
+    });
+  });
+
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
-      renderPlaylist();
       if (isPlaying && audioPlayer) audioPlayer.play();
     });
   }
@@ -233,11 +218,10 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
       loadTrack(currentTrackIndex);
-      renderPlaylist();
       if (isPlaying && audioPlayer) audioPlayer.play();
     });
   }
 
-  renderPlaylist();
+  // تحميل الأغنية الأولى (Runaway) كبداية
   loadTrack(currentTrackIndex);
 });
