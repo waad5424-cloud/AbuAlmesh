@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
       introScreen.classList.add('fade-out');
       setTimeout(() => introScreen.style.display = 'none', 600);
       
-      // تشغيل الأغنية فور دخول الموقع لتخطي قيود المتصفح
+      // تشغيل الموسيقى فور دخول الموقع
       if (audioPlayer) {
         audioPlayer.play().then(() => {
           isPlaying = true;
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchDiscordStatus();
   setInterval(fetchDiscordStatus, 30000);
 
-  // --- 5. مشغل الموسيقى وقائمة التشغيل ---
+  // --- 5. مشغل الموسيقى والقائمة ---
   const progressBar = document.getElementById('progress-bar');
   const currentTimeEl = document.getElementById('current-time');
   const durationTimeEl = document.getElementById('duration-time');
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     audioPlayer.addEventListener('ended', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
-      audioPlayer.play();
+      audioPlayer.play().catch(err => console.log("Ended play error:", err));
     });
   }
 
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
           isPlaying = true;
           if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
           if (disc) disc.classList.add('playing');
-        });
+        }).catch(err => console.log("Playlist click play error:", err));
       }
     });
   });
@@ -210,7 +210,9 @@ document.addEventListener('DOMContentLoaded', () => {
     nextBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
-      if (isPlaying && audioPlayer) audioPlayer.play();
+      if (isPlaying && audioPlayer) {
+        audioPlayer.play().catch(err => console.log("Next error:", err));
+      }
     });
   }
 
@@ -218,10 +220,12 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
       loadTrack(currentTrackIndex);
-      if (isPlaying && audioPlayer) audioPlayer.play();
+      if (isPlaying && audioPlayer) {
+        audioPlayer.play().catch(err => console.log("Prev error:", err));
+      }
     });
   }
 
-  // تحميل الأغنية الأولى (Runaway) كبداية
+  // تحميل الأغنية الأساسية الأولى (Runaway)
   loadTrack(currentTrackIndex);
 });
