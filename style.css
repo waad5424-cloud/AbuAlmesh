@@ -1,4 +1,4 @@
-/* --- إعدادات الموقع العامة والأسود الفاخر --- */
+/* --- إعدادات الموقع الأساسية بالاتجاه الصحيح --- */
 body {
   background-color: #000000;
   color: #ffffff;
@@ -6,8 +6,8 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  direction: rtl;
-  text-align: right;
+  direction: ltr;
+  text-align: left;
 }
 
 /* خلفية بليتش المتحركة بالأبيض والأسود الفخم */
@@ -22,7 +22,29 @@ body {
   filter: grayscale(100%) contrast(140%) brightness(35%);
 }
 
-/* تنسيق حاوية المحتوى والبطاقات */
+/* تنسيق الهيدر العلوي */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: rgba(0, 0, 0, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.nav-links a {
+  color: #999999;
+  margin-right: 20px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #ffffff;
+}
+
+/* حاوية المحتوى والبطاقات */
 .main-container {
   max-width: 800px;
   margin: 40px auto;
@@ -43,29 +65,20 @@ body {
   width: 100%;
 }
 
-/* الهيدر العلوي */
-.site-header {
+/* مشغل الموسيقى والأسطوانة الكلاسيكية */
+.player-wrapper {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  padding: 20px 40px;
-  background: rgba(0, 0, 0, 0.9);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
+  gap: 15px;
 }
 
-.nav-links a {
-  color: #999999;
-  margin-left: 20px;
-  text-decoration: none;
-  transition: color 0.3s;
+.vinyl-container {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
 }
 
-.nav-links a:hover {
-  color: #ffffff;
-}
-
-/* شكل الأسطوانة الكلاسيكي الأساسي (أبيض وأسود نقي) */
 .vinyl-record {
   width: 180px;
   height: 180px;
@@ -81,7 +94,6 @@ body {
   justify-content: center;
 }
 
-/* خطوط الأسطوانة الدائرية (حزوز الأسطوانة) */
 .vinyl-record::before {
   content: '';
   position: absolute;
@@ -92,20 +104,17 @@ body {
   pointer-events: none;
 }
 
-/* لمعة الإطار الخارجي وتوهجه عند التشغيل باللون الأبيض الفخم */
 .vinyl-record.playing {
   border-color: #ffffff;
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.3);
   animation: vinylRotate 4s linear infinite;
 }
 
-/* دوران الأسطوانة كاملة عند التشغيل */
 @keyframes vinylRotate {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-/* الدائرة البيضاء الداخلية التي في منتصف الأسطوانة */
 .vinyl-record .vinyl-center {
   width: 55px;
   height: 55px;
@@ -119,7 +128,6 @@ body {
   justify-content: center;
 }
 
-/* الثقب الأسود الصغير جداً في منتصف الدائرة البيضاء */
 .vinyl-record .vinyl-center::after {
   content: '';
   width: 12px;
@@ -129,7 +137,7 @@ body {
   border: 2px solid #333;
 }
 
-/* تنسيق الأزرار وعناصر التحكم */
+/* الأزرار وعناصر التحكم */
 button, .interactive-btn {
   background: #151515;
   color: #fff;
