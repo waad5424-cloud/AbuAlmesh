@@ -1,136 +1,12 @@
-/* --- إعدادات ستايل الأبيض والأسود النقي (Monochrome Theme) --- */
-:root {
-  --bg-color: #000000;
-  --card-bg: rgba(12, 12, 12, 0.85);
-  --border-color: rgba(255, 255, 255, 0.2);
-  --text-primary: #ffffff;
-  --text-secondary: #999999;
-}
-
-body {
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  font-family: 'Cairo', sans-serif;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  direction: rtl;
-  text-align: right;
-}
-
-/* خلفية الموقع المتحركة بلقطة بليتش الأبيض والأسود */
-.background-image-container, .hero-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -999;
-  object-fit: cover;
-  filter: grayscale(100%) contrast(140%) brightness(35%);
-}
-
-/* الهيدر العلوي */
-.site-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 40px;
-  background: rgba(0, 0, 0, 0.9);
-  border-bottom: 1px solid var(--border-color);
-  backdrop-filter: blur(10px);
-}
-
-.nav-links a {
-  color: var(--text-secondary);
-  margin-left: 20px;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.nav-links a:hover {
-  color: var(--text-primary);
-}
-
-/* الحاوية الرئيسية والبطاقات */
-.main-container {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-
-.glass-card, .profile-card, .music-player-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 25px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.95);
-  box-sizing: border-box;
-  width: 100%;
-}
-
-/* قسم ديسكورد وحالته */
-.discord-card {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.discord-avatar-container {
-  position: relative;
-  width: 70px;
-  height: 70px;
-}
-
-.discord-avatar-container img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-.status-indicator {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid #000;
-}
-
-.status-indicator.online { background-color: #ffffff; }
-.status-indicator.idle { background-color: #aaaaaa; }
-.status-indicator.dnd { background-color: #555555; }
-.status-indicator.offline { background-color: #333333; }
-
-/* مشغل الموسيقى والأسطوانة الكلاسيكية بالأبيض والأسود */
-.player-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
-.vinyl-container {
-  display: flex;
-  justify-content: center;
-  margin: 15px 0;
-}
-
+/* شكل الأسطوانة الكلاسيكي (الأساسي) */
 .vinyl-record {
   width: 180px;
   height: 180px;
   border-radius: 50%;
   position: relative;
   overflow: hidden;
-  background: radial-gradient(circle, #222222 0%, #111111 40%, #000000 100%);
-  border: 4px solid #444444;
+  background: radial-gradient(circle, #222 0%, #111 40%, #000 100%);
+  border: 4px solid #1a1a1a;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.9), inset 0 0 15px rgba(255, 255, 255, 0.05);
   transition: all 0.4s ease;
   display: flex;
@@ -138,33 +14,37 @@ body {
   justify-content: center;
 }
 
+/* خطوط الأسطوانة الدائرية (حزوز الأسطوانة الكلاسيكية) */
 .vinyl-record::before {
   content: '';
   position: absolute;
   top: 15px; left: 15px; right: 15px; bottom: 15px;
   border-radius: 50%;
-  border: 1px dashed rgba(255, 255, 255, 0.2);
-  box-shadow: inset 0 0 0 15px rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 15px rgba(255, 255, 255, 0.02), inset 0 0 0 30px rgba(255, 255, 255, 0.01);
   pointer-events: none;
 }
 
+/* لمعة الإطار الخارجي وتوهجه عند التشغيل (صارت باللون الأبيض الفخم بدال الأحمر) */
 .vinyl-record.playing {
   border-color: #ffffff;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.2);
   animation: vinylRotate 4s linear infinite;
 }
 
+/* دوران الأسطوانة كاملة عند التشغيل */
 @keyframes vinylRotate {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
+/* الدائرة الداخلية التي في منتصف الأسطوانة (صارت بيضاء بدال الحمراء) */
 .vinyl-record .vinyl-center {
   width: 55px;
   height: 55px;
   background: #ffffff;
   border-radius: 50%;
-  border: 3px solid #000000;
+  border: 3px solid #333;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), inset 0 0 5px rgba(0, 0, 0, 0.5);
   position: relative;
   display: flex;
@@ -172,110 +52,12 @@ body {
   justify-content: center;
 }
 
+/* الثقب الأسود الصغير جداً في منتصف الدائرة */
 .vinyl-record .vinyl-center::after {
   content: '';
   width: 12px;
   height: 12px;
   background: #000;
   border-radius: 50%;
-  border: 2px solid #555;
-}
-
-/* عناصر التحكم واليست */
-.player-controls {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.time-container, .volume-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.buttons-group {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin: 10px 0;
-}
-
-button, .interactive-btn {
-  background: #151515;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-button:hover, .interactive-btn:hover {
-  background: #fff;
-  color: #000;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
-}
-
-.playlist-container ul {
-  list-style: none;
-  padding: 0;
-  margin: 10px 0 0 0;
-}
-
-.playlist-item {
-  padding: 10px;
-  margin-bottom: 5px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  transition: background 0.3s;
-}
-
-.playlist-item:hover, .playlist-item.active {
-  background: rgba(255, 255, 255, 0.1);
-  border-right: 3px solid #fff;
-}
-
-.playlist-item .artist {
-  color: var(--text-secondary);
-  font-size: 13px;
-}
-
-/* شاشة الترحيب */
-.intro-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.96);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  transition: opacity 0.6s ease;
-}
-
-.intro-screen.fade-out {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.intro-content {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.intro-sub {
-  color: var(--text-secondary);
-  font-size: 12px;
-  letter-spacing: 1px;
+  border: 2px solid #333;
 }
