@@ -19,11 +19,11 @@ body {
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
-  filter: grayscale(100%) contrast(140%) brightness(35%);
+  filter: grayscale(100%) contrast(140%) brightness(100%);
 }
 
 .bg-overlay {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.7);
   position: fixed;
   top: 0;
   left: 0;
@@ -659,4 +659,87 @@ input[type="range"] {
 }
 
 .social-name {
-  font-size
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.social-handle {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+/* --- Visitors Card Styling --- */
+.visitors-card {
+  width: 100%;
+  background: rgba(15, 15, 15, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.visitor-icon-box {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 1.2rem;
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.visitor-label {
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: #888;
+  font-weight: 700;
+}
+
+.visitor-number {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.visitor-status-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 5px;
+}
+
+.v-dot {
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #ffffff;
+}
+
+.v-status-text {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.mouse-glow {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  mix-blend-mode: screen;
+}
