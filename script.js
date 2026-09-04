@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  // --- 4. جلب حالة الديسكورد ---
+  // --- 4. جلب حالة الديسكورد (مُصحح لعدم التعليق) ---
   const DISCORD_USER_ID = "1159623336041652244";
   async function fetchDiscordStatus() {
     const avatarEl = document.getElementById('discord-avatar');
@@ -44,13 +44,19 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
       const data = await res.json();
+      
       if (data.success && data.data) {
         const { discord_user, discord_status, activities, active_on_discord_desktop, active_on_discord_mobile, active_on_discord_web } = data.data;
-        if (avatarEl && discord_user.avatar) avatarEl.src = `https://cdn.discordapp.com/avatars/${discord_user.id}/${discord_user.avatar}.png`;
-        if (usernameEl) usernameEl.textContent = discord_user.username;
+        
+        if (avatarEl && discord_user.avatar) {
+          avatarEl.src = `https://cdn.discordapp.com/avatars/${discord_user.id}/${discord_user.avatar}.png`;
+        }
+        if (usernameEl && discord_user.username) {
+          usernameEl.textContent = discord_user.username;
+        }
         if (statusDot && statusTextEl) {
-          statusDot.className = `status-indicator ${discord_status}`;
-          statusTextEl.textContent = discord_status.toUpperCase();
+          statusDot.className = `status-indicator ${discord_status || 'offline'}`;
+          statusTextEl.textContent = (discord_status || 'offline').toUpperCase();
         }
         if (deviceEl) {
           let devices = [];
@@ -62,9 +68,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activityEl) {
           activityEl.textContent = activities?.length ? `Playing: ${activities[0].name}` : "No activities right now.";
         }
+      } else {
+        throw new Error("Invalid data");
       }
     } catch (e) {
-      console.log("Discord error");
+      // في حال حصل خطأ أو انقطاع، نحدث النصوص عشان ما تعلق على Loading
+      if (statusTextEl) statusTextEl.textContent = "OFFLINE";
+      if (statusDot) statusDot.className = "status-indicator offline";
+      if (deviceEl) deviceEl.textContent = "Offline";
+      if (activityEl) activityEl.textContent = "No activities right now.";
     }
   }
   fetchDiscordStatus();
