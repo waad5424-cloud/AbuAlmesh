@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     visitorCountEl.textContent = Number(visits).toLocaleString();
   }
 
-  // --- 2. شاشة الترحيب وتشغيل الموسيقى تلقائياً ---
+  // --- 2. شاشة الترحيب وتشغيل الموسيقى ---
   const introScreen = document.getElementById('intro-screen');
   const enterBtn = document.getElementById('enter-btn');
   const audioPlayer = document.getElementById('audio-player');
@@ -26,13 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
       introScreen.classList.add('fade-out');
       setTimeout(() => introScreen.style.display = 'none', 600);
       
-      // تشغيل الموسيقى فور دخول الموقع
       if (audioPlayer) {
         audioPlayer.play().then(() => {
           isPlaying = true;
           if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
           if (disc) disc.classList.add('playing');
-        }).catch(err => console.log("Autoplay blocked:", err));
+        }).catch(err => {
+          console.log("Autoplay blocked:", err);
+          isPlaying = false;
+          if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        });
       }
     }
   }
@@ -47,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  // --- 4. جلب حالة الديسكورد (بدون تعليق) ---
+  // --- 4. جلب حالة الديسكورد ---
   const DISCORD_USER_ID = "1159623336041652244";
   async function fetchDiscordStatus() {
     const avatarEl = document.getElementById('discord-avatar');
@@ -84,8 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activityEl) {
           activityEl.textContent = activities?.length ? `Playing: ${activities[0].name}` : "No activities right now.";
         }
-      } else {
-        throw new Error("Invalid data");
       }
     } catch (e) {
       if (statusTextEl) statusTextEl.textContent = "OFFLINE";
@@ -97,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchDiscordStatus();
   setInterval(fetchDiscordStatus, 30000);
 
-  // --- 5. مشغل الموسيقى وقائمة التشغيل الذكية ---
+  // --- 5. مشغل الموسيقى وقائمة التشغيل ---
   const progressBar = document.getElementById('progress-bar');
   const currentTimeEl = document.getElementById('current-time');
   const durationTimeEl = document.getElementById('duration-time');
@@ -121,20 +122,22 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadTrack(index) {
     if (!playlist[index]) return;
     const track = playlist[index];
-    if (audioPlayer) audioPlayer.src = track.src;
+    if (audioPlayer) {
+      audioPlayer.src = track.src;
+      audioPlayer.load();
+    }
     if (trackTitle) trackTitle.textContent = track.title;
     if (discTrackName) discTrackName.textContent = track.title;
     if (discArtistName) discArtistName.textContent = track.artist;
     if (trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
-    // تحديث الأسلوب النشط (active) للعناصر في القائمة برمجياً وتطابقها مع الـ index الحالي
+    // تحديث العناصر النشطة في القائمة
     const playlistItems = document.querySelectorAll('.playlist-item');
     playlistItems.forEach((item, idx) => {
       item.classList.toggle('active', idx === index);
     });
   }
 
-  // بناء القائمة تلقائياً والتأكد من تطابق الـ active مع الأغنية الحالية
   function renderPlaylist() {
     let playlistContainer = document.querySelector('.playlist-container');
     if (!playlistContainer) return;
@@ -147,16 +150,17 @@ document.addEventListener('DOMContentLoaded', () => {
         <span class="track-name">${track.title}</span>
         <span class="artist-name">${track.artist}</span>
       `;
+      
+      // الضغط على الأغنية في القائمة لتشغيلها بشكل مباشر
       item.addEventListener('click', () => {
         currentTrackIndex = index;
         loadTrack(currentTrackIndex);
-        renderPlaylist(); 
         if (audioPlayer) {
           audioPlayer.play().then(() => {
             isPlaying = true;
             if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
             if (disc) disc.classList.add('playing');
-          }).catch(err => console.log("Click play error:", err));
+          }).catch(err => console.log("Play error:", err));
         }
       });
       playlistContainer.appendChild(item);
@@ -175,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isPlaying = true;
         if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
         if (disc) disc.classList.add('playing');
-      }).catch(err => console.log("Playback error:", err));
+      }).catch(err => console.log("Play error:", err));
     }
   }
 
@@ -203,8 +207,9 @@ document.addEventListener('DOMContentLoaded', () => {
     audioPlayer.addEventListener('ended', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
-      renderPlaylist();
-      audioPlayer.play().catch(err => console.log("Ended error:", err));
+      if (audioPlayer) {
+        audioPlayer.play().catch(err => console.log("Next track error:", err));
+      }
     });
   }
 
@@ -227,9 +232,12 @@ document.addEventListener('DOMContentLoaded', () => {
     nextBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
-      renderPlaylist();
-      if (isPlaying && audioPlayer) {
-        audioPlayer.play().catch(err => console.log("Next error:", err));
+      if (audioPlayer) {
+        audioPlayer.play().then(() => {
+          isPlaying = true;
+          if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+          if (disc) disc.classList.add('playing');
+        }).catch(err => console.log("Next error:", err));
       }
     });
   }
@@ -238,14 +246,17 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
       loadTrack(currentTrackIndex);
-      renderPlaylist();
-      if (isPlaying && audioPlayer) {
-        audioPlayer.play().catch(err => console.log("Prev error:", err));
+      if (audioPlayer) {
+        audioPlayer.play().then(() => {
+          isPlaying = true;
+          if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+          if (disc) disc.classList.add('playing');
+        }).catch(err => console.log("Prev error:", err));
       }
     });
   }
 
-  // تهيئة القائمة بالترتيب الصحيح وتشغيل Runaway كبداية
+  // تشغيل التهيئة
   renderPlaylist();
   loadTrack(currentTrackIndex);
 });
