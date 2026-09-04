@@ -4,238 +4,120 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Silentreaper World</title>
+  <!-- ربط ملف الـ CSS -->
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome للأيقونات -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-  <!-- شاشة الدخول -->
-  <div id="intro-screen">
-    <div class="intro-box">
-      <div class="intro-top-badge">SILENTREAPER WORLD</div>
-      <button class="enter-btn" id="enter-btn">ENTER SILENTREAPER WORLD</button>
-      <div class="intro-hints">
-        <span>SKIP INTRO</span>
-        <span>•</span>
-        <span>PRESS ENTER OR SPACE</span>
-        <span>•</span>
-        <span>TAP ON MOBILE</span>
-      </div>
+  <!-- خلفية الموقع المتحركة بلقطة بليتش الأبيض والأسود -->
+  <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDVrMmpwbmprNGFoemZzOXp4NW9teXR6MDI4cmJkaHNld3hseGxvaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZhHH49UVo7CIo/giphy.gif" class="background-image-container" alt="Bleach Background">
+
+  <!-- شاشة الترحيب -->
+  <div id="intro-screen" class="intro-screen">
+    <div class="intro-content">
+      <h1>SILENTREAPER WORLD</h1>
+      <button id="enter-btn" class="interactive-btn">ENTER SILENTREAPER WORLD</button>
+      <p class="intro-sub">SKIP INTRO • PRESS ENTER OR SPACE • TAP ON MOBILE</p>
     </div>
   </div>
 
-  <div class="bg-overlay"></div>
-
-  <!-- الشريط العلوي (Navbar) -->
+  <!-- المحتوى الرئيسي للموقع -->
   <header class="site-header">
-    <div class="nav-brand" dir="ltr">Silentreaper World</div>
-    <nav class="nav-links" dir="ltr">
-      <a href="#hero" class="nav-link active">Home</a>
-      <a href="#about" class="nav-link">About</a>
-      <a href="#skills" class="nav-link">Skills</a>
-      <a href="#projects" class="nav-link">Projects</a>
-      <a href="#music" class="nav-link">Music</a>
-      <a href="#socials" class="nav-link">Socials</a>
-      <a href="#discord" class="nav-link">Discord</a>
-      <a href="#visitors" class="nav-link">Visitors</a>
+    <div class="logo">Silentreaper World</div>
+    <nav class="nav-links">
+      <a href="#about">Home</a>
+      <a href="#about-me">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#music">Music</a>
+      <a href="#socials">Socials</a>
+      <a href="#discord">Discord</a>
+      <a href="#visitors">Visitors</a>
     </nav>
-    <div class="nav-actions" dir="ltr">
-      <button class="nav-icon-btn" title="Command Menu"><i class="fas fa-command"></i> K</button>
-      <button class="nav-icon-btn" id="theme-toggle"><i class="fas fa-sun"></i></button>
-    </div>
   </header>
 
-  <main class="page-container">
-
-    <!-- القسم الرئيسي (Hero Section) -->
-    <section id="hero" class="section hero-section">
-      <div class="hero-content">
-        <span class="hero-subtitle" dir="ltr">THIS IS MY WORLD</span>
-        <h1 class="hero-title" dir="ltr">Good evening.</h1>
-        <p class="hero-desc">مساحة شخصية أشارك فيها مشاريعي، الموسيقى، والأشياء اللي أبتكرها.</p>
-      </div>
+  <main class="main-container">
+    <section class="glass-card">
+      <h2>Good evening.</h2>
     </section>
 
-    <!-- القسم الأول: ABOUT ME -->
-    <section id="about" class="section about-section">
-      <div class="section-badge">ABOUT ME</div>
-      <h2 class="section-title-en" dir="ltr">A little about me</h2>
-      <div class="about-content">
-        <div class="about-text-box">
-          <p class="about-description">
-            مرحبا انا مشاري مصمم بوتات بسيط ومبرمج ومورد للمنتجات الرقمية
-          </p>
+    <section id="about-me" class="glass-card">
+      <h3>A little about me</h3>
+      <p>مساحة شخصية أشارك فيها مشاريعي، الموسيقى، والأشياء اللي أبتكرها.</p>
+    </section>
+
+    <section id="skills" class="glass-card">
+      <h3>What I do</h3>
+      <ul>
+        <li><i class="fas fa-robot"></i> تطوير البوتات</li>
+        <li><i class="fas fa-code"></i> البرمجة والتطوير</li>
+        <li><i class="fas fa-store"></i> توريد المنتجات الرقمية</li>
+      </ul>
+    </section>
+
+    <section id="projects" class="glass-card">
+      <h3>Featured Projects</h3>
+      <p>قريباً سيتم إدراج المشاريع والأعمال البرمجية هنا.</p>
+    </section>
+
+    <!-- قسم مشغل الموسيقى والأسطوانة -->
+    <section id="music" class="glass-card music-player-card">
+      <h3>My musics</h3>
+      <div class="player-wrapper">
+        <div class="now-playing-info">
+          <span id="track-counter">NOW PLAYING 1/4</span>
+          <h4 id="current-track-title">Runaway</h4>
         </div>
-      </div>
-    </section>
-
-    <!-- قسم SKILLS -->
-    <section id="skills" class="section skills-section">
-      <div class="section-badge">SKILLS</div>
-      <h2 class="section-title-en" dir="ltr">What I do</h2>
-      <div class="skills-grid">
-        <div class="skill-card"><i class="fas fa-robot"></i><span>تطوير البوتات</span></div>
-        <div class="skill-card"><i class="fas fa-code"></i><span>البرمجة والتطوير</span></div>
-        <div class="skill-card"><i class="fas fa-store"></i><span>توريد المنتجات الرقمية</span></div>
-      </div>
-    </section>
-
-    <!-- قسم PROJECTS -->
-    <section id="projects" class="section projects-section">
-      <div class="section-badge">PROJECTS</div>
-      <h2 class="section-title-en" dir="ltr">Featured Projects</h2>
-      <div class="projects-card">
-        <p class="section-sub">قريباً سيتم إدراج المشاريع والأعمال البرمجية هنا.</p>
-      </div>
-    </section>
-
-    <!-- القسم الثاني: MUSIC -->
-    <section id="music" class="section music-section">
-      <div class="section-badge">MUSIC</div>
-      <h2 class="section-title-en" dir="ltr">My musics</h2>
-      <div class="music-player-wrapper">
-        <div class="player-left-card">
-          <div class="now-playing-header">
-            <span id="track-counter" class="badge-mini">1/4</span>
-            <span class="np-label">NOW PLAYING</span>
-            <h3 id="current-track-title" class="track-title-main">Runaway</h3>
-          </div>
-          <div class="progress-container">
-            <input type="range" id="progress-bar" value="0" min="0" max="100">
-            <div class="time-labels">
-              <span id="current-time">0:00</span>
-              <span id="duration-time">0:00</span>
-            </div>
-          </div>
-          <div class="controls-row">
-            <button id="prev-btn" class="ctrl-btn"><i class="fas fa-step-backward"></i></button>
-            <button id="play-pause-btn" class="play-btn-purple"><i class="fas fa-play"></i></button>
-            <button id="next-btn" class="ctrl-btn"><i class="fas fa-step-forward"></i></button>
-          </div>
-          <div class="volume-row">
-            <i class="fas fa-volume-down"></i>
-            <input type="range" id="volume-bar" value="80" min="0" max="100">
-            <span class="vol-num">80%</span>
-          </div>
-          <div class="loop-badge"><i class="fas fa-sync-alt"></i> تكرار الأغاني</div>
-          <div class="playlist-box">
-            <span class="playlist-label">PLAYLIST</span>
-            <div class="playlist-item active" data-index="0">
-              <span>Runaway</span>
-              <small>AURORA</small>
-            </div>
-            <div class="playlist-item" data-index="1">
-              <span>I Wanna Be Yours</span>
-              <small>Arctic Monkeys</small>
-            </div>
-            <div class="playlist-item" data-index="2">
-              <span>Thank You</span>
-              <small>Dido (Slowed/Reverb)</small>
-            </div>
-            <div class="playlist-item" data-index="3">
-              <span>All Girls Are The Same</span>
-              <small>Juice WRLD</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="player-right-disc">
-          <div class="vinyl-record" id="disc">
+        
+        <!-- الأسطوانة الكلاسيكية -->
+        <div class="vinyl-container">
+          <div id="disc" class="vinyl-record">
             <div class="vinyl-center"></div>
           </div>
-          <h3 id="disc-track-name" class="disc-track-name">Runaway</h3>
-          <p id="disc-artist-name" class="disc-artist-name">AURORA</p>
         </div>
-      </div>
 
-      <audio id="audio-player" preload="auto"></audio>
-    </section>
+        <audio id="audio-player"></audio>
 
-    <!-- القسم الثالث: DISCORD -->
-    <section id="discord" class="section discord-section">
-      <div class="section-badge">DISCORD</div>
-      <h2 class="section-title-en" dir="ltr">What am I doing?</h2>
-      <p class="section-sub" dir="ltr">My Discord status updates automatically.</p>
-      
-      <div class="discord-wide-card">
-        <div class="dc-user-info">
-          <div class="dc-avatar-container">
-            <img id="discord-avatar" class="discord-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
-            <span id="discord-status-dot" class="status-indicator offline"></span>
+        <div class="player-controls">
+          <input type="range" id="progress-bar" value="0" max="100">
+          <div class="time-container">
+            <span id="current-time">0:00</span>
+            <span id="duration-time">0:00</span>
           </div>
-          <div class="dc-details">
-            <div class="dc-name-row">
-              <h3 id="discord-username" class="dc-username">world silentreaper</h3>
-              <span id="discord-status-text" class="dc-badge">Offline</span>
-            </div>
-            <span id="discord-device" class="dc-device">Loading...</span>
-            <p id="discord-activity" class="dc-activity">جاري جلب الحالة...</p>
+          <div class="buttons-group">
+            <button id="prev-btn"><i class="fas fa-backward"></i></button>
+            <button id="play-pause-btn"><i class="fas fa-play"></i></button>
+            <button id="next-btn"><i class="fas fa-forward"></i></button>
+          </div>
+          <div class="volume-container">
+            <i class="fas fa-volume-up"></i>
+            <input type="range" id="volume-bar" value="80" max="100">
+            <span id="volume-text">80%</span>
           </div>
         </div>
-        <div class="dc-arrow"><i class="fas fa-arrow-left"></i></div>
-      </div>
-    </section>
 
-    <!-- القسم الرابع: SOCIALS -->
-    <section id="socials" class="section socials-section">
-      <div class="section-badge">SOCIALS</div>
-      <h2 class="section-title-en" dir="ltr">Find me</h2>
-      <p class="section-sub" dir="ltr">You can find me on these platforms.</p>
-
-      <div class="socials-grid">
-        <a href="https://www.instagram.com/i4xuz?igsi=ZHA3ZG02eGp5ZHVr&utm_source=qr" target="_blank" class="social-card">
-          <div class="social-icon-wrapper"><i class="fab fa-instagram"></i></div>
-          <span class="social-name">Instagram</span>
-          <span class="social-handle">@i4xuz</span>
-        </a>
-        <a href="https://www.tiktok.com/@b95m" target="_blank" class="social-card">
-          <div class="social-icon-wrapper"><i class="fab fa-tiktok"></i></div>
-          <span class="social-name">TikTok</span>
-          <span class="social-handle">@b95m</span>
-        </a>
-        <a href="https://discord.gg/NYYxHjCVvb" target="_blank" class="social-card store-card">
-          <div class="social-icon-wrapper store-icon-wrap">
-            <i class="fas fa-store"></i>
-          </div>
-          <span class="social-name">doou store</span>
-          <span class="social-handle">Discord Server</span>
-        </a>
-      </div>
-    </section>
-
-    <!-- القسم الخامس: VISITORS COUNTER -->
-    <section id="visitors" class="section visitors-section">
-      <div class="section-badge" dir="ltr">VISITORS</div>
-      <h2 class="section-title-en" dir="ltr">World counter</h2>
-      <p class="section-sub" dir="ltr">Total visits recorded across Silentreaper World.</p>
-
-      <div class="visitors-card">
-        <div class="visitor-icon-box">
-          <i class="fas fa-circle-dot"></i>
-        </div>
-        <span class="visitor-label" dir="ltr">TOTAL VISITS</span>
-        <h3 id="visitor-count" class="visitor-number">--</h3>
-        <div class="visitor-status-row">
-          <span class="v-dot"></span>
-          <span class="v-status-text">Counter active</span>
+        <div class="playlist-container">
+          <h4><i class="fas fa-list"></i> تكرار الأغاني</h4>
+          <ul id="playlist">
+            <li class="playlist-item active">Runaway <span class="artist">AURORA</span></li>
+            <li class="playlist-item">I Wanna Be Yours <span class="artist">Arctic Monkeys</span></li>
+            <li class="playlist-item">Thank You <span class="artist">Dido (Slowed/Reverb)</span></li>
+            <li class="playlist-item">All Girls Are The Same <span class="artist">Juice WRLD</span></li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- القسم الأخير: END OF THE WORLD & FOOTER -->
-    <section id="footer-section" class="section footer-section">
-      <div class="section-badge" dir="ltr">END OF THE WORLD</div>
-      <h2 class="section-title-en" dir="ltr">You've reached the end of my world.</h2>
-      <p class="section-sub" dir="ltr">© 2026 SilentReaper World · Made by SilentReaper</p>
-      
-      <button class="back-to-top-btn" id="back-to-top">
-        <i class="fas fa-arrow-up"></i> BACK TO TOP
-      </button>
+    <!-- قسم إحصائيات الزيارات -->
+    <section id="visitors" class="glass-card">
+      <h3>Visitors</h3>
+      <p>Total Visits: <span id="visitor-count">1042</span></p>
     </section>
-
   </main>
 
+  <!-- ربط ملف الـ JavaScript -->
   <script src="script.js"></script>
 </body>
 </html>
