@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchDiscordStatus();
   setInterval(fetchDiscordStatus, 30000);
 
-  // --- 5. مشغل الموسيقى ---
+  // --- 5. مشغل الموسيقى مع الأسطوانة الكلاسيكية والدائرة البيضاء الفخمة ---
   const audioPlayer = document.getElementById('audio-player');
   const playPauseBtn = document.getElementById('play-pause-btn');
   const progressBar = document.getElementById('progress-bar');
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (discArtistName) discArtistName.textContent = track.artist;
     if (trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
-    // إعادة هيكلة الأسطوانة الكلاسيكية بالدائرة الحمراء اللي بالنص
+    // تصميم الدائرة الداخلية البيضاء الفخمة للأسطوانة
     if (disc) {
       disc.innerHTML = `<div class="vinyl-center"></div>`;
     }
