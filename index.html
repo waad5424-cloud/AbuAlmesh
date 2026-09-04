@@ -1,123 +1,101 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Silentreaper World</title>
-  <!-- ربط ملف الـ CSS -->
-  <link rel="stylesheet" href="style.css">
-  <!-- FontAwesome للأيقونات -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silentreaper World</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- خلفية الموقع المتحركة بلقطة بليتش الأبيض والأسود -->
-  <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDVrMmpwbmprNGFoemZzOXp4NW9teXR6MDI4cmJkaHNld3hseGxvaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZhHH49UVo7CIo/giphy.gif" class="background-image-container" alt="Bleach Background">
+    <!-- خلفية بليتش المتحركة بالأبيض والأسود -->
+    <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDVrMmpwbmprNGFoemZzOXp4NW9teXR6MDI4cmJkaHNld3hseGxvaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZhHH49UVo7CIo/giphy.gif" class="background-image-container" alt="Bleach Background">
 
-  <!-- شاشة الترحيب -->
-  <div id="intro-screen" class="intro-screen">
-    <div class="intro-content">
-      <h1>SILENTREAPER WORLD</h1>
-      <button id="enter-btn" class="interactive-btn">ENTER SILENTREAPER WORLD</button>
-      <p class="intro-sub">SKIP INTRO • PRESS ENTER OR SPACE • TAP ON MOBILE</p>
+    <!-- شاشة الترحيب -->
+    <div id="intro-screen">
+        <div class="intro-content">
+            <div class="intro-icon">⚔️</div>
+            <div class="intro-title">SILENTREAPER WORLD</div>
+            <div style="font-size: 0.85rem; color: #aaa;">ENTER SILENTREAPER WORLD</div>
+            <div class="intro-sub" style="margin-top: 15px;">SKIP INTRO • PRESS ENTER OR SPACE • TAP ON MOBILE</div>
+        </div>
     </div>
-  </div>
 
-  <!-- المحتوى الرئيسي للموقع -->
-  <header class="site-header">
-    <div class="logo">Silentreaper World</div>
-    <nav class="nav-links">
-      <a href="#about">Home</a>
-      <a href="#about-me">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#music">Music</a>
-      <a href="#socials">Socials</a>
-      <a href="#discord">Discord</a>
-      <a href="#visitors">Visitors</a>
-    </nav>
-  </header>
-
-  <main class="main-container">
-    <section class="glass-card">
-      <h2>Good evening.</h2>
-    </section>
-
-    <section id="about-me" class="glass-card">
-      <h3>A little about me</h3>
-      <p>مساحة شخصية أشارك فيها مشاريعي، الموسيقى، والأشياء اللي أبتكرها.</p>
-    </section>
-
-    <section id="skills" class="glass-card">
-      <h3>What I do</h3>
-      <ul>
-        <li><i class="fas fa-robot"></i> تطوير البوتات</li>
-        <li><i class="fas fa-code"></i> البرمجة والتطوير</li>
-        <li><i class="fas fa-store"></i> توريد المنتجات الرقمية</li>
-      </ul>
-    </section>
-
-    <section id="projects" class="glass-card">
-      <h3>Featured Projects</h3>
-      <p>قريباً سيتم إدراج المشاريع والأعمال البرمجية هنا.</p>
-    </section>
-
-    <!-- قسم مشغل الموسيقى والأسطوانة -->
-    <section id="music" class="glass-card music-player-card">
-      <h3>My musics</h3>
-      <div class="player-wrapper">
-        <div class="now-playing-info">
-          <span id="track-counter">NOW PLAYING 1/4</span>
-          <h4 id="current-track-title">Runaway</h4>
-        </div>
+    <!-- المحتوى الرئيسي للموقع -->
+    <div class="page-container">
         
-        <!-- الأسطوانة الكلاسيكية -->
-        <div class="vinyl-container">
-          <div id="disc" class="vinyl-record">
-            <div class="vinyl-center"></div>
-          </div>
+        <!-- قسم About Me -->
+        <div class="section">
+            <div class="section-badge">.Good evening</div>
+            <div class="section-title-en">A little about me</div>
+            <div class="about-content">
+                <div class="about-text-box">
+                    <p class="about-description">مساحة شخصية أشارك فيها مشاريعي، الموسيقى، والأشياء التي أبتكرها.</p>
+                </div>
+                <div class="about-image-box">
+                    <img src="your-image.jpg" alt="About Me" class="about-img">
+                </div>
+            </div>
         </div>
 
-        <audio id="audio-player"></audio>
+        <!-- قسم مشغل الموسيقى -->
+        <div class="section">
+            <div class="section-badge">What I do</div>
+            <div class="section-title-en">Featured Projects</div>
+            <div class="section-sub">قريباً سيتم إدراج المشاريع والأعمال البرمجية هنا.</div>
+            
+            <div class="music-player-wrapper">
+                <div class="player-left-card">
+                    <div class="now-playing-header">
+                        <span class="badge-mini">1/4</span>
+                        <span class="np-label">NOW PLAYING</span>
+                    </div>
+                    <div class="track-title-main">Runaway</div>
+                    
+                    <div class="progress-container">
+                        <input type="range" min="0" max="100" value="0">
+                        <div class="time-labels">
+                            <span>2:56</span>
+                            <span>0:00</span>
+                        </div>
+                    </div>
 
-        <div class="player-controls">
-          <input type="range" id="progress-bar" value="0" max="100">
-          <div class="time-container">
-            <span id="current-time">0:00</span>
-            <span id="duration-time">0:00</span>
-          </div>
-          <div class="buttons-group">
-            <button id="prev-btn"><i class="fas fa-backward"></i></button>
-            <button id="play-pause-btn"><i class="fas fa-play"></i></button>
-            <button id="next-btn"><i class="fas fa-forward"></i></button>
-          </div>
-          <div class="volume-container">
-            <i class="fas fa-volume-up"></i>
-            <input type="range" id="volume-bar" value="80" max="100">
-            <span id="volume-text">80%</span>
-          </div>
+                    <div class="controls-row">
+                        <button class="ctrl-btn">⏮</button>
+                        <button class="play-btn-purple">تشغيل</button>
+                        <button class="ctrl-btn">⏭</button>
+                    </div>
+
+                    <div class="volume-row">
+                        <span>🔊</span>
+                        <input type="range" min="0" max="100" value="80">
+                        <span class="vol-num">80%</span>
+                    </div>
+
+                    <div class="loop-badge">🔄 تكرار الأغاني</div>
+
+                    <div class="playlist-box">
+                        <span class="playlist-label">PLAYLIST</span>
+                        <div class="playlist-item">
+                            <span>Runaway AURORA</span>
+                            <small>AURORA</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- القرص الدوار (الأسطوانة) -->
+                <div class="player-right-disc">
+                    <div class="vinyl-record">
+                        <div class="vinyl-center"></div>
+                    </div>
+                    <div class="disc-track-name">Runaway</div>
+                    <div class="disc-artist-name">AURORA</div>
+                </div>
+            </div>
         </div>
 
-        <div class="playlist-container">
-          <h4><i class="fas fa-list"></i> تكرار الأغاني</h4>
-          <ul id="playlist">
-            <li class="playlist-item active">Runaway <span class="artist">AURORA</span></li>
-            <li class="playlist-item">I Wanna Be Yours <span class="artist">Arctic Monkeys</span></li>
-            <li class="playlist-item">Thank You <span class="artist">Dido (Slowed/Reverb)</span></li>
-            <li class="playlist-item">All Girls Are The Same <span class="artist">Juice WRLD</span></li>
-          </ul>
-        </div>
-      </div>
-    </section>
+    </div>
 
-    <!-- قسم إحصائيات الزيارات -->
-    <section id="visitors" class="glass-card">
-      <h3>Visitors</h3>
-      <p>Total Visits: <span id="visitor-count">1042</span></p>
-    </section>
-  </main>
-
-  <!-- ربط ملف الـ JavaScript -->
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
