@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- 4. جلب حالة الديسكورد ---
-  const DISCORD_USER_ID = "YOUR_DISCORD_ID_HERE";
+  const DISCORD_USER_ID = "1159623336041652244";
   async function fetchDiscordStatus() {
     const avatarEl = document.getElementById('discord-avatar');
     const statusDot = document.getElementById('discord-status-dot');
