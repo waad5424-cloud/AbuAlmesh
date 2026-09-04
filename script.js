@@ -12,10 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
     visitorCountEl.textContent = Number(visits).toLocaleString();
   }
 
-  // --- 2. شاشة الترحيب وتشغيل الموسيقى تلقائياً ---
+  // --- 2. شاشة الترحيب وتشغيل الموسيقى ---
   const introScreen = document.getElementById('intro-screen');
   const enterBtn = document.getElementById('enter-btn');
-  
+  const audioPlayer = document.getElementById('audio-player');
+  const playPauseBtn = document.getElementById('play-pause-btn');
+  const disc = document.getElementById('disc');
+
+  let isPlaying = false;
+
   function removeIntro() {
     if (introScreen) {
       introScreen.classList.add('fade-out');
@@ -89,23 +94,20 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchDiscordStatus();
   setInterval(fetchDiscordStatus, 30000);
 
-  // --- 5. مشغل الموسيقى ---
-  const audioPlayer = document.getElementById('audio-player');
-  const playPauseBtn = document.getElementById('play-pause-btn');
+  // --- 5. مشغل الموسيقى وقائمة الأغاني ---
   const progressBar = document.getElementById('progress-bar');
   const currentTimeEl = document.getElementById('current-time');
   const durationTimeEl = document.getElementById('duration-time');
   const volumeBar = document.getElementById('volume-bar');
   const trackTitle = document.getElementById('current-track-title');
   const trackCounter = document.getElementById('track-counter');
-  const disc = document.getElementById('disc');
   const discTrackName = document.getElementById('disc-track-name');
   const discArtistName = document.getElementById('disc-artist-name');
   const playlistItems = document.querySelectorAll('.playlist-item');
   const nextBtn = document.getElementById('next-btn');
   const prevBtn = document.getElementById('prev-btn');
 
-  // ترتيب الأغاني مطابق تماماً لعناصر الـ HTML الثابتة
+  // الـ 4 أغاني بترتيبها الصحيح المطابق للـ HTML تماماً
   const playlist = [
     { title: "Runaway", artist: "AURORA", src: "https://files.catbox.moe/7wl70w.mp3" },
     { title: "I Wanna Be Yours", artist: "Arctic Monkeys", src: "https://files.catbox.moe/azuegp.mp3" },
@@ -114,7 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   let currentTrackIndex = 0;
-  let isPlaying = false;
 
   function loadTrack(index) {
     if (!playlist[index]) return;
@@ -189,7 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ربط الأزرار الثابتة في الـ HTML بدقة متناهية
   playlistItems.forEach((item, index) => {
     item.addEventListener('click', () => {
       currentTrackIndex = index;
