@@ -12,15 +12,26 @@ document.addEventListener('DOMContentLoaded', () => {
     visitorCountEl.textContent = Number(visits).toLocaleString();
   }
 
-  // --- 2. شاشة الترحيب ---
+  // --- 2. شاشة الترحيب وتشغيل الموسيقى تلقائياً ---
   const introScreen = document.getElementById('intro-screen');
   const enterBtn = document.getElementById('enter-btn');
+  
   function removeIntro() {
     if (introScreen) {
       introScreen.classList.add('fade-out');
       setTimeout(() => introScreen.style.display = 'none', 600);
+      
+      // تشغيل الموسيقى تلقائياً فور دخول الموقع
+      if (audioPlayer && !isPlaying) {
+        audioPlayer.play().then(() => {
+          isPlaying = true;
+          if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+          if (disc) disc.classList.add('playing');
+        }).catch(err => console.log("Autoplay blocked:", err));
+      }
     }
   }
+
   if (enterBtn) enterBtn.addEventListener('click', removeIntro);
   window.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.code === 'Space') removeIntro(); });
   if (introScreen) introScreen.addEventListener('click', removeIntro);
@@ -31,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  // --- 4. جلب حالة الديسكورد (مُصحح لعدم التعليق) ---
+  // --- 4. جلب حالة الديسكورد ---
   const DISCORD_USER_ID = "1159623336041652244";
   async function fetchDiscordStatus() {
     const avatarEl = document.getElementById('discord-avatar');
@@ -72,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error("Invalid data");
       }
     } catch (e) {
-      // في حال حصل خطأ أو انقطاع، نحدث النصوص عشان ما تعلق على Loading
       if (statusTextEl) statusTextEl.textContent = "OFFLINE";
       if (statusDot) statusDot.className = "status-indicator offline";
       if (deviceEl) deviceEl.textContent = "Offline";
