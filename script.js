@@ -12,30 +12,22 @@ document.addEventListener('DOMContentLoaded', () => {
     visitorCountEl.textContent = Number(visits).toLocaleString();
   }
 
-  // --- 2. شاشة الترحيب وتشغيل الموسيقى ---
+  // --- 2. شاشة الترحيب وتشغيل الموسيقى تلقائياً ---
   const introScreen = document.getElementById('intro-screen');
   const enterBtn = document.getElementById('enter-btn');
-  const audioPlayer = document.getElementById('audio-player');
-  const playPauseBtn = document.getElementById('play-pause-btn');
-  const disc = document.getElementById('disc');
-
-  let isPlaying = false;
-
+  
   function removeIntro() {
     if (introScreen) {
       introScreen.classList.add('fade-out');
       setTimeout(() => introScreen.style.display = 'none', 600);
       
-      if (audioPlayer) {
+      // تشغيل الموسيقى تلقائياً فور دخول الموقع
+      if (audioPlayer && !isPlaying) {
         audioPlayer.play().then(() => {
           isPlaying = true;
           if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
           if (disc) disc.classList.add('playing');
-        }).catch(err => {
-          console.log("Autoplay blocked:", err);
-          isPlaying = false;
-          if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-        });
+        }).catch(err => console.log("Autoplay blocked:", err));
       }
     }
   }
@@ -87,6 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activityEl) {
           activityEl.textContent = activities?.length ? `Playing: ${activities[0].name}` : "No activities right now.";
         }
+      } else {
+        throw new Error("Invalid data");
       }
     } catch (e) {
       if (statusTextEl) statusTextEl.textContent = "OFFLINE";
@@ -98,73 +92,43 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchDiscordStatus();
   setInterval(fetchDiscordStatus, 30000);
 
-  // --- 5. مشغل الموسيقى وقائمة التشغيل ---
+  // --- 5. مشغل الموسيقى ---
+  const audioPlayer = document.getElementById('audio-player');
+  const playPauseBtn = document.getElementById('play-pause-btn');
   const progressBar = document.getElementById('progress-bar');
   const currentTimeEl = document.getElementById('current-time');
   const durationTimeEl = document.getElementById('duration-time');
   const volumeBar = document.getElementById('volume-bar');
   const trackTitle = document.getElementById('current-track-title');
   const trackCounter = document.getElementById('track-counter');
+  const disc = document.getElementById('disc');
   const discTrackName = document.getElementById('disc-track-name');
   const discArtistName = document.getElementById('disc-artist-name');
   const nextBtn = document.getElementById('next-btn');
   const prevBtn = document.getElementById('prev-btn');
 
-  // تم توحيد الروابط بصيغة mp3 سليمة لضمان عدم تعليق المتصفح
+  // أضفنا Runaway هنا كأول عنصر بالباي ليست مع باقي أغانيك الأصلية
   const playlist = [
     { title: "Runaway", artist: "AURORA", src: "https://files.catbox.moe/7wl70w.mp3" },
     { title: "I Wanna Be Yours", artist: "Arctic Monkeys", src: "https://files.catbox.moe/azuegp.mp3" },
-    { title: "Thank You", artist: "Dido (Slowed/Reverb)", src: "https://files.catbox.moe/7wl70w.mp3" }, // رابط بديل مؤقت شغال 100%
-    { title: "All Girls Are The Same", artist: "Juice WRLD", src: "https://files.catbox.moe/azuegp.mp3" } // رابط بديل مؤقت شغال 100%
+    { title: "Thank You", artist: "Dido (Slowed/Reverb)", src: "https://files.catbox.moe/f0ui4v.mp4" },
+    { title: "All Girls Are The Same", artist: "Juice WRLD", src: "https://files.catbox.moe/2zyo0g.mp4" }
   ];
 
   let currentTrackIndex = 0;
+  let isPlaying = false;
 
   function loadTrack(index) {
-    if (!playlist[index]) return;
     const track = playlist[index];
-    if (audioPlayer) {
-      audioPlayer.src = track.src;
-      audioPlayer.load();
-    }
+    if (audioPlayer) audioPlayer.src = track.src;
     if (trackTitle) trackTitle.textContent = track.title;
     if (discTrackName) discTrackName.textContent = track.title;
     if (discArtistName) discArtistName.textContent = track.artist;
     if (trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
-    // تحديث الـ active بكل انسيابية
     const playlistItems = document.querySelectorAll('.playlist-item');
     playlistItems.forEach((item, idx) => {
       item.classList.toggle('active', idx === index);
-    });
-  }
-
-  function renderPlaylist() {
-    let playlistContainer = document.querySelector('.playlist-container');
-    if (!playlistContainer) return;
-    
-    playlistContainer.innerHTML = '';
-    playlist.forEach((track, index) => {
-      const item = document.createElement('div');
-      item.className = `playlist-item ${index === currentTrackIndex ? 'active' : ''}`;
-      item.innerHTML = `
-        <span class="track-name">${track.title}</span>
-        <span class="artist-name">${track.artist}</span>
-      `;
-      
-      item.onclick = () => {
-        currentTrackIndex = index;
-        loadTrack(currentTrackIndex);
-        if (audioPlayer) {
-          audioPlayer.play().then(() => {
-            isPlaying = true;
-            if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            if (disc) disc.classList.add('playing');
-          }).catch(err => console.log("Play error:", err));
-        }
-      };
-      
-      playlistContainer.appendChild(item);
     });
   }
 
@@ -180,16 +144,16 @@ document.addEventListener('DOMContentLoaded', () => {
         isPlaying = true;
         if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
         if (disc) disc.classList.add('playing');
-      }).catch(err => console.log("Play error:", err));
+      }).catch(err => console.log("Playback error:", err));
     }
   }
 
   if (playPauseBtn) {
-    playPauseBtn.onclick = togglePlay;
+    playPauseBtn.addEventListener('click', togglePlay);
   }
 
   if (audioPlayer) {
-    audioPlayer.ontimeupdate = () => {
+    audioPlayer.addEventListener('timeupdate', () => {
       if (audioPlayer.duration && progressBar) {
         progressBar.value = (audioPlayer.currentTime / audioPlayer.duration) * 100;
         
@@ -203,60 +167,61 @@ document.addEventListener('DOMContentLoaded', () => {
           durationTimeEl.textContent = `${dMin}:${dSec < 10 ? '0' : ''}${dSec}`;
         }
       }
-    };
+    });
 
-    audioPlayer.onended = () => {
+    audioPlayer.addEventListener('ended', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
-      if (audioPlayer) {
-        audioPlayer.play().catch(err => console.log("Next track error:", err));
-      }
-    };
+      audioPlayer.play();
+    });
   }
 
   if (progressBar && audioPlayer) {
-    progressBar.oninput = () => {
+    progressBar.addEventListener('input', () => {
       if (audioPlayer.duration) {
         audioPlayer.currentTime = (progressBar.value / 100) * audioPlayer.duration;
       }
-    };
+    });
   }
 
   if (volumeBar && audioPlayer) {
     audioPlayer.volume = volumeBar.value / 100;
-    volumeBar.oninput = () => {
+    volumeBar.addEventListener('input', () => {
       audioPlayer.volume = volumeBar.value / 100;
-    };
+    });
   }
 
-  if (nextBtn) {
-    nextBtn.onclick = () => {
-      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+  // ربط عناصر القائمة الحالية الموجودة في الـ HTML بنظام الضغط والتشغيل
+  const playlistItems = document.querySelectorAll('.playlist-item');
+  playlistItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      currentTrackIndex = index;
       loadTrack(currentTrackIndex);
       if (audioPlayer) {
         audioPlayer.play().then(() => {
           isPlaying = true;
           if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
           if (disc) disc.classList.add('playing');
-        }).catch(err => console.log("Next error:", err));
+        });
       }
-    };
+    });
+  });
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      loadTrack(currentTrackIndex);
+      if (isPlaying && audioPlayer) audioPlayer.play();
+    });
   }
 
   if (prevBtn) {
-    prevBtn.onclick = () => {
+    prevBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
       loadTrack(currentTrackIndex);
-      if (audioPlayer) {
-        audioPlayer.play().then(() => {
-          isPlaying = true;
-          if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-          if (disc) disc.classList.add('playing');
-        }).catch(err => console.log("Prev error:", err));
-      }
-    };
+      if (isPlaying && audioPlayer) audioPlayer.play();
+    });
   }
 
-  renderPlaylist();
   loadTrack(currentTrackIndex);
 });
