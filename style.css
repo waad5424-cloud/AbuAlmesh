@@ -1,3 +1,13 @@
+/* --- تنسيقات الموقع الأصلية مع الأسطوانة بالأبيض والأسود --- */
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: 'Cairo', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
 /* شكل الأسطوانة الكلاسيكي (الأساسي) */
 .vinyl-record {
   width: 180px;
@@ -25,10 +35,10 @@
   pointer-events: none;
 }
 
-/* لمعة الإطار الخارجي وتوهجه عند التشغيل (صارت باللون الأبيض الفخم بدال الأحمر) */
+/* لمعة الإطار الخارجي وتوهجه عند التشغيل (باللون الأبيض الفخم) */
 .vinyl-record.playing {
   border-color: #ffffff;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.3);
   animation: vinylRotate 4s linear infinite;
 }
 
@@ -38,13 +48,13 @@
   to { transform: rotate(360deg); }
 }
 
-/* الدائرة الداخلية التي في منتصف الأسطوانة (صارت بيضاء بدال الحمراء) */
+/* الدائرة البيضاء الداخلية التي في منتصف الأسطوانة */
 .vinyl-record .vinyl-center {
   width: 55px;
   height: 55px;
   background: #ffffff;
   border-radius: 50%;
-  border: 3px solid #333;
+  border: 3px solid #fff;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), inset 0 0 5px rgba(0, 0, 0, 0.5);
   position: relative;
   display: flex;
@@ -52,7 +62,7 @@
   justify-content: center;
 }
 
-/* الثقب الأسود الصغير جداً في منتصف الدائرة */
+/* الثقب الأسود الصغير جداً في منتصف الدائرة البيضاء */
 .vinyl-record .vinyl-center::after {
   content: '';
   width: 12px;
