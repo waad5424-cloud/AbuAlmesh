@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchDiscordStatus();
   setInterval(fetchDiscordStatus, 30000);
 
-  // --- 5. مشغل الموسيقى مع دعم الـ GIF الخاص بك ---
+  // --- 5. مشغل الموسيقى ---
   const audioPlayer = document.getElementById('audio-player');
   const playPauseBtn = document.getElementById('play-pause-btn');
   const progressBar = document.getElementById('progress-bar');
@@ -108,30 +108,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.getElementById('prev-btn');
 
   const playlist = [
-    { 
-      title: "Runaway", 
-      artist: "AURORA", 
-      src: "https://files.catbox.moe/t4lvx9.mp4", 
-      gif: "https://files.catbox.moe/ibmezr.gif" 
-    },
-    { 
-      title: "I Wanna Be Yours", 
-      artist: "Arctic Monkeys", 
-      src: "https://files.catbox.moe/azuegp.mp3", 
-      gif: "https://files.catbox.moe/ibmezr.gif" 
-    },
-    { 
-      title: "Thank You", 
-      artist: "Dido (Slowed/Reverb)", 
-      src: "https://files.catbox.moe/f0ui4v.mp4", 
-      gif: "https://files.catbox.moe/ibmezr.gif" 
-    },
-    { 
-      title: "All Girls Are The Same", 
-      artist: "Juice WRLD", 
-      src: "https://files.catbox.moe/2zyo0g.mp4", 
-      gif: "https://files.catbox.moe/ibmezr.gif" 
-    }
+    { title: "Runaway", artist: "AURORA", src: "https://files.catbox.moe/t4lvx9.mp4" },
+    { title: "I Wanna Be Yours", artist: "Arctic Monkeys", src: "https://files.catbox.moe/azuegp.mp3" },
+    { title: "Thank You", artist: "Dido (Slowed/Reverb)", src: "https://files.catbox.moe/f0ui4v.mp4" },
+    { title: "All Girls Are The Same", artist: "Juice WRLD", src: "https://files.catbox.moe/2zyo0g.mp4" }
   ];
 
   let currentTrackIndex = 0;
@@ -145,8 +125,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (discArtistName) discArtistName.textContent = track.artist;
     if (trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
+    // إعادة هيكلة الأسطوانة الكلاسيكية بالدائرة الحمراء اللي بالنص
     if (disc) {
-      disc.innerHTML = `<div class="track-gif-container"><img src="${track.gif}" alt="${track.title}" class="track-gif"></div>`;
+      disc.innerHTML = `<div class="vinyl-center"></div>`;
     }
 
     playlistItems.forEach((item, idx) => {
