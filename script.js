@@ -78,8 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activityEl) {
           activityEl.textContent = activities?.length ? `Playing: ${activities[0].name}` : "No activities right now.";
         }
-      } else {
-        throw new Error("Invalid data");
       }
     } catch (e) {
       if (statusTextEl) statusTextEl.textContent = "OFFLINE";
@@ -103,10 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const disc = document.getElementById('disc');
   const discTrackName = document.getElementById('disc-track-name');
   const discArtistName = document.getElementById('disc-artist-name');
+  const playlistItems = document.querySelectorAll('.playlist-item');
   const nextBtn = document.getElementById('next-btn');
   const prevBtn = document.getElementById('prev-btn');
 
-  // الأغاني الأربع كاملة (Runaway أضيفت وصارت الأولى)
+  // ترتيب الأغاني مطابق تماماً لعناصر الـ HTML الثابتة
   const playlist = [
     { title: "Runaway", artist: "AURORA", src: "https://files.catbox.moe/7wl70w.mp3" },
     { title: "I Wanna Be Yours", artist: "Arctic Monkeys", src: "https://files.catbox.moe/azuegp.mp3" },
@@ -118,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let isPlaying = false;
 
   function loadTrack(index) {
+    if (!playlist[index]) return;
     const track = playlist[index];
     if (audioPlayer) audioPlayer.src = track.src;
     if (trackTitle) trackTitle.textContent = track.title;
@@ -125,39 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (discArtistName) discArtistName.textContent = track.artist;
     if (trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
-    // تحديث الـ active تلقائياً لكل عناصر القائمة
-    const playlistItems = document.querySelectorAll('.playlist-item');
     playlistItems.forEach((item, idx) => {
       item.classList.toggle('active', idx === index);
-    });
-  }
-
-  // بناء القائمة ديناميكياً في الصفحة عشان تضمن إن الأغاني الأربع تظهر وتتفاعل صح
-  function renderPlaylist() {
-    const playlistContainer = document.querySelector('.playlist-container');
-    if (!playlistContainer) return;
-
-    playlistContainer.innerHTML = '';
-    playlist.forEach((track, index) => {
-      const item = document.createElement('div');
-      item.className = `playlist-item ${index === currentTrackIndex ? 'active' : ''}`;
-      item.innerHTML = `
-        <span class="track-name">${track.title}</span>
-        <span class="artist-name">${track.artist}</span>
-      `;
-      
-      item.addEventListener('click', () => {
-        currentTrackIndex = index;
-        loadTrack(currentTrackIndex);
-        if (audioPlayer) {
-          audioPlayer.play().then(() => {
-            isPlaying = true;
-            if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            if (disc) disc.classList.add('playing');
-          });
-        }
-      });
-      playlistContainer.appendChild(item);
     });
   }
 
@@ -201,8 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     audioPlayer.addEventListener('ended', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
-      renderPlaylist();
-      audioPlayer.play();
+      if (audioPlayer) audioPlayer.play();
     });
   }
 
@@ -221,11 +189,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ربط الأزرار الثابتة في الـ HTML بدقة متناهية
+  playlistItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      currentTrackIndex = index;
+      loadTrack(currentTrackIndex);
+      if (audioPlayer) {
+        audioPlayer.play().then(() => {
+          isPlaying = true;
+          if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+          if (disc) disc.classList.add('playing');
+        }).catch(err => console.log("Play error:", err));
+      }
+    });
+  });
+
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
-      renderPlaylist();
       if (isPlaying && audioPlayer) audioPlayer.play();
     });
   }
@@ -234,11 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
       loadTrack(currentTrackIndex);
-      renderPlaylist();
       if (isPlaying && audioPlayer) audioPlayer.play();
     });
   }
 
-  renderPlaylist();
   loadTrack(currentTrackIndex);
 });
