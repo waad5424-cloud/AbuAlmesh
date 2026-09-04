@@ -12,20 +12,16 @@ document.addEventListener('DOMContentLoaded', () => {
     visitorCountEl.textContent = Number(visits).toLocaleString();
   }
 
-  // --- 2. شاشة الترحيب وتشغيل الموسيقى ---
+  // --- 2. شاشة الترحيب وتشغيل الموسيقى تلقائياً ---
   const introScreen = document.getElementById('intro-screen');
   const enterBtn = document.getElementById('enter-btn');
-  const audioPlayer = document.getElementById('audio-player');
-  const playPauseBtn = document.getElementById('play-pause-btn');
-  const disc = document.getElementById('disc');
-
-  let isPlaying = false;
-
+  
   function removeIntro() {
     if (introScreen) {
       introScreen.classList.add('fade-out');
       setTimeout(() => introScreen.style.display = 'none', 600);
       
+      // تشغيل الموسيقى تلقائياً فور دخول الموقع
       if (audioPlayer && !isPlaying) {
         audioPlayer.play().then(() => {
           isPlaying = true;
@@ -83,6 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activityEl) {
           activityEl.textContent = activities?.length ? `Playing: ${activities[0].name}` : "No activities right now.";
         }
+      } else {
+        throw new Error("Invalid data");
       }
     } catch (e) {
       if (statusTextEl) statusTextEl.textContent = "OFFLINE";
@@ -94,20 +92,23 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchDiscordStatus();
   setInterval(fetchDiscordStatus, 30000);
 
-  // --- 5. مشغل الموسيقى وقائمة الأغاني ---
+  // --- 5. مشغل الموسيقى ---
+  const audioPlayer = document.getElementById('audio-player');
+  const playPauseBtn = document.getElementById('play-pause-btn');
   const progressBar = document.getElementById('progress-bar');
   const currentTimeEl = document.getElementById('current-time');
   const durationTimeEl = document.getElementById('duration-time');
   const volumeBar = document.getElementById('volume-bar');
   const trackTitle = document.getElementById('current-track-title');
   const trackCounter = document.getElementById('track-counter');
+  const disc = document.getElementById('disc');
   const discTrackName = document.getElementById('disc-track-name');
   const discArtistName = document.getElementById('disc-artist-name');
-  const playlistContainer = document.querySelector('.playlist-container');
+  const playlistItems = document.querySelectorAll('.playlist-item');
   const nextBtn = document.getElementById('next-btn');
   const prevBtn = document.getElementById('prev-btn');
 
-  // قائمة الأغاني الأربع بترتيبها الصحيح
+  // أضفنا Runaway وصارت بالصدارة فوق
   const playlist = [
     { title: "Runaway", artist: "AURORA", src: "https://files.catbox.moe/7wl70w.mp3" },
     { title: "I Wanna Be Yours", artist: "Arctic Monkeys", src: "https://files.catbox.moe/azuegp.mp3" },
@@ -116,9 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   let currentTrackIndex = 0;
+  let isPlaying = false;
 
   function loadTrack(index) {
-    if (!playlist[index]) return;
     const track = playlist[index];
     if (audioPlayer) audioPlayer.src = track.src;
     if (trackTitle) trackTitle.textContent = track.title;
@@ -126,39 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (discArtistName) discArtistName.textContent = track.artist;
     if (trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
-    // تحديث الأسلوب النشط (Active) في عناصر القائمة
-    const items = playlistContainer.querySelectorAll('.playlist-item');
-    items.forEach((item, idx) => {
+    playlistItems.forEach((item, idx) => {
       item.classList.toggle('active', idx === index);
-    });
-  }
-
-  // بناء القائمة ديناميكياً لتجنب أي مشاكل تطابق في الـ HTML
-  function renderPlaylist() {
-    if (!playlistContainer) return;
-    playlistContainer.innerHTML = '';
-    
-    playlist.forEach((track, index) => {
-      const item = document.createElement('div');
-      item.className = `playlist-item ${index === currentTrackIndex ? 'active' : ''}`;
-      item.innerHTML = `
-        <span class="track-name">${track.title}</span>
-        <span class="artist-name">${track.artist}</span>
-      `;
-      
-      item.addEventListener('click', () => {
-        currentTrackIndex = index;
-        loadTrack(currentTrackIndex);
-        if (audioPlayer) {
-          audioPlayer.play().then(() => {
-            isPlaying = true;
-            if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            if (disc) disc.classList.add('playing');
-          }).catch(err => console.log("Play error:", err));
-        }
-      });
-      
-      playlistContainer.appendChild(item);
     });
   }
 
@@ -202,8 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     audioPlayer.addEventListener('ended', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
-      renderPlaylist();
-      if (audioPlayer) audioPlayer.play();
+      audioPlayer.play();
     });
   }
 
@@ -222,11 +191,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  playlistItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      currentTrackIndex = index;
+      loadTrack(currentTrackIndex);
+      if (audioPlayer) {
+        audioPlayer.play().then(() => {
+          isPlaying = true;
+          if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+          if (disc) disc.classList.add('playing');
+        });
+      }
+    });
+  });
+
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
-      renderPlaylist();
       if (isPlaying && audioPlayer) audioPlayer.play();
     });
   }
@@ -235,11 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
       loadTrack(currentTrackIndex);
-      renderPlaylist();
       if (isPlaying && audioPlayer) audioPlayer.play();
     });
   }
 
-  renderPlaylist();
   loadTrack(currentTrackIndex);
 });
