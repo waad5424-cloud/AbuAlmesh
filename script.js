@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchDiscordStatus();
   setInterval(fetchDiscordStatus, 30000);
 
-  // --- 5. مشغل الموسيقى والقائمة ---
+  // --- 5. مشغل الموسيقى وقائمة التشغيل الذكية ---
   const progressBar = document.getElementById('progress-bar');
   const currentTimeEl = document.getElementById('current-time');
   const durationTimeEl = document.getElementById('duration-time');
@@ -106,7 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const trackCounter = document.getElementById('track-counter');
   const discTrackName = document.getElementById('disc-track-name');
   const discArtistName = document.getElementById('disc-artist-name');
-  const playlistItems = document.querySelectorAll('.playlist-item');
   const nextBtn = document.getElementById('next-btn');
   const prevBtn = document.getElementById('prev-btn');
 
@@ -128,8 +127,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (discArtistName) discArtistName.textContent = track.artist;
     if (trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
+    // تحديث الأسلوب النشط (active) للعناصر في القائمة برمجياً
+    const playlistItems = document.querySelectorAll('.playlist-item');
     playlistItems.forEach((item, idx) => {
       item.classList.toggle('active', idx === index);
+    });
+  }
+
+  // بناء القائمة تلقائياً والتأكد من ظهور Runaway في البداية
+  function renderPlaylist() {
+    let playlistContainer = document.querySelector('.playlist-container');
+    if (!playlistContainer) return;
+    
+    playlistContainer.innerHTML = '';
+    playlist.forEach((track, index) => {
+      const item = document.createElement('div');
+      item.className = `playlist-item ${index === currentTrackIndex ? 'active' : ''}`;
+      item.innerHTML = `
+        <span class="track-name">${track.title}</span>
+        <span class="artist-name">${track.artist}</span>
+      `;
+      item.addEventListener('click', () => {
+        currentTrackIndex = index;
+        loadTrack(currentTrackIndex);
+        renderPlaylist(); // تحديث حالة الـ active للقائمة فور الضغط
+        if (audioPlayer) {
+          audioPlayer.play().then(() => {
+            isPlaying = true;
+            if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            if (disc) disc.classList.add('playing');
+          }).catch(err => console.log("Click play error:", err));
+        }
+      });
+      playlistContainer.appendChild(item);
     });
   }
 
@@ -173,7 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
     audioPlayer.addEventListener('ended', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
-      audioPlayer.play().catch(err => console.log("Ended play error:", err));
+      renderPlaylist();
+      audioPlayer.play().catch(err => console.log("Ended error:", err));
     });
   }
 
@@ -192,24 +223,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  playlistItems.forEach((item, index) => {
-    item.addEventListener('click', () => {
-      currentTrackIndex = index;
-      loadTrack(currentTrackIndex);
-      if (audioPlayer) {
-        audioPlayer.play().then(() => {
-          isPlaying = true;
-          if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-          if (disc) disc.classList.add('playing');
-        }).catch(err => console.log("Playlist click play error:", err));
-      }
-    });
-  });
-
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
+      renderPlaylist();
       if (isPlaying && audioPlayer) {
         audioPlayer.play().catch(err => console.log("Next error:", err));
       }
@@ -220,12 +238,14 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
       loadTrack(currentTrackIndex);
+      renderPlaylist();
       if (isPlaying && audioPlayer) {
         audioPlayer.play().catch(err => console.log("Prev error:", err));
       }
     });
   }
 
-  // تحميل الأغنية الأساسية الأولى (Runaway)
+  // تهيئة وعرض القائمة وتشغيل الأغنية الأساسية (Runaway)
+  renderPlaylist();
   loadTrack(currentTrackIndex);
 });
