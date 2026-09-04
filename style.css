@@ -14,6 +14,8 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  direction: rtl;
+  text-align: right;
 }
 
 /* خلفية الموقع المتحركة بلقطة بليتش الأبيض والأسود */
@@ -28,13 +30,62 @@ body {
   filter: grayscale(100%) contrast(130%) brightness(40%);
 }
 
+/* تنسيق الهيدر العلوي */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: rgba(10, 10, 10, 0.85);
+  border-bottom: 1px solid var(--border-color);
+  backdrop-filter: blur(10px);
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  margin-left: 20px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--text-primary);
+}
+
+/* الحاوية الرئيسية وترتيب البطاقات بالنص */
+.main-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
 /* تصميم البطاقات والعناصر بستايل زجاجي أسود وأبيض أنيق */
 .glass-card, .profile-card, .music-player-card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   backdrop-filter: blur(12px);
   border-radius: 16px;
+  padding: 25px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.9);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* تنسيق حاوية مشغل الموسيقى والأسطوانة */
+.player-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.vinyl-container {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
 }
 
 /* شكل الأسطوانة الكلاسيكي مع التوهج الأبيض اللامع */
@@ -96,11 +147,37 @@ body {
   border: 2px solid #555;
 }
 
+/* عناصر تحكم المشغل */
+.player-controls {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.time-container, .volume-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.buttons-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 10px 0;
+}
+
 /* تنسيق الأزرار */
 button, .interactive-btn {
   background: #1a1a1a;
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
@@ -108,4 +185,65 @@ button:hover, .interactive-btn:hover {
   background: #fff;
   color: #000;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+/* قائمة الأغاني */
+.playlist-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+}
+
+.playlist-item {
+  padding: 10px;
+  margin-bottom: 5px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  transition: background 0.3s;
+}
+
+.playlist-item:hover, .playlist-item.active {
+  background: rgba(255, 255, 255, 0.1);
+  border-right: 3px solid #fff;
+}
+
+.playlist-item .artist {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+/* شاشة الترحيب */
+.intro-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(5, 5, 5, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.6s ease;
+}
+
+.intro-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.intro-sub {
+  color: var(--text-secondary);
+  font-size: 12px;
+  letter-spacing: 1px;
 }
