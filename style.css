@@ -1,12 +1,10 @@
 /* --- إعدادات ستايل الأبيض والأسود الفاخر (Monochrome Theme) --- */
 :root {
   --bg-color: #050505;
-  --card-bg: rgba(20, 20, 20, 0.75);
+  --card-bg: rgba(15, 15, 15, 0.85);
   --border-color: rgba(255, 255, 255, 0.15);
   --text-primary: #ffffff;
   --text-secondary: #aaaaaa;
-  --accent-color: #ffffff;
-  --glow-color: rgba(255, 255, 255, 0.4);
 }
 
 body {
@@ -18,29 +16,28 @@ body {
   overflow-x: hidden;
 }
 
-/* خلفية الصورة أو الـ GIF الجديد (مكان البنت اللي تدخن) */
-.hero-background, .background-image-container {
+/* خلفية الموقع المتحركة بلقطة بليتش الأبيض والأسود */
+.background-image-container, .hero-background {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1;
+  z-index: -999;
   object-fit: cover;
-  /* فلتر أبيض وأسود فاخر مع تباين عالي */
-  filter: grayscale(100%) contrast(120%) brightness(50%);
+  filter: grayscale(100%) contrast(130%) brightness(40%);
 }
 
-/* البطاقات والعناصر بستايل زجاجي أسود وأبيض */
+/* تصميم البطاقات والعناصر بستايل زجاجي أسود وأبيض أنيق */
 .glass-card, .profile-card, .music-player-card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   backdrop-filter: blur(12px);
   border-radius: 16px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.9);
 }
 
-/* شكل الأسطوانة الكلاسيكي الأبيض والأسود */
+/* شكل الأسطوانة الكلاسيكي مع التوهج الأبيض اللامع */
 .vinyl-record {
   width: 180px;
   height: 180px;
@@ -56,21 +53,19 @@ body {
   justify-content: center;
 }
 
-/* خطوط الأسطوانة الدائرية */
 .vinyl-record::before {
   content: '';
   position: absolute;
   top: 15px; left: 15px; right: 15px; bottom: 15px;
   border-radius: 50%;
   border: 1px dashed rgba(255, 255, 255, 0.15);
-  box-shadow: inset 0 0 0 15px rgba(255, 255, 255, 0.03), inset 0 0 0 30px rgba(255, 255, 255, 0.01);
+  box-shadow: inset 0 0 0 15px rgba(255, 255, 255, 0.03);
   pointer-events: none;
 }
 
-/* توهج الأسطوانة بالأبيض الفاخر عند التشغيل */
 .vinyl-record.playing {
   border-color: #ffffff;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.2);
   animation: vinylRotate 4s linear infinite;
 }
 
@@ -79,7 +74,6 @@ body {
   to { transform: rotate(360deg); }
 }
 
-/* الدائرة الداخلية (صارت فضية/بيضاء فخمة بدل الأحمر) */
 .vinyl-record .vinyl-center {
   width: 55px;
   height: 55px;
@@ -93,7 +87,6 @@ body {
   justify-content: center;
 }
 
-/* الثقب الأسود الصغير في المنتصف */
 .vinyl-record .vinyl-center::after {
   content: '';
   width: 12px;
@@ -103,7 +96,7 @@ body {
   border: 2px solid #555;
 }
 
-/* الأزرار والعناصر التفاعلية */
+/* تنسيق الأزرار */
 button, .interactive-btn {
   background: #1a1a1a;
   color: #fff;
@@ -115,9 +108,4 @@ button:hover, .interactive-btn:hover {
   background: #fff;
   color: #000;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-}
-
-/* أشرطة التقدم */
-input[type="range"] {
-  accent-color: #ffffff;
 }
