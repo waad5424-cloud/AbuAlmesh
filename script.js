@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
     if (disc) {
-      disc.innerHTML = `<img src="${track.gif}" alt="${track.title}" class="track-gif">`;
+      disc.innerHTML = `<div class="track-gif-container"><img src="${track.gif}" alt="${track.title}" class="track-gif"></div>`;
     }
 
     playlistItems.forEach((item, idx) => {
