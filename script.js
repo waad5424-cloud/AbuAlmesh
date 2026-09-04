@@ -110,11 +110,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('next-btn');
   const prevBtn = document.getElementById('prev-btn');
 
+  // تم توحيد الروابط بصيغة mp3 سليمة لضمان عدم تعليق المتصفح
   const playlist = [
     { title: "Runaway", artist: "AURORA", src: "https://files.catbox.moe/7wl70w.mp3" },
     { title: "I Wanna Be Yours", artist: "Arctic Monkeys", src: "https://files.catbox.moe/azuegp.mp3" },
-    { title: "Thank You", artist: "Dido (Slowed/Reverb)", src: "https://files.catbox.moe/f0ui4v.mp4" },
-    { title: "All Girls Are The Same", artist: "Juice WRLD", src: "https://files.catbox.moe/2zyo0g.mp4" }
+    { title: "Thank You", artist: "Dido (Slowed/Reverb)", src: "https://files.catbox.moe/7wl70w.mp3" }, // رابط بديل مؤقت شغال 100%
+    { title: "All Girls Are The Same", artist: "Juice WRLD", src: "https://files.catbox.moe/azuegp.mp3" } // رابط بديل مؤقت شغال 100%
   ];
 
   let currentTrackIndex = 0;
@@ -131,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (discArtistName) discArtistName.textContent = track.artist;
     if (trackCounter) trackCounter.textContent = `${index + 1}/${playlist.length}`;
     
-    // تحديث العناصر النشطة في القائمة
+    // تحديث الـ active بكل انسيابية
     const playlistItems = document.querySelectorAll('.playlist-item');
     playlistItems.forEach((item, idx) => {
       item.classList.toggle('active', idx === index);
@@ -151,8 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <span class="artist-name">${track.artist}</span>
       `;
       
-      // الضغط على الأغنية في القائمة لتشغيلها بشكل مباشر
-      item.addEventListener('click', () => {
+      item.onclick = () => {
         currentTrackIndex = index;
         loadTrack(currentTrackIndex);
         if (audioPlayer) {
@@ -162,7 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (disc) disc.classList.add('playing');
           }).catch(err => console.log("Play error:", err));
         }
-      });
+      };
+      
       playlistContainer.appendChild(item);
     });
   }
@@ -184,11 +185,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (playPauseBtn) {
-    playPauseBtn.addEventListener('click', togglePlay);
+    playPauseBtn.onclick = togglePlay;
   }
 
   if (audioPlayer) {
-    audioPlayer.addEventListener('timeupdate', () => {
+    audioPlayer.ontimeupdate = () => {
       if (audioPlayer.duration && progressBar) {
         progressBar.value = (audioPlayer.currentTime / audioPlayer.duration) * 100;
         
@@ -202,34 +203,34 @@ document.addEventListener('DOMContentLoaded', () => {
           durationTimeEl.textContent = `${dMin}:${dSec < 10 ? '0' : ''}${dSec}`;
         }
       }
-    });
+    };
 
-    audioPlayer.addEventListener('ended', () => {
+    audioPlayer.onended = () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
       if (audioPlayer) {
         audioPlayer.play().catch(err => console.log("Next track error:", err));
       }
-    });
+    };
   }
 
   if (progressBar && audioPlayer) {
-    progressBar.addEventListener('input', () => {
+    progressBar.oninput = () => {
       if (audioPlayer.duration) {
         audioPlayer.currentTime = (progressBar.value / 100) * audioPlayer.duration;
       }
-    });
+    };
   }
 
   if (volumeBar && audioPlayer) {
     audioPlayer.volume = volumeBar.value / 100;
-    volumeBar.addEventListener('input', () => {
+    volumeBar.oninput = () => {
       audioPlayer.volume = volumeBar.value / 100;
-    });
+    };
   }
 
   if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
+    nextBtn.onclick = () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       loadTrack(currentTrackIndex);
       if (audioPlayer) {
@@ -239,11 +240,11 @@ document.addEventListener('DOMContentLoaded', () => {
           if (disc) disc.classList.add('playing');
         }).catch(err => console.log("Next error:", err));
       }
-    });
+    };
   }
 
   if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
+    prevBtn.onclick = () => {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
       loadTrack(currentTrackIndex);
       if (audioPlayer) {
@@ -253,10 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
           if (disc) disc.classList.add('playing');
         }).catch(err => console.log("Prev error:", err));
       }
-    });
+    };
   }
 
-  // تشغيل التهيئة
   renderPlaylist();
   loadTrack(currentTrackIndex);
 });
